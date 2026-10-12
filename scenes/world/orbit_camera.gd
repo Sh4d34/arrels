@@ -2,7 +2,7 @@ class_name OrbitCamera
 extends Node3D
 ## Orbit camera around a ground pivot, following a target when one is set.
 ## Right drag: rotate (the cursor is hidden and held in place meanwhile). Wheel / pinch: zoom.
-## Trackpad two-finger swipe: horizontal rotates, vertical zooms.
+## Trackpad two-finger swipe: horizontal rotates around, vertical tilts up and down.
 ## Without a target, middle drag or Shift + right drag: pan.
 ## With a moving target, the camera slowly swings back behind it unless rotated by hand recently.
 
@@ -15,6 +15,7 @@ extends Node3D
 @export_range(-89.0, 0.0) var min_pitch_deg: float = -80.0
 @export_range(-89.0, 0.0) var max_pitch_deg: float = -6.0
 @export var trackpad_rotate_sensitivity: float = 6.0 ## Degrees per unit of two-finger swipe.
+@export var trackpad_tilt_sensitivity: float = 4.0 ## Degrees per unit; negative inverts the tilt.
 
 @export_group("Auto follow")
 @export var auto_follow_enabled: bool = true
@@ -86,13 +87,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		# Trackpad pinch: factor > 1 means fingers spreading, i.e. zoom in.
 		distance = clampf(distance / (event as InputEventMagnifyGesture).factor, min_distance, max_distance)
 	elif event is InputEventPanGesture:
-		# Trackpad two-finger swipe: the dominant direction decides between rotating and zooming.
+		# Trackpad two-finger swipe: rotate around and tilt; zooming is left to the pinch.
 		var swipe := (event as InputEventPanGesture).delta
-		if absf(swipe.x) > absf(swipe.y):
-			rotation.y -= deg_to_rad(swipe.x * trackpad_rotate_sensitivity)
-			_time_since_manual_rotation = 0.0
-		else:
-			_zoom(swipe.y * zoom_step * 0.5)
+		rotation.y -= deg_to_rad(swipe.x * trackpad_rotate_sensitivity)
+		pitch_deg -= swipe.y * trackpad_tilt_sensitivity
+		_apply_pitch()
+		_time_since_manual_rotation = 0.0
 
 
 func _rotate(relative: Vector2) -> void:
