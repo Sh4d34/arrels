@@ -1,1 +1,11 @@
-[]
+[
+	{
+		"id": "composteur",
+		"nom": "Composteur en palettes",
+		"palier": "debutant",
+		"taille_grille": [1, 1],
+		"cout": [{ "item": "bois", "qte": 8 }],
+		"scene": "res://scenes/buildables/composteur.tscn",
+		"carnet": "Le compost transforme les déchets verts en terre fertile."
+	}
+]

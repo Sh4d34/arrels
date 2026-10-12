@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="player"]
 [ext_resource type="PackedScene" path="res://scenes/world/bridge.tscn" id="bridge"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="hud"]
+[ext_resource type="PackedScene" path="res://scenes/buildables/build_mode.tscn" id="build_mode"]
 [ext_resource type="PackedScene" path="res://assets/models/quaternius_nature/Pine_2.gltf" id="m10_pine_2"]
 [ext_resource type="PackedScene" path="res://assets/models/quaternius_nature/Pine_1.gltf" id="m11_pine_1"]
 [ext_resource type="PackedScene" path="res://assets/models/quaternius_nature/Pine_4.gltf" id="m12_pine_4"]
@@ -3089,5 +3090,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.0, 0.5, 9.0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.0, 0, 9.0)
 target = NodePath("../Player")
 
-[node name="Hud" parent="." node_paths=PackedStringArray("player") instance=ExtResource("hud")]
+[node name="Buildings" type="Node3D" parent="."]
+
+[node name="BuildMode" parent="." node_paths=PackedStringArray("terrain", "player", "buildings") instance=ExtResource("build_mode")]
+terrain = NodePath("../Terrain")
 player = NodePath("../Player")
+buildings = NodePath("../Buildings")
+
+[node name="Hud" parent="." node_paths=PackedStringArray("player", "build_mode") instance=ExtResource("hud")]
+player = NodePath("../Player")
+build_mode = NodePath("../BuildMode")

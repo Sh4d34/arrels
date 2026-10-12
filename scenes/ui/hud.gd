@@ -1,10 +1,13 @@
 class_name Hud
 extends CanvasLayer
-## On-screen information: inventory, interaction prompt and short pickup messages.
+## On-screen information: inventory, interaction prompt, short pickup messages and the build panel.
 
 const PROMPT_KEYS := "Espace / clic"
 
 @export var player: Player
+@export var build_mode: BuildMode
+@export var valid_status_color: Color = Color(0.7, 0.95, 0.6)
+@export var invalid_status_color: Color = Color(1.0, 0.6, 0.5)
 @export var toast_duration: float = 1.6
 @export var toast_rise: float = 30.0
 
@@ -15,13 +18,23 @@ var _known_quantities: Dictionary[String, int] = {}
 @onready var _prompt_panel: PanelContainer = %PromptPanel
 @onready var _prompt_label: Label = %PromptLabel
 @onready var _toasts: Control = %Toasts
+@onready var _build_panel: PanelContainer = %BuildPanel
+@onready var _build_title: Label = %BuildTitle
+@onready var _build_cost: Label = %BuildCost
+@onready var _build_carnet: Label = %BuildCarnet
+@onready var _build_status: Label = %BuildStatus
 
 
 func _ready() -> void:
 	Inventory.changed.connect(_on_inventory_changed)
 	if player:
 		player.interaction_prompt_changed.connect(_on_prompt_changed)
+	if build_mode:
+		build_mode.mode_changed.connect(_on_build_mode_changed)
+		build_mode.placement_changed.connect(_on_placement_changed)
+		build_mode.built.connect(_on_built)
 	_on_prompt_changed("")
+	_on_build_mode_changed(false, "")
 	_refresh_inventory()
 
 
@@ -35,6 +48,42 @@ func _on_inventory_changed(item_id: String, quantity: int) -> void:
 	if gained > 0:
 		_show_toast("+%d %s" % [gained, GameData.item_name(item_id)])
 	_refresh_inventory()
+	_refresh_build_cost()
+
+
+func _on_build_mode_changed(active: bool, buildable_id: String) -> void:
+	_build_panel.visible = active
+	if not active:
+		return
+	var data := GameData.get_buildable(buildable_id)
+	_build_title.text = "Construire : %s" % data.get("nom", buildable_id)
+	_build_carnet.text = data.get("carnet", "")
+	_build_carnet.visible = _build_carnet.text != ""
+	_on_placement_changed(false, "")
+	_refresh_build_cost()
+
+
+func _on_placement_changed(valid: bool, reason: String) -> void:
+	if valid:
+		_build_status.text = "Emplacement libre"
+	elif reason != "":
+		_build_status.text = reason
+	else:
+		_build_status.text = "Vise le sol pour placer"
+	_build_status.modulate = valid_status_color if valid else invalid_status_color
+
+
+func _on_built(buildable_id: String) -> void:
+	_show_toast("%s construit !" % GameData.get_buildable(buildable_id).get("nom", buildable_id))
+
+
+func _refresh_build_cost() -> void:
+	if build_mode == null or not build_mode.active:
+		return
+	var lines: PackedStringArray = []
+	for cost: Dictionary in GameData.get_buildable(build_mode.get_buildable_id()).get("cout", []):
+		lines.append("%d %s (tu en as %d)" % [int(cost.qte), GameData.item_name(cost.item).to_lower(), Inventory.count(cost.item)])
+	_build_cost.text = "Coût : " + ", ".join(lines)
 
 
 func _refresh_inventory() -> void:

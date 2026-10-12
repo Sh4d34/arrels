@@ -1,0 +1,185 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="wood0"]
+albedo_color = Color(0.693, 0.573, 0.393, 1)
+roughness = 1.0
+
+[sub_resource type="StandardMaterial3D" id="wood1"]
+albedo_color = Color(0.766, 0.646, 0.466, 1)
+roughness = 1.0
+
+[sub_resource type="StandardMaterial3D" id="wood2"]
+albedo_color = Color(0.683, 0.563, 0.383, 1)
+roughness = 1.0
+
+[sub_resource type="StandardMaterial3D" id="wood_dark"]
+albedo_color = Color(0.480, 0.380, 0.260, 1)
+roughness = 1.0
+
+[sub_resource type="StandardMaterial3D" id="compost"]
+albedo_color = Color(0.240, 0.170, 0.110, 1)
+roughness = 1.0
+
+[sub_resource type="StandardMaterial3D" id="greens"]
+albedo_color = Color(0.420, 0.550, 0.250, 1)
+roughness = 1.0
+
+[sub_resource type="BoxMesh" id="board"]
+material = SubResource("wood0")
+size = Vector3(0.96, 0.11, 0.025)
+
+[sub_resource type="BoxMesh" id="board1"]
+material = SubResource("wood1")
+size = Vector3(0.96, 0.11, 0.025)
+
+[sub_resource type="BoxMesh" id="board2"]
+material = SubResource("wood2")
+size = Vector3(0.96, 0.11, 0.025)
+
+[sub_resource type="BoxMesh" id="post"]
+material = SubResource("wood_dark")
+size = Vector3(0.07, 0.85, 0.07)
+
+[sub_resource type="BoxMesh" id="compost"]
+material = SubResource("compost")
+size = Vector3(0.88, 0.42, 0.88)
+
+[sub_resource type="BoxMesh" id="greens"]
+material = SubResource("greens")
+size = Vector3(0.16, 0.05, 0.12)
+
+[sub_resource type="BoxShape3D" id="shape"]
+size = Vector3(1.0, 0.85, 1.0)
+
+[node name="Composteur" type="StaticBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.425, 0)
+shape = SubResource("shape")
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="BackBoard0" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000, 0.080, -0.487)
+mesh = SubResource("board2")
+
+[node name="BackBoard1" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000, 0.215, -0.487)
+mesh = SubResource("board")
+
+[node name="BackBoard2" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000, 0.350, -0.487)
+mesh = SubResource("board")
+
+[node name="BackBoard3" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000, 0.485, -0.487)
+mesh = SubResource("board")
+
+[node name="BackBoard4" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000, 0.620, -0.487)
+mesh = SubResource("board")
+
+[node name="BackBoard5" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000, 0.755, -0.487)
+mesh = SubResource("board2")
+
+[node name="FrontBoard0" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000, 0.080, 0.487)
+mesh = SubResource("board")
+
+[node name="FrontBoard1" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000, 0.215, 0.487)
+mesh = SubResource("board1")
+
+[node name="FrontBoard2" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000, 0.350, 0.487)
+mesh = SubResource("board2")
+
+[node name="LeftBoard0" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.487, 0.080, 0.000)
+mesh = SubResource("board")
+
+[node name="LeftBoard1" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.487, 0.215, 0.000)
+mesh = SubResource("board1")
+
+[node name="LeftBoard2" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.487, 0.350, 0.000)
+mesh = SubResource("board1")
+
+[node name="LeftBoard3" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.487, 0.485, 0.000)
+mesh = SubResource("board1")
+
+[node name="LeftBoard4" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.487, 0.620, 0.000)
+mesh = SubResource("board1")
+
+[node name="LeftBoard5" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.487, 0.755, 0.000)
+mesh = SubResource("board1")
+
+[node name="RightBoard0" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0.487, 0.080, 0.000)
+mesh = SubResource("board2")
+
+[node name="RightBoard1" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0.487, 0.215, 0.000)
+mesh = SubResource("board")
+
+[node name="RightBoard2" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0.487, 0.350, 0.000)
+mesh = SubResource("board1")
+
+[node name="RightBoard3" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0.487, 0.485, 0.000)
+mesh = SubResource("board")
+
+[node name="RightBoard4" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0.487, 0.620, 0.000)
+mesh = SubResource("board1")
+
+[node name="RightBoard5" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0.487, 0.755, 0.000)
+mesh = SubResource("board")
+
+[node name="Post0" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.460, 0.425, -0.460)
+mesh = SubResource("post")
+
+[node name="Post1" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.460, 0.425, -0.460)
+mesh = SubResource("post")
+
+[node name="Post2" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.460, 0.425, 0.460)
+mesh = SubResource("post")
+
+[node name="Post3" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.460, 0.425, 0.460)
+mesh = SubResource("post")
+
+[node name="Compost" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000, 0.210, 0.000)
+mesh = SubResource("compost")
+
+[node name="Greens0" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.155, 0.440, 0.121)
+mesh = SubResource("greens")
+
+[node name="Greens1" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.012, 0.440, -0.015)
+mesh = SubResource("greens")
+
+[node name="Greens2" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.247, 0.440, 0.136)
+mesh = SubResource("greens")
+
+[node name="Greens3" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.098, 0.440, -0.242)
+mesh = SubResource("greens")
+
+[node name="Greens4" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.189, 0.440, -0.068)
+mesh = SubResource("greens")
+

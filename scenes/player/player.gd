@@ -27,6 +27,7 @@ signal interaction_prompt_changed(prompt: String) ## Empty when nothing can be i
 
 var _spawn_position: Vector3
 var _bob_phase: float = 0.0
+var interaction_enabled: bool = true ## Turned off by modes that use the same inputs (building).
 var _target: Node3D ## The physics body currently targeted, or null.
 var _target_prompt: String = ""
 var _cooldown_left: float = 0.0
@@ -67,9 +68,11 @@ func _physics_process(delta: float) -> void:
 
 func _update_interaction(delta: float) -> void:
 	_cooldown_left = maxf(_cooldown_left - delta, 0.0)
-	var target := _find_hovered_interactable()
-	if target == null:
-		target = _find_nearest_interactable()
+	var target: Node3D = null
+	if interaction_enabled:
+		target = _find_hovered_interactable()
+		if target == null:
+			target = _find_nearest_interactable()
 	var prompt := ""
 	if target:
 		prompt = (target.get_meta("interactable") as Object).call("get_interaction_prompt")

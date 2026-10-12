@@ -29,6 +29,23 @@ func remove(item_id: String, quantity: int = 1) -> bool:
 	return true
 
 
+## True if every cost line ({"item": id, "qte": n}) is covered.
+func has_all(costs: Array) -> bool:
+	for cost: Dictionary in costs:
+		if count(cost.item) < int(cost.qte):
+			return false
+	return true
+
+
+## Removes every cost line at once, or nothing if one of them is not covered.
+func remove_all(costs: Array) -> bool:
+	if not has_all(costs):
+		return false
+	for cost: Dictionary in costs:
+		remove(cost.item, int(cost.qte))
+	return true
+
+
 func count(item_id: String) -> int:
 	return _quantities.get(item_id, 0)
 

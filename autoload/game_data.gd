@@ -6,11 +6,13 @@ const DATA_DIR := "res://data/"
 
 var items: Dictionary = {}
 var harvestables: Dictionary = {}
+var buildables: Dictionary = {}
 
 
 func _ready() -> void:
 	items = _load_collection("items.json")
 	harvestables = _load_collection("harvestables.json")
+	buildables = _load_collection("buildables.json")
 	_validate()
 
 
@@ -20,6 +22,10 @@ func get_item(id: String) -> Dictionary:
 
 func get_harvestable(id: String) -> Dictionary:
 	return harvestables.get(id, {})
+
+
+func get_buildable(id: String) -> Dictionary:
+	return buildables.get(id, {})
 
 
 ## Display name of an item, falling back to its id.
@@ -54,3 +60,9 @@ func _validate() -> void:
 		for drop: Dictionary in harvestable.get("recolte", []):
 			if not items.has(drop.get("item", "")):
 				push_error("GameData: harvestable '%s' drops unknown item '%s'" % [harvestable.id, drop.get("item", "")])
+	for buildable: Dictionary in buildables.values():
+		for cost: Dictionary in buildable.get("cout", []):
+			if not items.has(cost.get("item", "")):
+				push_error("GameData: buildable '%s' costs unknown item '%s'" % [buildable.id, cost.get("item", "")])
+		if not ResourceLoader.exists(buildable.get("scene", "")):
+			push_error("GameData: buildable '%s' has no scene at '%s'" % [buildable.id, buildable.get("scene", "")])

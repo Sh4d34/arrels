@@ -11,6 +11,7 @@ func _initialize() -> void:
 	await process_frame
 	_test_game_data()
 	_test_inventory()
+	_test_costs()
 	print("Tests: %s" % ("OK" if _failures == 0 else "%d échec(s)" % _failures))
 	quit(1 if _failures > 0 else 0)
 
@@ -49,3 +50,20 @@ func _test_inventory() -> void:
 	_check(inventory.remove("bois", 3), "retrait du stock exact")
 	_check(inventory.count("bois") == 0 and not inventory.get_all().has("bois"), "objet retiré quand il tombe à 0")
 	_check(events.back() == ["bois", 0], "signal après retrait")
+
+
+func _test_costs() -> void:
+	var inventory: Node = root.get_node("Inventory")
+	var game_data: Node = root.get_node("GameData")
+	var composteur: Dictionary = game_data.get_buildable("composteur")
+	_check(not composteur.is_empty(), "buildables.json contient le composteur")
+	var costs: Array = composteur.get("cout", [])
+	_check(not costs.is_empty(), "le composteur a un coût")
+	inventory.add("bois", 5)
+	_check(not inventory.has_all(costs), "5 bois ne suffisent pas")
+	_check(not inventory.remove_all(costs), "retrait refusé sans assez de bois")
+	_check(inventory.count("bois") == 5, "rien n'est retiré quand le coût n'est pas couvert")
+	inventory.add("bois", 5)
+	_check(inventory.remove_all(costs), "retrait du coût avec 10 bois")
+	_check(inventory.count("bois") == 2, "il reste 2 bois")
+	inventory.remove("bois", 2)

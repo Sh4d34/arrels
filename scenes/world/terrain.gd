@@ -52,6 +52,9 @@ extends StaticBody3D
 @export var gravel_color: Color = Color(0.5, 0.45, 0.36)
 @export_range(0.0, 1.0) var steep_threshold: float = 0.82
 
+## Render layers 1 and 2: layer 2 marks the ground, for decals such as the build grid.
+const GROUND_RENDER_LAYERS := 0b11
+
 var _mesh_instance: MeshInstance3D
 var _track_instance: MeshInstance3D
 var _ground_shape: CollisionShape3D
@@ -210,10 +213,12 @@ func _ensure_nodes() -> void:
 	# Internal children are not shown in the scene tree and not saved.
 	if _mesh_instance == null:
 		_mesh_instance = MeshInstance3D.new()
+		_mesh_instance.layers = GROUND_RENDER_LAYERS
 		add_child(_mesh_instance, false, Node.INTERNAL_MODE_FRONT)
 	if _track_instance == null:
 		_track_instance = MeshInstance3D.new()
 		_track_instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		_track_instance.layers = GROUND_RENDER_LAYERS
 		add_child(_track_instance, false, Node.INTERNAL_MODE_FRONT)
 	if _ground_shape == null:
 		_ground_shape = CollisionShape3D.new()

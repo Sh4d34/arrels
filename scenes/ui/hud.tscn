@@ -18,6 +18,18 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
+[sub_resource type="FontVariation" id="FontVariation_italic"]
+variation_transform = Transform2D(1, 0, 0.2, 1, 0, 0)
+
+[sub_resource type="LabelSettings" id="LabelSettings_carnet"]
+font = SubResource("FontVariation_italic")
+font_size = 18
+font_color = Color(0.93, 0.88, 0.76, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_help"]
+font_size = 16
+font_color = Color(0.85, 0.82, 0.74, 1)
+
 [sub_resource type="Theme" id="Theme_hud"]
 Label/font_sizes/font_size = 22
 Label/colors/font_color = Color(0.98, 0.95, 0.88, 1)
@@ -84,3 +96,44 @@ offset_right = 150.0
 offset_bottom = 300.0
 grow_horizontal = 2
 mouse_filter = 2
+
+[node name="BuildPanel" type="PanelContainer" parent="Root"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -420.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 60.0
+grow_horizontal = 0
+mouse_filter = 2
+
+[node name="BuildList" type="VBoxContainer" parent="Root/BuildPanel"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="BuildTitle" type="Label" parent="Root/BuildPanel/BuildList"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="BuildCost" type="Label" parent="Root/BuildPanel/BuildList"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="BuildCarnet" type="Label" parent="Root/BuildPanel/BuildList"]
+unique_name_in_owner = true
+layout_mode = 2
+label_settings = SubResource("LabelSettings_carnet")
+autowrap_mode = 3
+
+[node name="BuildStatus" type="Label" parent="Root/BuildPanel/BuildList"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="BuildHelp" type="Label" parent="Root/BuildPanel/BuildList"]
+layout_mode = 2
+text = "Clic : poser · R : tourner · Échap : quitter"
+label_settings = SubResource("LabelSettings_help")
