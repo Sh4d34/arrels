@@ -1,7 +1,9 @@
 class_name OrbitCamera
 extends Node3D
 ## Orbit camera around a ground pivot, following a target when one is set.
-## Right drag: rotate. Wheel / pinch: zoom. Without a target, middle drag or Shift + right drag: pan.
+## Right drag or A / E (AZERTY): rotate. Wheel / pinch: zoom.
+## Without a target, middle drag or Shift + right drag: pan.
+## With a moving target, the camera slowly swings back behind it unless rotated by hand recently.
 
 @export var target: Node3D ## When set, the pivot follows it and panning is disabled.
 @export var target_height: float = 1.2 ## Point looked at, above the target's origin.
@@ -11,6 +13,13 @@ extends Node3D
 @export var rotate_sensitivity: float = 0.3 ## Degrees per pixel.
 @export_range(-89.0, 0.0) var min_pitch_deg: float = -80.0
 @export_range(-89.0, 0.0) var max_pitch_deg: float = -6.0
+@export var keyboard_rotate_speed: float = 100.0 ## Degrees per second.
+
+@export_group("Auto follow")
+@export var auto_follow_enabled: bool = true
+@export var auto_follow_delay: float = 2.5 ## Seconds after a manual rotation before swinging back.
+@export var auto_follow_speed: float = 1.0 ## Higher swings back faster.
+@export var auto_follow_min_speed: float = 1.0 ## Target speed (m/s) below which nothing happens.
 
 @export_group("Zoom")
 @export var min_distance: float = 4.0
@@ -27,6 +36,7 @@ extends Node3D
 @export var pitch_deg: float = -35.0
 
 var _current_distance: float
+var _time_since_manual_rotation: float = INF
 
 @onready var _pitch: Node3D = $Pitch
 @onready var _camera: Camera3D = $Pitch/Camera3D
@@ -44,8 +54,14 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	_current_distance = lerpf(_current_distance, distance, 1.0 - exp(-zoom_smoothing * delta))
 	_camera.position.z = _current_distance
+	_time_since_manual_rotation += delta
+	var key_axis := Input.get_axis("camera_rotate_right", "camera_rotate_left")
+	if key_axis != 0.0:
+		rotation.y += deg_to_rad(key_axis * keyboard_rotate_speed * delta)
+		_time_since_manual_rotation = 0.0
 	if target:
 		global_position = global_position.lerp(_target_point(), 1.0 - exp(-follow_smoothing * delta))
+		_auto_follow(delta)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -70,6 +86,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _rotate(relative: Vector2) -> void:
+	_time_since_manual_rotation = 0.0
 	rotation.y -= deg_to_rad(relative.x * rotate_sensitivity)
 	pitch_deg -= relative.y * rotate_sensitivity
 	_apply_pitch()
@@ -86,6 +103,22 @@ func _pan(relative: Vector2) -> void:
 
 func _zoom(amount: float) -> void:
 	distance = clampf(distance + amount, min_distance, max_distance)
+
+
+func _auto_follow(delta: float) -> void:
+	var body := target as CharacterBody3D
+	if not auto_follow_enabled or body == null or _time_since_manual_rotation < auto_follow_delay:
+		return
+	var move := Vector2(body.velocity.x, body.velocity.z)
+	if move.length() < auto_follow_min_speed:
+		return
+	var move_dir := move.normalized()
+	var view_dir := Vector2(-sin(rotation.y), -cos(rotation.y))
+	# Only swing when walking away from the camera: strafing or walking toward it
+	# would otherwise make the camera (and so the controls) spin.
+	var alignment := maxf(move_dir.dot(view_dir), 0.0)
+	var target_yaw := atan2(-move_dir.x, -move_dir.y)
+	rotation.y = lerp_angle(rotation.y, target_yaw, (1.0 - exp(-auto_follow_speed * delta)) * alignment)
 
 
 func _target_point() -> Vector3:
