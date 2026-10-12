@@ -1,0 +1,460 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="wood_light"]
+albedo_color = Color(0.62, 0.47, 0.31, 1)
+roughness = 1.0
+
+[sub_resource type="StandardMaterial3D" id="wood_dark"]
+albedo_color = Color(0.4, 0.29, 0.19, 1)
+roughness = 1.0
+
+[sub_resource type="BoxMesh" id="plank"]
+material = SubResource("wood_light")
+size = Vector3(0.3, 0.08, 2.4)
+
+[sub_resource type="BoxMesh" id="stringer0"]
+material = SubResource("wood_dark")
+size = Vector3(7.1, 0.18, 0.16)
+
+[sub_resource type="BoxShape3D" id="deck_shape0"]
+size = Vector3(7.15, 0.3, 2.4)
+
+[sub_resource type="BoxShape3D" id="rail_shape0"]
+size = Vector3(7.15, 1.1, 0.12)
+
+[sub_resource type="BoxMesh" id="stringer1"]
+material = SubResource("wood_dark")
+size = Vector3(3.28, 0.18, 0.16)
+
+[sub_resource type="BoxShape3D" id="deck_shape1"]
+size = Vector3(3.33, 0.3, 2.4)
+
+[sub_resource type="BoxShape3D" id="rail_shape1"]
+size = Vector3(3.33, 1.1, 0.12)
+
+[sub_resource type="BoxMesh" id="stringer2"]
+material = SubResource("wood_dark")
+size = Vector3(3.28, 0.18, 0.16)
+
+[sub_resource type="BoxShape3D" id="deck_shape2"]
+size = Vector3(3.33, 0.3, 2.4)
+
+[sub_resource type="BoxShape3D" id="rail_shape2"]
+size = Vector3(3.33, 1.1, 0.12)
+
+[sub_resource type="BoxMesh" id="post"]
+material = SubResource("wood_dark")
+size = Vector3(0.12, 1.05, 0.12)
+
+[sub_resource type="BoxMesh" id="rail0"]
+material = SubResource("wood_light")
+size = Vector3(1.5, 0.08, 0.08)
+
+[sub_resource type="BoxMesh" id="rail1"]
+material = SubResource("wood_light")
+size = Vector3(1.6, 0.08, 0.08)
+
+[sub_resource type="BoxMesh" id="rail2"]
+material = SubResource("wood_light")
+size = Vector3(1.81, 0.08, 0.08)
+
+[sub_resource type="BoxMesh" id="rail3"]
+material = SubResource("wood_light")
+size = Vector3(1.81, 0.08, 0.08)
+
+[sub_resource type="BoxMesh" id="rail4"]
+material = SubResource("wood_light")
+size = Vector3(1.81, 0.08, 0.08)
+
+[sub_resource type="BoxMesh" id="rail5"]
+material = SubResource("wood_light")
+size = Vector3(1.81, 0.08, 0.08)
+
+[sub_resource type="BoxMesh" id="rail6"]
+material = SubResource("wood_light")
+size = Vector3(1.6, 0.08, 0.08)
+
+[sub_resource type="BoxMesh" id="rail7"]
+material = SubResource("wood_light")
+size = Vector3(1.5, 0.08, 0.08)
+
+[sub_resource type="BoxMesh" id="pier"]
+material = SubResource("wood_dark")
+size = Vector3(0.24, 2.1, 0.24)
+
+[node name="Bridge" type="StaticBody3D"]
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="Plank00" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9754, -0.2203, 0.006277, 0.2203, 0.9754, 0.001417, -0.006435, 0, 1, -6.421, -0.1458, 0)
+mesh = SubResource("plank")
+
+[node name="Plank01" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9753, -0.2203, 0.01508, 0.2202, 0.9754, 0.003404, -0.01546, 0, 0.9999, -6.091, -0.06727, 0)
+mesh = SubResource("plank")
+
+[node name="Plank02" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9754, -0.2203, 0.01225, 0.2202, 0.9754, 0.002767, -0.01256, 0, 0.9999, -5.761, 0.006848, 0)
+mesh = SubResource("plank")
+
+[node name="Plank03" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9751, -0.2203, -0.02405, 0.2202, 0.9754, -0.005431, 0.02466, 0, 0.9997, -5.431, 0.07223, 0)
+mesh = SubResource("plank")
+
+[node name="Plank04" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9752, -0.2203, 0.02264, 0.2202, 0.9754, 0.005113, -0.02321, 0, 0.9997, -5.101, 0.1504, 0)
+mesh = SubResource("plank")
+
+[node name="Plank05" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9752, -0.2203, 0.02047, 0.2202, 0.9754, 0.004623, -0.02099, 0, 0.9998, -4.771, 0.2142, 0)
+mesh = SubResource("plank")
+
+[node name="Plank06" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9754, -0.2203, -0.00158, 0.2203, 0.9754, -0.0003567, 0.00162, 0, 1, -4.441, 0.2914, 0)
+mesh = SubResource("plank")
+
+[node name="Plank07" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9754, -0.2203, 0.002235, 0.2203, 0.9754, 0.0005047, -0.002291, 0, 1, -4.111, 0.3725, 0)
+mesh = SubResource("plank")
+
+[node name="Plank08" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9751, -0.2203, -0.02486, 0.2202, 0.9754, -0.005615, 0.02549, 0, 0.9997, -3.781, 0.4398, 0)
+mesh = SubResource("plank")
+
+[node name="Plank09" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9999, 0, -0.01155, 0, 1, 0, 0.01155, 0, 0.9999, -3.46, 0.5183, 0)
+mesh = SubResource("plank")
+
+[node name="Plank10" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9999, 0, 0.01391, 0, 1, 0, -0.01391, 0, 0.9999, -3.13, 0.5032, 0)
+mesh = SubResource("plank")
+
+[node name="Plank11" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9999, 0, 0.01556, 0, 1, 0, -0.01556, 0, 0.9999, -2.8, 0.5028, 0)
+mesh = SubResource("plank")
+
+[node name="Plank12" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0.00615, 0, 1, 0, -0.00615, 0, 1, -2.47, 0.5025, 0)
+mesh = SubResource("plank")
+
+[node name="Plank13" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9997, 0, -0.02608, 0, 1, 0, 0.02608, 0, 0.9997, -2.14, 0.5174, 0)
+mesh = SubResource("plank")
+
+[node name="Plank14" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9999, 0, -0.01521, 0, 1, 0, 0.01521, 0, 0.9999, -1.81, 0.5043, 0)
+mesh = SubResource("plank")
+
+[node name="Plank15" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9997, 0, 0.02526, 0, 1, 0, -0.02526, 0, 0.9997, -1.48, 0.5174, 0)
+mesh = SubResource("plank")
+
+[node name="Plank16" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9999, 0, -0.01103, 0, 1, 0, 0.01103, 0, 0.9999, -1.15, 0.5192, 0)
+mesh = SubResource("plank")
+
+[node name="Plank17" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0.002054, 0, 1, 0, -0.002054, 0, 1, -0.82, 0.5136, 0)
+mesh = SubResource("plank")
+
+[node name="Plank18" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9999, 0, -0.01546, 0, 1, 0, 0.01546, 0, 0.9999, -0.49, 0.5188, 0)
+mesh = SubResource("plank")
+
+[node name="Plank19" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0.009982, 0, 1, 0, -0.009982, 0, 1, -0.16, 0.5193, 0)
+mesh = SubResource("plank")
+
+[node name="Plank20" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9998, 0, 0.02061, 0, 1, 0, -0.02061, 0, 0.9998, 0.17, 0.506, 0)
+mesh = SubResource("plank")
+
+[node name="Plank21" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, -0.007268, 0, 1, 0, 0.007268, 0, 1, 0.5, 0.5033, 0)
+mesh = SubResource("plank")
+
+[node name="Plank22" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9998, 0, -0.01855, 0, 1, 0, 0.01855, 0, 0.9998, 0.83, 0.5013, 0)
+mesh = SubResource("plank")
+
+[node name="Plank23" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9999, 0, -0.0104, 0, 1, 0, 0.0104, 0, 0.9999, 1.16, 0.5121, 0)
+mesh = SubResource("plank")
+
+[node name="Plank24" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9997, 0, -0.026, 0, 1, 0, 0.026, 0, 0.9997, 1.49, 0.5136, 0)
+mesh = SubResource("plank")
+
+[node name="Plank25" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, -0.008488, 0, 1, 0, 0.008488, 0, 1, 1.82, 0.5062, 0)
+mesh = SubResource("plank")
+
+[node name="Plank26" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9999, 0, 0.01668, 0, 1, 0, -0.01668, 0, 0.9999, 2.15, 0.5096, 0)
+mesh = SubResource("plank")
+
+[node name="Plank27" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, -0.009645, 0, 1, 0, 0.009645, 0, 1, 2.48, 0.5096, 0)
+mesh = SubResource("plank")
+
+[node name="Plank28" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9999, 0, 0.01072, 0, 1, 0, -0.01072, 0, 0.9999, 2.81, 0.5011, 0)
+mesh = SubResource("plank")
+
+[node name="Plank29" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9997, 0, 0.02487, 0, 1, 0, -0.02487, 0, 0.9997, 3.14, 0.5005, 0)
+mesh = SubResource("plank")
+
+[node name="Plank30" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9999, 0, 0.01308, 0, 1, 0, -0.01308, 0, 0.9999, 3.47, 0.5169, 0)
+mesh = SubResource("plank")
+
+[node name="Plank31" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9751, 0.2203, -0.02461, -0.2202, 0.9754, 0.005557, 0.02523, 0, 0.9997, 3.791, 0.449, 0)
+mesh = SubResource("plank")
+
+[node name="Plank32" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9754, 0.2203, -0.006834, -0.2203, 0.9754, 0.001543, 0.007007, 0, 1, 4.121, 0.3703, 0)
+mesh = SubResource("plank")
+
+[node name="Plank33" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9751, 0.2203, -0.02507, -0.2202, 0.9754, 0.005661, 0.0257, 0, 0.9997, 4.451, 0.2851, 0)
+mesh = SubResource("plank")
+
+[node name="Plank34" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9753, 0.2203, -0.0163, -0.2202, 0.9754, 0.00368, 0.01671, 0, 0.9999, 4.781, 0.2288, 0)
+mesh = SubResource("plank")
+
+[node name="Plank35" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9753, 0.2203, -0.0155, -0.2202, 0.9754, 0.0035, 0.01589, 0, 0.9999, 5.111, 0.1503, 0)
+mesh = SubResource("plank")
+
+[node name="Plank36" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9752, 0.2203, 0.02194, -0.2202, 0.9754, -0.004955, -0.02249, 0, 0.9997, 5.441, 0.0795, 0)
+mesh = SubResource("plank")
+
+[node name="Plank37" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9754, 0.2203, -0.007948, -0.2203, 0.9754, 0.001795, 0.008148, 0, 1, 5.771, -0.00676, 0)
+mesh = SubResource("plank")
+
+[node name="Plank38" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9754, 0.2203, 0.001262, -0.2203, 0.9754, -0.0002849, -0.001293, 0, 1, 6.101, -0.07286, 0)
+mesh = SubResource("plank")
+
+[node name="Plank39" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9752, 0.2203, -0.02002, -0.2202, 0.9754, 0.00452, 0.02052, 0, 0.9998, 6.431, -0.1479, 0)
+mesh = SubResource("plank")
+
+[node name="Stringer0L" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.38, -0.85)
+mesh = SubResource("stringer0")
+
+[node name="RailWall0L" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, -1.12)
+shape = SubResource("rail_shape0")
+
+[node name="Stringer0R" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.38, 0.85)
+mesh = SubResource("stringer0")
+
+[node name="RailWall0R" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 1.12)
+shape = SubResource("rail_shape0")
+
+[node name="Deck0" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+shape = SubResource("deck_shape0")
+
+[node name="Stringer1L" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9754, 0.2203, 0, -0.2203, 0.9754, 0, 0, 0, 1, 5.013, 0.03418, -0.85)
+mesh = SubResource("stringer1")
+
+[node name="RailWall1L" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.9754, 0.2203, 0, -0.2203, 0.9754, 0, 0, 0, 1, 5.171, 0.7365, -1.12)
+shape = SubResource("rail_shape1")
+
+[node name="Stringer1R" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9754, 0.2203, 0, -0.2203, 0.9754, 0, 0, 0, 1, 5.013, 0.03418, 0.85)
+mesh = SubResource("stringer1")
+
+[node name="RailWall1R" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.9754, 0.2203, 0, -0.2203, 0.9754, 0, 0, 0, 1, 5.171, 0.7365, 1.12)
+shape = SubResource("rail_shape1")
+
+[node name="Deck1" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.9754, 0.2203, 0, -0.2203, 0.9754, 0, 0, 0, 1, 5.017, 0.05368, 0)
+shape = SubResource("deck_shape1")
+
+[node name="Stringer2L" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9754, -0.2203, 0, 0.2203, 0.9754, 0, 0, 0, 1, -5.013, 0.03418, -0.85)
+mesh = SubResource("stringer2")
+
+[node name="RailWall2L" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.9754, -0.2203, 0, 0.2203, 0.9754, 0, 0, 0, 1, -5.171, 0.7365, -1.12)
+shape = SubResource("rail_shape2")
+
+[node name="Stringer2R" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9754, -0.2203, 0, 0.2203, 0.9754, 0, 0, 0, 1, -5.013, 0.03418, 0.85)
+mesh = SubResource("stringer2")
+
+[node name="RailWall2R" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.9754, -0.2203, 0, 0.2203, 0.9754, 0, 0, 0, 1, -5.171, 0.7365, 1.12)
+shape = SubResource("rail_shape2")
+
+[node name="Deck2" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.9754, -0.2203, 0, 0.2203, 0.9754, 0, 0, 0, 1, -5.017, 0.05368, 0)
+shape = SubResource("deck_shape2")
+
+[node name="PostL0" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.4, 0.3202, -1.12)
+mesh = SubResource("post")
+
+[node name="PostL1" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.6363, -1.12)
+mesh = SubResource("post")
+
+[node name="PostL2" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0.975, -1.12)
+mesh = SubResource("post")
+
+[node name="PostL3" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75, 0.975, -1.12)
+mesh = SubResource("post")
+
+[node name="PostL4" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.975, -1.12)
+mesh = SubResource("post")
+
+[node name="PostL5" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 0.975, -1.12)
+mesh = SubResource("post")
+
+[node name="PostL6" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0.975, -1.12)
+mesh = SubResource("post")
+
+[node name="PostL7" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0.6363, -1.12)
+mesh = SubResource("post")
+
+[node name="PostL8" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.4, 0.3202, -1.12)
+mesh = SubResource("post")
+
+[node name="RailL0" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9754, -0.2203, 0, 0.2203, 0.9754, 0, 0, 0, 1, -5.7, 0.9432, -1.12)
+mesh = SubResource("rail0")
+
+[node name="RailL1" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9754, -0.2203, 0, 0.2203, 0.9754, 0, 0, 0, 1, -4.25, 1.271, -1.12)
+mesh = SubResource("rail1")
+
+[node name="RailL2" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.625, 1.44, -1.12)
+mesh = SubResource("rail2")
+
+[node name="RailL3" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.875, 1.44, -1.12)
+mesh = SubResource("rail3")
+
+[node name="RailL4" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.875, 1.44, -1.12)
+mesh = SubResource("rail4")
+
+[node name="RailL5" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.625, 1.44, -1.12)
+mesh = SubResource("rail5")
+
+[node name="RailL6" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9754, 0.2203, 0, -0.2203, 0.9754, 0, 0, 0, 1, 4.25, 1.271, -1.12)
+mesh = SubResource("rail6")
+
+[node name="RailL7" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9754, 0.2203, 0, -0.2203, 0.9754, 0, 0, 0, 1, 5.7, 0.9432, -1.12)
+mesh = SubResource("rail7")
+
+[node name="PostR0" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.4, 0.3202, 1.12)
+mesh = SubResource("post")
+
+[node name="PostR1" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.6363, 1.12)
+mesh = SubResource("post")
+
+[node name="PostR2" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0.975, 1.12)
+mesh = SubResource("post")
+
+[node name="PostR3" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75, 0.975, 1.12)
+mesh = SubResource("post")
+
+[node name="PostR4" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.975, 1.12)
+mesh = SubResource("post")
+
+[node name="PostR5" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 0.975, 1.12)
+mesh = SubResource("post")
+
+[node name="PostR6" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0.975, 1.12)
+mesh = SubResource("post")
+
+[node name="PostR7" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0.6363, 1.12)
+mesh = SubResource("post")
+
+[node name="PostR8" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.4, 0.3202, 1.12)
+mesh = SubResource("post")
+
+[node name="RailR0" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9754, -0.2203, 0, 0.2203, 0.9754, 0, 0, 0, 1, -5.7, 0.9432, 1.12)
+mesh = SubResource("rail0")
+
+[node name="RailR1" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9754, -0.2203, 0, 0.2203, 0.9754, 0, 0, 0, 1, -4.25, 1.271, 1.12)
+mesh = SubResource("rail1")
+
+[node name="RailR2" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.625, 1.44, 1.12)
+mesh = SubResource("rail2")
+
+[node name="RailR3" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.875, 1.44, 1.12)
+mesh = SubResource("rail3")
+
+[node name="RailR4" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.875, 1.44, 1.12)
+mesh = SubResource("rail4")
+
+[node name="RailR5" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.625, 1.44, 1.12)
+mesh = SubResource("rail5")
+
+[node name="RailR6" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9754, 0.2203, 0, -0.2203, 0.9754, 0, 0, 0, 1, 4.25, 1.271, 1.12)
+mesh = SubResource("rail6")
+
+[node name="RailR7" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.9754, 0.2203, 0, -0.2203, 0.9754, 0, 0, 0, 1, 5.7, 0.9432, 1.12)
+mesh = SubResource("rail7")
+
+[node name="PierWL" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, -0.7, -0.85)
+mesh = SubResource("pier")
+
+[node name="PierWR" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, -0.7, 0.85)
+mesh = SubResource("pier")
+
+[node name="PierEL" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, -0.7, -0.85)
+mesh = SubResource("pier")
+
+[node name="PierER" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, -0.7, 0.85)
+mesh = SubResource("pier")
+

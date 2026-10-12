@@ -30,6 +30,9 @@ extends StaticBody3D
 @export var meander_amplitude: float = 2.5
 @export var meander_frequency: float = 0.07
 @export var blocker_segment_length: float = 4.0
+@export var blocker_half_width: float = 4.6 ## Covers the water up to its shoreline.
+## Gaps in the river walls for bridges: x = z of the crossing on the river centerline, y = half width.
+@export var river_crossings: PackedVector2Array = PackedVector2Array()
 
 @export_group("World bounds")
 @export var walk_bounds: Rect2 = Rect2(-45.0, -45.0, 90.0, 90.0) ## Invisible walls keep the player inside.
@@ -242,24 +245,49 @@ func _face_color(center: Vector3, normal: Vector3) -> Color:
 
 
 func _build_river_blockers() -> void:
-	# Invisible walls following the meanders, so the player cannot cross the river.
+	# Invisible walls following the meanders, covering the whole water surface,
+	# with gaps where a bridge crosses.
 	for blocker in _river_blockers:
 		blocker.queue_free()
 	_river_blockers.clear()
 	var half := size * 0.5
-	var z := -half
-	while z < half:
-		var x0 := river_center_x(z)
-		var x1 := river_center_x(z + blocker_segment_length)
-		var box := BoxShape3D.new()
-		box.size = Vector3(river_half_width * 2.0, 4.0, Vector2(x1 - x0, blocker_segment_length).length() + 0.5)
-		var blocker := CollisionShape3D.new()
-		blocker.shape = box
-		blocker.position = Vector3((x0 + x1) * 0.5, river_bed_height + 2.0, z + blocker_segment_length * 0.5)
-		blocker.rotation.y = atan2(x1 - x0, blocker_segment_length)
-		add_child(blocker, false, Node.INTERNAL_MODE_BACK)
-		_river_blockers.append(blocker)
-		z += blocker_segment_length
+	for interval in _blocked_intervals(-half, half):
+		var z := interval.x
+		while z < interval.y - 0.01:
+			var z_end := minf(z + blocker_segment_length, interval.y)
+			_add_river_blocker(z, z_end)
+			z = z_end
+
+
+func _blocked_intervals(z_min: float, z_max: float) -> Array[Vector2]:
+	var intervals: Array[Vector2] = [Vector2(z_min, z_max)]
+	for crossing in river_crossings:
+		var gap_start := crossing.x - crossing.y
+		var gap_end := crossing.x + crossing.y
+		var split: Array[Vector2] = []
+		for interval in intervals:
+			if gap_end <= interval.x or gap_start >= interval.y:
+				split.append(interval)
+				continue
+			if gap_start > interval.x:
+				split.append(Vector2(interval.x, gap_start))
+			if gap_end < interval.y:
+				split.append(Vector2(gap_end, interval.y))
+		intervals = split
+	return intervals
+
+
+func _add_river_blocker(z0: float, z1: float) -> void:
+	var x0 := river_center_x(z0)
+	var x1 := river_center_x(z1)
+	var box := BoxShape3D.new()
+	box.size = Vector3(blocker_half_width * 2.0, 4.0, Vector2(x1 - x0, z1 - z0).length() + 0.5)
+	var blocker := CollisionShape3D.new()
+	blocker.shape = box
+	blocker.position = Vector3((x0 + x1) * 0.5, river_bed_height + 2.0, (z0 + z1) * 0.5)
+	blocker.rotation.y = atan2(x1 - x0, z1 - z0)
+	add_child(blocker, false, Node.INTERNAL_MODE_BACK)
+	_river_blockers.append(blocker)
 
 
 func _build_bound_walls() -> void:

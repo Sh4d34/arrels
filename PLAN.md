@@ -232,3 +232,4 @@ Si la boucle ne convainc pas, mieux vaut la retravailler maintenant que de const
 ## Idées pour plus tard
 
 - Un petit drapeau catalan (senyera) sur la cabane du joueur, en écho aux drapeaux qui ornent la croix du Canigou.
+- La pêche dans la rivière (truites de la Têt et de ses affluents), avec un poste de pêche près du pont.
