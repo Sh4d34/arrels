@@ -8,6 +8,7 @@ var items: Dictionary = {}
 var harvestables: Dictionary = {}
 var buildables: Dictionary = {}
 var crops: Dictionary = {}
+var time_settings: Dictionary = {} ## data/temps.json: day length, dawn and dusk hours, periods.
 
 
 func _ready() -> void:
@@ -15,6 +16,7 @@ func _ready() -> void:
 	harvestables = _load_collection("harvestables.json")
 	buildables = _load_collection("buildables.json")
 	crops = _load_collection("crops.json")
+	time_settings = _load_object("temps.json")
 	_validate()
 
 
@@ -74,6 +76,15 @@ func _load_collection(file_name: String) -> Dictionary:
 			push_error("GameData: duplicate id '%s' in %s" % [entry.id, path])
 		result[entry.id] = entry
 	return result
+
+
+func _load_object(file_name: String) -> Dictionary:
+	var path := DATA_DIR + file_name
+	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
+	if not parsed is Dictionary:
+		push_error("GameData: %s must contain a JSON object" % path)
+		return {}
+	return parsed
 
 
 func _validate() -> void:

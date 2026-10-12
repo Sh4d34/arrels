@@ -15,6 +15,7 @@ func _initialize() -> void:
 	_test_costs()
 	_test_parcel()
 	_test_composter()
+	_test_clock()
 	print("Tests: %s (%d vérifications)" % ["OK" if _failures == 0 else "%d échec(s)" % _failures, _checks])
 	quit(1 if _failures > 0 else 0)
 
@@ -35,8 +36,8 @@ func _test_game_data() -> void:
 		var data: Dictionary = game_data.get_harvestable(id)
 		_check(not data.is_empty(), "harvestables.json contient %s" % id)
 		_check(int(data.get("coups", 0)) > 0, "%s a au moins un coup" % id)
-	_check(game_data.get_harvestable("arbre_friche").get("repousse_secondes") == null, "la friche ne repousse pas")
-	_check(game_data.get_harvestable("arbre_lisiere").get("repousse_secondes") != null, "la lisière repousse")
+	_check(game_data.get_harvestable("arbre_friche").get("repousse_jours") == null, "la friche ne repousse pas")
+	_check(int(game_data.get_harvestable("arbre_lisiere").get("repousse_jours", 0)) > 0, "la lisière repousse en jours")
 	_check(game_data.crop_for_seed("graine_tomate").get("id") == "tomate", "la graine de tomate donne la tomate")
 	_check(game_data.describe([{"item": "herbes", "qte": 2}]) == "2 herbes", "description d'un coût")
 
@@ -148,3 +149,25 @@ func _test_composter() -> void:
 	_check(inventory.count("compost") == 1, "on récupère 1 compost")
 	inventory.remove("compost", 1)
 	composter.queue_free()
+
+
+func _test_clock() -> void:
+	var time: Node = root.get_node("TimeManager")
+	var start_day: int = time.day
+	time.set_hour(8.0)
+	_check(absf(time.hour() - 8.0) < 0.01, "réglage de l'heure : 8 h")
+	_check(time.period_name() == "matin", "8 h, c'est le matin")
+	_check(not time.is_night(), "8 h n'est pas la nuit")
+	time.set_hour(14.0)
+	_check(time.period_name() == "après-midi", "14 h, c'est l'après-midi")
+	time.set_hour(23.0)
+	_check(time.is_night() and absf(time.hour() - 23.0) < 0.01, "23 h est la nuit")
+	time.set_hour(3.0)
+	_check(time.is_night() and absf(time.hour() - 3.0) < 0.01, "3 h est la fin de la nuit")
+	# The night lasts a quarter of the real day: 9 game hours in 30 real seconds.
+	time.set_hour(21.0)
+	time._process(time.day_length * time.night_share * 0.5)
+	_check(absf(time.hour() - 1.5) < 0.05, "la nuit passe plus vite : 4 h 30 en 15 s")
+	time._process(time.day_length * time.night_share * 0.5 + 0.01)
+	_check(time.day == start_day + 1, "un nouveau jour commence à l'aube")
+	_check(absf(time.hour() - time.dawn_hour) < 0.05, "le jour commence à 6 h")

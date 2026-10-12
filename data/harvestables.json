@@ -5,7 +5,7 @@
 		"invite": "Couper le jeune arbre",
 		"coups": 3,
 		"recolte": [{ "item": "bois", "qte": 2 }, { "item": "branchages", "qte": 2 }],
-		"repousse_secondes": null,
+		"repousse_jours": null,
 		"disparition": "chute"
 	},
 	{
@@ -14,7 +14,7 @@
 		"invite": "Abattre l'arbre mort",
 		"coups": 2,
 		"recolte": [{ "item": "bois", "qte": 1 }, { "item": "branchages", "qte": 1 }],
-		"repousse_secondes": null,
+		"repousse_jours": null,
 		"disparition": "chute"
 	},
 	{
@@ -23,7 +23,7 @@
 		"invite": "Couper l'arbre",
 		"coups": 5,
 		"recolte": [{ "item": "bois", "qte": 4 }, { "item": "branchages", "qte": 2 }],
-		"repousse_secondes": 180,
+		"repousse_jours": 2,
 		"disparition": "chute"
 	},
 	{
@@ -32,7 +32,7 @@
 		"invite": "Ouvrir le colis de graines",
 		"coups": 1,
 		"recolte": [{ "item": "graine_tomate", "qte": 3 }],
-		"repousse_secondes": null,
+		"repousse_jours": null,
 		"disparition": "ramassage"
 	}
 ]

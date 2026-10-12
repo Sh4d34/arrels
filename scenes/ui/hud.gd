@@ -32,7 +32,8 @@ var _known_quantities: Dictionary[String, int] = {}
 func _ready() -> void:
 	Inventory.changed.connect(_on_inventory_changed)
 	TimeManager.new_day.connect(_on_new_day)
-	_day_label.text = "Jour %d" % TimeManager.day
+	TimeManager.hour_changed.connect(func(_hour: int) -> void: _refresh_clock())
+	_refresh_clock()
 	if player:
 		player.interaction_prompt_changed.connect(_on_prompt_changed)
 	if build_mode:
@@ -52,8 +53,12 @@ func _on_prompt_changed(prompt: String, hint: String, possible: bool) -> void:
 
 
 func _on_new_day(day: int) -> void:
-	_day_label.text = "Jour %d" % day
+	_refresh_clock()
 	_show_toast("Un nouveau jour se lève (jour %d)" % day)
+
+
+func _refresh_clock() -> void:
+	_day_label.text = "Jour %d · %d h · %s" % [TimeManager.day, int(TimeManager.hour()), TimeManager.period_name()]
 
 
 func _on_inventory_changed(item_id: String, quantity: int) -> void:

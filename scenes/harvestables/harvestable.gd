@@ -18,6 +18,7 @@ var _hits_left: int = 0
 var _body: CollisionObject3D
 var _rest_basis: Basis ## Only the basis: world.gd moves trees onto the terrain after this _ready().
 var _collision_layer: int
+var _regrow_day: int = 0
 
 
 func _ready() -> void:
@@ -97,12 +98,19 @@ func _pick_up() -> void:
 
 
 func _after_fall() -> void:
-	var regrow_delay: Variant = _data.get("repousse_secondes")
-	if regrow_delay == null:
+	var regrow_days: Variant = _data.get("repousse_jours")
+	if regrow_days == null:
 		_body.queue_free()
 		return
 	_body.visible = false
-	get_tree().create_timer(float(regrow_delay)).timeout.connect(_regrow)
+	_regrow_day = TimeManager.day + int(regrow_days)
+	TimeManager.new_day.connect(_on_new_day)
+
+
+func _on_new_day(day: int) -> void:
+	if day >= _regrow_day:
+		TimeManager.new_day.disconnect(_on_new_day)
+		_regrow()
 
 
 func _regrow() -> void:

@@ -122,6 +122,8 @@ Sept jalons dans l'ordre, chacun jouable et commité avant de passer au suivant.
 - [ ] Autoload `time_manager` : un jour de jeu dure quelques minutes réelles, réglable.
 - [ ] Le soleil tourne, la lumière et le ciel changent.
 - [ ] La croissance des cultures avance avec les jours de jeu.
+- [ ] Nuits plus courtes que les journées, clair de lune bleuté et ciel étoilé ; réglages dans `data/temps.json`.
+- [ ] La repousse des arbres de lisière se compte en jours de jeu.
 
 **Jalon 7 — Finition légère**
 
