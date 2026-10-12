@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://scenes/world/canigou.tscn" id="canigou"]
 [ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="player"]
 [ext_resource type="PackedScene" path="res://scenes/world/bridge.tscn" id="bridge"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="hud"]
 [ext_resource type="PackedScene" path="res://assets/models/quaternius_nature/Pine_2.gltf" id="m10_pine_2"]
 [ext_resource type="PackedScene" path="res://assets/models/quaternius_nature/Pine_1.gltf" id="m11_pine_1"]
 [ext_resource type="PackedScene" path="res://assets/models/quaternius_nature/Pine_4.gltf" id="m12_pine_4"]
@@ -114,334 +115,417 @@ mesh = SubResource("PlaneMesh_water")
 [node name="Tree01" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.4792, 0, 0.9058, 0, 1.025, 0, -0.9058, 0, -0.4792, -25.72, 0, -27.62)
 model = ExtResource("m10_pine_2")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree02" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.7612, 0, 0.03698, 0, 0.7621, 0, -0.03698, 0, 0.7612, -24.08, 0, -28.86)
 model = ExtResource("m10_pine_2")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree03" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.1281, 0, 0.6786, 0, 0.6906, 0, -0.6786, 0, -0.1281, -26.44, 0, -25.93)
 model = ExtResource("m11_pine_1")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree04" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.6371, 0, 0.2879, 0, 0.6992, 0, -0.2879, 0, -0.6371, -22.64, 0, -24.93)
 model = ExtResource("m12_pine_4")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree05" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.7205, 0, -0.4028, 0, 0.8255, 0, 0.4028, 0, 0.7205, -25.05, 0, -21.8)
 model = ExtResource("m13_pine_5")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree06" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.2013, 0, -0.5951, 0, 0.6282, 0, 0.5951, 0, -0.2013, -27.66, 0, -22.33)
 model = ExtResource("m14_commontree_5")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree07" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.8515, 0, 0.1924, 0, 0.8729, 0, -0.1924, 0, -0.8515, -21.6, 0, -20.48)
 model = ExtResource("m12_pine_4")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree08" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.3926, 0, -0.5945, 0, 0.7124, 0, 0.5945, 0, 0.3926, -22.55, 0, -20.45)
 model = ExtResource("m13_pine_5")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree09" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.9532, 0, 0.2471, 0, 0.9847, 0, -0.2471, 0, -0.9532, -26.68, 0, -16.37)
 model = ExtResource("m15_pine_3")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree10" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.3448, 0, -0.6119, 0, 0.7024, 0, 0.6119, 0, 0.3448, -22.3, 0, -17.29)
 model = ExtResource("m10_pine_2")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree11" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.8548, 0, -0.208, 0, 0.8797, 0, 0.208, 0, -0.8548, -21.49, 0, -13.46)
 model = ExtResource("m16_commontree_2")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree12" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.7145, 0, 0.5522, 0, 0.903, 0, -0.5522, 0, -0.7145, -27.84, 0, -12.31)
 model = ExtResource("m15_pine_3")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree13" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.502, 0, -0.8282, 0, 0.9684, 0, 0.8282, 0, -0.502, -27.77, 0, -10.12)
 model = ExtResource("m14_commontree_5")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree14" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.8549, 0, -0.301, 0, 0.9064, 0, 0.301, 0, -0.8549, -27.7, 0, -10.38)
 model = ExtResource("m11_pine_1")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree15" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.5474, 0, 0.7512, 0, 0.9295, 0, -0.7512, 0, -0.5474, -27.59, 0, -6.24)
 model = ExtResource("m12_pine_4")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree16" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.3377, 0, 0.6919, 0, 0.77, 0, -0.6919, 0, -0.3377, -27.94, 0, -7.5)
 model = ExtResource("m14_commontree_5")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree17" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.442, 0, 0.5286, 0, 0.689, 0, -0.5286, 0, -0.442, -26.27, 0, -3.49)
 model = ExtResource("m16_commontree_2")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree18" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.4609, 0, 0.5289, 0, 0.7016, 0, -0.5289, 0, 0.4609, -24.72, 0, -3.35)
 model = ExtResource("m13_pine_5")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree19" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.6402, 0, -0.1829, 0, 0.6658, 0, 0.1829, 0, -0.6402, -27.97, 0, 0.23)
 model = ExtResource("m14_commontree_5")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree20" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.9219, 0, 0.2736, 0, 0.9616, 0, -0.2736, 0, 0.9219, -20.89, 0, 0.83)
 model = ExtResource("m13_pine_5")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree21" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.2267, 0, 0.9958, 0, 1.021, 0, -0.9958, 0, -0.2267, -26.56, 0, 2.63)
 model = ExtResource("m11_pine_1")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree22" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.6305, 0, -0.4508, 0, 0.7751, 0, 0.4508, 0, -0.6305, -23.86, 0, 3.37)
 model = ExtResource("m10_pine_2")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree23" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.7012, 0, -0.7182, 0, 1.004, 0, 0.7182, 0, 0.7012, -27.26, 0, 5.34)
 model = ExtResource("m10_pine_2")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree24" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.2832, 0, 0.5924, 0, 0.6566, 0, -0.5924, 0, -0.2832, -25.44, 0, 6.41)
 model = ExtResource("m12_pine_4")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree25" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.6197, 0, -0.7582, 0, 0.9792, 0, 0.7582, 0, -0.6197, -27.98, 0, 9.54)
 model = ExtResource("m10_pine_2")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree26" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.7399, 0, -0.6005, 0, 0.953, 0, 0.6005, 0, -0.7399, -26.06, 0, 8.81)
 model = ExtResource("m10_pine_2")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree27" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.6985, 0, 0.4285, 0, 0.8195, 0, -0.4285, 0, -0.6985, -26.08, 0, 11.32)
 model = ExtResource("m17_commontree_1")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree28" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.06054, 0, 0.7284, 0, 0.7309, 0, -0.7284, 0, -0.06054, -23.04, 0, 10.64)
 model = ExtResource("m18_commontree_4")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree29" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.525, 0, 0.495, 0, 0.7216, 0, -0.495, 0, -0.525, -27.53, 0, 15.21)
 model = ExtResource("m18_commontree_4")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree30" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.7777, 0, 0.5684, 0, 0.9632, 0, -0.5684, 0, -0.7777, -27.96, 0, 14.2)
 model = ExtResource("m10_pine_2")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree31" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.3342, 0, 0.6063, 0, 0.6923, 0, -0.6063, 0, 0.3342, -24.36, 0, 16.61)
 model = ExtResource("m11_pine_1")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree32" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.03044, 0, 1.037, 0, 1.037, 0, -1.037, 0, -0.03044, -25.84, 0, 16.99)
 model = ExtResource("m10_pine_2")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree33" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.6175, 0, -0.08887, 0, 0.6238, 0, 0.08887, 0, -0.6175, -25.71, 0, 21.67)
 model = ExtResource("m10_pine_2")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree34" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.5076, 0, -0.8535, 0, 0.9931, 0, 0.8535, 0, 0.5076, -25.67, 0, 21.66)
 model = ExtResource("m11_pine_1")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree35" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.3292, 0, -0.6866, 0, 0.7615, 0, 0.6866, 0, 0.3292, -21.39, 0, 23.01)
 model = ExtResource("m12_pine_4")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree36" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.07102, 0, -0.734, 0, 0.7375, 0, 0.734, 0, -0.07102, -27.48, 0, 23.93)
 model = ExtResource("m12_pine_4")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree37" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.6436, 0, 0.7514, 0, 0.9894, 0, -0.7514, 0, 0.6436, -28, 0, 26.29)
 model = ExtResource("m10_pine_2")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree38" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.3464, 0, -0.6026, 0, 0.695, 0, 0.6026, 0, 0.3464, -23.06, 0, 26.47)
 model = ExtResource("m12_pine_4")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree39" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.4449, 0, -0.4188, 0, 0.6111, 0, 0.4188, 0, 0.4449, -61.72, 0, -57.04)
 model = ExtResource("m10_pine_2")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree40" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.2174, 0, 0.5655, 0, 0.6058, 0, -0.5655, 0, -0.2174, -42.19, 0, 59.99)
 model = ExtResource("m13_pine_5")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree41" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.3206, 0, 0.5923, 0, 0.6735, 0, -0.5923, 0, 0.3206, -30.05, 0, 0.45)
 model = ExtResource("m10_pine_2")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree42" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.1563, 0, -0.7166, 0, 0.7335, 0, 0.7166, 0, -0.1563, -61.23, 0, -22.02)
 model = ExtResource("m12_pine_4")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree43" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.2344, 0, 0.5926, 0, 0.6373, 0, -0.5926, 0, 0.2344, -36.8, 0, 41.16)
 model = ExtResource("m17_commontree_1")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree44" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.35, 0, 0.8531, 0, 0.9221, 0, -0.8531, 0, -0.35, -41.54, 0, -33.54)
 model = ExtResource("m16_commontree_2")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree45" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.5058, 0, -0.4019, 0, 0.646, 0, 0.4019, 0, -0.5058, -45.13, 0, -2.8)
 model = ExtResource("m12_pine_4")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree46" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.3119, 0, -0.7206, 0, 0.7852, 0, 0.7206, 0, -0.3119, -41.94, 0, -29.43)
 model = ExtResource("m16_commontree_2")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree47" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.7939, 0, 0.2665, 0, 0.8374, 0, -0.2665, 0, -0.7939, -31.71, 0, 48.9)
 model = ExtResource("m15_pine_3")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree48" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.5571, 0, -0.7822, 0, 0.9603, 0, 0.7822, 0, -0.5571, -56.81, 0, -25.88)
 model = ExtResource("m10_pine_2")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree49" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.8855, 0, -0.02939, 0, 0.886, 0, 0.02939, 0, -0.8855, -34.06, 0, -27.49)
 model = ExtResource("m11_pine_1")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree50" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.8667, 0, 0.1807, 0, 0.8853, 0, -0.1807, 0, -0.8667, -31.8, 0, 1.88)
 model = ExtResource("m15_pine_3")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree51" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.5612, 0, 0.4734, 0, 0.7342, 0, -0.4734, 0, -0.5612, -39.73, 0, 25.38)
 model = ExtResource("m17_commontree_1")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree52" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.9167, 0, -0.0963, 0, 0.9218, 0, 0.0963, 0, -0.9167, -55.15, 0, -26.66)
 model = ExtResource("m11_pine_1")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree53" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.1811, 0, 0.9999, 0, 1.016, 0, -0.9999, 0, -0.1811, -53.84, 0, 22.73)
 model = ExtResource("m11_pine_1")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree54" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.9836, 0, 0.0523, 0, 0.985, 0, -0.0523, 0, -0.9836, -39.79, 0, -45.67)
 model = ExtResource("m12_pine_4")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree55" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.3769, 0, -0.9589, 0, 1.03, 0, 0.9589, 0, -0.3769, -33.63, 0, -9.88)
 model = ExtResource("m12_pine_4")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree56" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.3262, 0, -0.7218, 0, 0.7921, 0, 0.7218, 0, -0.3262, -54.28, 0, -8.03)
 model = ExtResource("m15_pine_3")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree57" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.7251, 0, 0.487, 0, 0.8735, 0, -0.487, 0, -0.7251, -30.66, 0, 7.43)
 model = ExtResource("m10_pine_2")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree58" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.02377, 0, -0.9773, 0, 0.9776, 0, 0.9773, 0, 0.02377, -42.01, 0, 52.07)
 model = ExtResource("m15_pine_3")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree59" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.4319, 0, 0.456, 0, 0.6281, 0, -0.456, 0, 0.4319, -31.22, 0, 32.29)
 model = ExtResource("m12_pine_4")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree60" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.4962, 0, 0.4009, 0, 0.6379, 0, -0.4009, 0, 0.4962, -48.64, 0, 10.97)
 model = ExtResource("m10_pine_2")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree61" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.5662, 0, 0.2096, 0, 0.6038, 0, -0.2096, 0, 0.5662, -33.17, 0, 35.86)
 model = ExtResource("m10_pine_2")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree62" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.001947, 0, 0.6509, 0, 0.6509, 0, -0.6509, 0, 0.001947, -43.43, 0, -18.91)
 model = ExtResource("m15_pine_3")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree63" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.324, 0, -0.7518, 0, 0.8186, 0, 0.7518, 0, -0.324, -50.21, 0, 29.24)
 model = ExtResource("m19_commontree_3")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree64" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(1.008, 0, -0.221, 0, 1.032, 0, 0.221, 0, 1.008, -43.97, 0, -59.88)
 model = ExtResource("m10_pine_2")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree65" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.02114, 0, -1.027, 0, 1.027, 0, 1.027, 0, -0.02114, -39.28, 0, 50.07)
 model = ExtResource("m12_pine_4")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree66" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.6917, 0, 0.1233, 0, 0.7026, 0, -0.1233, 0, 0.6917, -36.47, 0, 49.29)
 model = ExtResource("m11_pine_1")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree67" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.7279, 0, -0.3643, 0, 0.814, 0, 0.3643, 0, 0.7279, -32.86, 0, 4.33)
 model = ExtResource("m12_pine_4")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree68" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.2534, 0, 0.9058, 0, 0.9406, 0, -0.9058, 0, 0.2534, -36.75, 0, -14.95)
 model = ExtResource("m15_pine_3")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree69" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.6989, 0, 0.3642, 0, 0.7881, 0, -0.3642, 0, -0.6989, -58.85, 0, -18.21)
 model = ExtResource("m19_commontree_3")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree70" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.2853, 0, 0.6488, 0, 0.7088, 0, -0.6488, 0, -0.2853, -52.01, 0, 53.82)
 model = ExtResource("m15_pine_3")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree71" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.7454, 0, 0.4547, 0, 0.8731, 0, -0.4547, 0, 0.7454, -39.95, 0, 5.16)
 model = ExtResource("m13_pine_5")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree72" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.9318, 0, -0.2851, 0, 0.9744, 0, 0.2851, 0, 0.9318, -42.09, 0, -46.53)
 model = ExtResource("m19_commontree_3")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree73" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.09744, 0, -1.015, 0, 1.02, 0, 1.015, 0, 0.09744, -44.9, 0, 24.88)
 model = ExtResource("m15_pine_3")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree74" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.4759, 0, 0.5591, 0, 0.7342, 0, -0.5591, 0, -0.4759, -49.39, 0, -31.53)
 model = ExtResource("m13_pine_5")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree75" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.7201, 0, -0.3754, 0, 0.8121, 0, 0.3754, 0, 0.7201, -48.98, 0, -21.87)
 model = ExtResource("m18_commontree_4")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree76" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.2948, 0, -0.5291, 0, 0.6056, 0, 0.5291, 0, -0.2948, -40.07, 0, -44.42)
 model = ExtResource("m13_pine_5")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree77" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.1099, 0, 0.8097, 0, 0.8171, 0, -0.8097, 0, 0.1099, -59.1, 0, -23.25)
 model = ExtResource("m13_pine_5")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree78" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.1157, 0, -0.9647, 0, 0.9716, 0, 0.9647, 0, -0.1157, -39.74, 0, 32.19)
 model = ExtResource("m12_pine_4")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree79" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.03221, 0, -0.7019, 0, 0.7027, 0, 0.7019, 0, 0.03221, -40.9, 0, 53.9)
 model = ExtResource("m19_commontree_3")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree80" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.7271, 0, 0.669, 0, 0.9881, 0, -0.669, 0, -0.7271, -50.3, 0, -58.31)
 model = ExtResource("m15_pine_3")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree81" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.7621, 0, -0.05003, 0, 0.7637, 0, 0.05003, 0, 0.7621, -46.39, 0, -6.98)
 model = ExtResource("m19_commontree_3")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree82" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.2996, 0, 0.8285, 0, 0.881, 0, -0.8285, 0, 0.2996, -56.26, 0, 20.76)
 model = ExtResource("m10_pine_2")
+harvestable_id = "arbre_lisiere"
 
 [node name="Tree83" parent="ForestEdge" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.7434, 0, -0.1707, 0, 0.7627, 0, 0.1707, 0, -0.7434, -51.08, 0, -32.45)
 model = ExtResource("m10_pine_2")
+harvestable_id = "arbre_lisiere"
 
 [node name="Riparian" type="Node3D" parent="."]
 
@@ -574,410 +658,512 @@ model = ExtResource("m17_commontree_1")
 [node name="Tree01" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.1451, 0, 0.326, 0, 0.3568, 0, -0.326, 0, -0.1451, 3.6, 0, -2.89)
 model = ExtResource("m11_pine_1")
+harvestable_id = "arbre_friche"
 
 [node name="Tree02" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.4107, 0, 0.05183, 0, 0.4139, 0, -0.05183, 0, -0.4107, 8.82, 0, 17.53)
 model = ExtResource("m15_pine_3")
+harvestable_id = "arbre_friche"
 
 [node name="Tree03" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.6233, 0, 0.08235, 0, 0.6287, 0, -0.08235, 0, -0.6233, -12.64, 0, -19.9)
 model = ExtResource("m14_commontree_5")
+harvestable_id = "arbre_friche"
 
 [node name="Tree04" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.6158, 0, 0.1259, 0, 0.6286, 0, -0.1259, 0, -0.6158, 8.04, 0, 0.66)
 model = ExtResource("m10_pine_2")
+harvestable_id = "arbre_friche"
 
 [node name="Tree05" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.2348, 0, 0.4187, 0, 0.4801, 0, -0.4187, 0, 0.2348, 5.52, 0, 8.18)
 model = ExtResource("m18_commontree_4")
+harvestable_id = "arbre_friche"
 
 [node name="Tree06" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.3196, 0, 0.1991, 0, 0.3765, 0, -0.1991, 0, -0.3196, -6.02, 0, -15.9)
 model = ExtResource("m16_commontree_2")
+harvestable_id = "arbre_friche"
 
 [node name="Tree07" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.2137, 0, -0.4863, 0, 0.5312, 0, 0.4863, 0, -0.2137, -0.9, 0, -7.91)
 model = ExtResource("m15_pine_3")
+harvestable_id = "arbre_friche"
 
 [node name="Tree08" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.6176, 0, -0.1468, 0, 0.6348, 0, 0.1468, 0, 0.6176, -6.42, 0, -4.98)
 model = ExtResource("m16_commontree_2")
+harvestable_id = "arbre_friche"
 
 [node name="Tree09" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.6681, 0, 0.06421, 0, 0.6711, 0, -0.06421, 0, -0.6681, -14.06, 0, -12.28)
 model = ExtResource("m12_pine_4")
+harvestable_id = "arbre_friche"
 
 [node name="Tree10" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.3827, 0, -0.1219, 0, 0.4017, 0, 0.1219, 0, -0.3827, 7.37, 0, -16.27)
 model = ExtResource("m16_commontree_2")
+harvestable_id = "arbre_friche"
 
 [node name="Tree11" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.2132, 0, 0.3504, 0, 0.4101, 0, -0.3504, 0, 0.2132, 5.93, 0, -11.01)
 model = ExtResource("m16_commontree_2")
+harvestable_id = "arbre_friche"
 
 [node name="Tree12" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.176, 0, -0.313, 0, 0.3591, 0, 0.313, 0, 0.176, 0.42, 0, -3.38)
 model = ExtResource("m14_commontree_5")
+harvestable_id = "arbre_friche"
 
 [node name="Tree13" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.1478, 0, 0.3293, 0, 0.3609, 0, -0.3293, 0, 0.1478, -13.2, 0, -2.99)
 model = ExtResource("m12_pine_4")
+harvestable_id = "arbre_friche"
 
 [node name="Tree14" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.2851, 0, 0.3477, 0, 0.4496, 0, -0.3477, 0, 0.2851, 7.31, 0, -22.62)
 model = ExtResource("m12_pine_4")
+harvestable_id = "arbre_friche"
 
 [node name="Tree15" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.3208, 0, 0.1971, 0, 0.3765, 0, -0.1971, 0, 0.3208, 7.72, 0, 15.64)
 model = ExtResource("m18_commontree_4")
+harvestable_id = "arbre_friche"
 
 [node name="Tree16" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.4569, 0, 0.07377, 0, 0.4629, 0, -0.07377, 0, 0.4569, -10.43, 0, 13.52)
 model = ExtResource("m11_pine_1")
+harvestable_id = "arbre_friche"
 
 [node name="Tree17" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.0501, 0, 0.6059, 0, 0.6079, 0, -0.6059, 0, -0.0501, -16.68, 0, -10.77)
 model = ExtResource("m12_pine_4")
+harvestable_id = "arbre_friche"
 
 [node name="Tree18" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.4754, 0, -0.3232, 0, 0.5749, 0, 0.3232, 0, -0.4754, -15.55, 0, 7.27)
 model = ExtResource("m17_commontree_1")
+harvestable_id = "arbre_friche"
 
 [node name="Tree19" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.5768, 0, 0.3852, 0, 0.6936, 0, -0.3852, 0, -0.5768, 6.48, 0, -2.94)
 model = ExtResource("m12_pine_4")
+harvestable_id = "arbre_friche"
 
 [node name="Tree20" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.03518, 0, 0.2368, 0, 0.2394, 0, -0.2368, 0, -0.03518, 7.5, 0, 22.94)
 model = ExtResource("m20_deadtree_3")
+harvestable_id = "arbre_mort"
 
 [node name="Tree21" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.08618, 0, 0.6356, 0, 0.6415, 0, -0.6356, 0, 0.08618, -18.88, 0, -19.09)
 model = ExtResource("m14_commontree_5")
+harvestable_id = "arbre_friche"
 
 [node name="Tree22" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.3371, 0, -0.4927, 0, 0.597, 0, 0.4927, 0, -0.3371, 7.57, 0, -4.93)
 model = ExtResource("m15_pine_3")
+harvestable_id = "arbre_friche"
 
 [node name="Tree23" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.5233, 0, 0.187, 0, 0.5557, 0, -0.187, 0, -0.5233, -16.31, 0, 17.87)
 model = ExtResource("m14_commontree_5")
+harvestable_id = "arbre_friche"
 
 [node name="Tree24" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.1693, 0, 0.5439, 0, 0.5697, 0, -0.5439, 0, -0.1693, 2.59, 0, 15.01)
 model = ExtResource("m19_commontree_3")
+harvestable_id = "arbre_friche"
 
 [node name="Tree25" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.08517, 0, -0.3661, 0, 0.3759, 0, 0.3661, 0, -0.08517, -9.86, 0, -4.95)
 model = ExtResource("m14_commontree_5")
+harvestable_id = "arbre_friche"
 
 [node name="Tree26" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.473, 0, -0.462, 0, 0.6612, 0, 0.462, 0, -0.473, -15.07, 0, -19.96)
 model = ExtResource("m18_commontree_4")
+harvestable_id = "arbre_friche"
 
 [node name="Tree27" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.06865, 0, 0.1735, 0, 0.1866, 0, -0.1735, 0, -0.06865, -18.83, 0, -1.74)
 model = ExtResource("m21_deadtree_2")
+harvestable_id = "arbre_mort"
 
 [node name="Tree28" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.337, 0, 0.1326, 0, 0.3622, 0, -0.1326, 0, 0.337, -15.87, 0, -3.5)
 model = ExtResource("m14_commontree_5")
+harvestable_id = "arbre_friche"
 
 [node name="Tree29" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.2401, 0, -0.5656, 0, 0.6144, 0, 0.5656, 0, 0.2401, 7.91, 0, 10.04)
 model = ExtResource("m10_pine_2")
+harvestable_id = "arbre_friche"
 
 [node name="Tree30" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.3934, 0, 0.4977, 0, 0.6344, 0, -0.4977, 0, 0.3934, 9.54, 0, 8.49)
 model = ExtResource("m11_pine_1")
+harvestable_id = "arbre_friche"
 
 [node name="Tree31" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.522, 0, -0.1076, 0, 0.5329, 0, 0.1076, 0, 0.522, -3.47, 0, -18.96)
 model = ExtResource("m18_commontree_4")
+harvestable_id = "arbre_friche"
 
 [node name="Tree32" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.2459, 0, 0.2863, 0, 0.3774, 0, -0.2863, 0, 0.2459, 2.76, 0, -6.8)
 model = ExtResource("m16_commontree_2")
+harvestable_id = "arbre_friche"
 
 [node name="Tree33" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.2753, 0, 0.3818, 0, 0.4707, 0, -0.3818, 0, 0.2753, -4.58, 0, -3.34)
 model = ExtResource("m16_commontree_2")
+harvestable_id = "arbre_friche"
 
 [node name="Tree34" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.06723, 0, -0.5983, 0, 0.602, 0, 0.5983, 0, 0.06723, -5.27, 0, -20.64)
 model = ExtResource("m15_pine_3")
+harvestable_id = "arbre_friche"
 
 [node name="Tree35" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.1433, 0, -0.0138, 0, 0.144, 0, 0.0138, 0, 0.1433, -17.82, 0, 22.22)
 model = ExtResource("m22_deadtree_1")
+harvestable_id = "arbre_mort"
 
 [node name="Tree36" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.6532, 0, 0.07503, 0, 0.6574, 0, -0.07503, 0, -0.6532, 3.57, 0, 3.68)
 model = ExtResource("m10_pine_2")
+harvestable_id = "arbre_friche"
 
 [node name="Tree37" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.3605, 0, -0.3752, 0, 0.5203, 0, 0.3752, 0, -0.3605, -2.23, 0, 2.18)
 model = ExtResource("m14_commontree_5")
+harvestable_id = "arbre_friche"
 
 [node name="Tree38" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.07417, 0, -0.3898, 0, 0.3968, 0, 0.3898, 0, -0.07417, 8.27, 0, 12.55)
 model = ExtResource("m17_commontree_1")
+harvestable_id = "arbre_friche"
 
 [node name="Tree39" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.3525, 0, 0.1726, 0, 0.3925, 0, -0.1726, 0, 0.3525, -5.04, 0, 1.2)
 model = ExtResource("m10_pine_2")
+harvestable_id = "arbre_friche"
 
 [node name="Tree40" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.3972, 0, 0.2473, 0, 0.4679, 0, -0.2473, 0, -0.3972, -6.6, 0, -12.72)
 model = ExtResource("m17_commontree_1")
+harvestable_id = "arbre_friche"
 
 [node name="Tree41" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.1131, 0, -0.2492, 0, 0.2737, 0, 0.2492, 0, -0.1131, -9, 0, 22.32)
 model = ExtResource("m20_deadtree_3")
+harvestable_id = "arbre_mort"
 
 [node name="Tree42" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.5106, 0, 0.1578, 0, 0.5344, 0, -0.1578, 0, -0.5106, -11.56, 0, 9.9)
 model = ExtResource("m16_commontree_2")
+harvestable_id = "arbre_friche"
 
 [node name="Tree43" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.1851, 0, -0.6361, 0, 0.6625, 0, 0.6361, 0, -0.1851, 1.16, 0, -22.74)
 model = ExtResource("m10_pine_2")
+harvestable_id = "arbre_friche"
 
 [node name="Tree44" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.3435, 0, 0.3375, 0, 0.4815, 0, -0.3375, 0, 0.3435, 6.97, 0, -20.14)
 model = ExtResource("m13_pine_5")
+harvestable_id = "arbre_friche"
 
 [node name="Tree45" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.1345, 0, -0.4289, 0, 0.4495, 0, 0.4289, 0, 0.1345, -0.95, 0, -21.63)
 model = ExtResource("m17_commontree_1")
+harvestable_id = "arbre_friche"
 
 [node name="Tree46" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.2869, 0, -0.3368, 0, 0.4425, 0, 0.3368, 0, -0.2869, 8.5, 0, -18.2)
 model = ExtResource("m12_pine_4")
+harvestable_id = "arbre_friche"
 
 [node name="Tree47" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.5637, 0, 0.1647, 0, 0.5872, 0, -0.1647, 0, -0.5637, 7.8, 0, -13.44)
 model = ExtResource("m16_commontree_2")
+harvestable_id = "arbre_friche"
 
 [node name="Tree48" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.3598, 0, -0.09398, 0, 0.3719, 0, 0.09398, 0, -0.3598, 5.86, 0, 12.13)
 model = ExtResource("m10_pine_2")
+harvestable_id = "arbre_friche"
 
 [node name="Tree49" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.2729, 0, 0.2692, 0, 0.3833, 0, -0.2692, 0, -0.2729, -2.35, 0, -3.08)
 model = ExtResource("m13_pine_5")
+harvestable_id = "arbre_friche"
 
 [node name="Tree50" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.1641, 0, -0.2918, 0, 0.3348, 0, 0.2918, 0, -0.1641, -7.88, 0, 15.24)
 model = ExtResource("m17_commontree_1")
+harvestable_id = "arbre_friche"
 
 [node name="Tree51" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.4736, 0, 0.4392, 0, 0.6459, 0, -0.4392, 0, 0.4736, -12.58, 0, -10.77)
 model = ExtResource("m17_commontree_1")
+harvestable_id = "arbre_friche"
 
 [node name="Tree52" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.5305, 0, -0.005435, 0, 0.5305, 0, 0.005435, 0, -0.5305, -9.39, 0, -22.96)
 model = ExtResource("m16_commontree_2")
+harvestable_id = "arbre_friche"
 
 [node name="Tree53" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.3266, 0, -0.418, 0, 0.5304, 0, 0.418, 0, 0.3266, 4.62, 0, -19.02)
 model = ExtResource("m13_pine_5")
+harvestable_id = "arbre_friche"
 
 [node name="Tree54" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.3896, 0, -0.3211, 0, 0.5048, 0, 0.3211, 0, 0.3896, -14.69, 0, -22.53)
 model = ExtResource("m11_pine_1")
+harvestable_id = "arbre_friche"
 
 [node name="Tree55" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.5031, 0, 0.3629, 0, 0.6203, 0, -0.3629, 0, 0.5031, -1.55, 0, -1.07)
 model = ExtResource("m10_pine_2")
+harvestable_id = "arbre_friche"
 
 [node name="Tree56" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.3858, 0, 0.3902, 0, 0.5487, 0, -0.3902, 0, -0.3858, -1.18, 0, -14.8)
 model = ExtResource("m10_pine_2")
+harvestable_id = "arbre_friche"
 
 [node name="Tree57" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.4079, 0, 0.1193, 0, 0.425, 0, -0.1193, 0, -0.4079, 4.21, 0, 21.96)
 model = ExtResource("m19_commontree_3")
+harvestable_id = "arbre_friche"
 
 [node name="Tree58" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.3989, 0, 0.4566, 0, 0.6063, 0, -0.4566, 0, 0.3989, 0.7, 0, -17.61)
 model = ExtResource("m14_commontree_5")
+harvestable_id = "arbre_friche"
 
 [node name="Tree59" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.1556, 0, -0.01332, 0, 0.1562, 0, 0.01332, 0, 0.1556, -7.53, 0, -9.17)
 model = ExtResource("m21_deadtree_2")
+harvestable_id = "arbre_mort"
 
 [node name="Tree60" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.006204, 0, -0.2502, 0, 0.2503, 0, 0.2502, 0, -0.006204, 1.05, 0, -12.49)
 model = ExtResource("m22_deadtree_1")
+harvestable_id = "arbre_mort"
 
 [node name="Tree61" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.4263, 0, 0.3554, 0, 0.555, 0, -0.3554, 0, 0.4263, -2.09, 0, -17.36)
 model = ExtResource("m11_pine_1")
+harvestable_id = "arbre_friche"
 
 [node name="Tree62" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.243, 0, -0.4835, 0, 0.5412, 0, 0.4835, 0, -0.243, 8.82, 0, -10.65)
 model = ExtResource("m14_commontree_5")
+harvestable_id = "arbre_friche"
 
 [node name="Tree63" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.04171, 0, 0.4441, 0, 0.4461, 0, -0.4441, 0, -0.04171, 5.71, 0, 4.67)
 model = ExtResource("m11_pine_1")
+harvestable_id = "arbre_friche"
 
 [node name="Tree64" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.1819, 0, -0.3694, 0, 0.4118, 0, 0.3694, 0, 0.1819, -15.33, 0, -16.18)
 model = ExtResource("m11_pine_1")
+harvestable_id = "arbre_friche"
 
 [node name="Tree65" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.1335, 0, -0.1249, 0, 0.1828, 0, 0.1249, 0, -0.1335, -8.37, 0, -15.57)
 model = ExtResource("m22_deadtree_1")
+harvestable_id = "arbre_mort"
 
 [node name="Tree66" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.4849, 0, 0.3681, 0, 0.6088, 0, -0.3681, 0, 0.4849, -6.63, 0, 21.28)
 model = ExtResource("m19_commontree_3")
+harvestable_id = "arbre_friche"
 
 [node name="Tree67" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.254, 0, -0.3011, 0, 0.3939, 0, 0.3011, 0, -0.254, -15.12, 0, -0.19)
 model = ExtResource("m19_commontree_3")
+harvestable_id = "arbre_friche"
 
 [node name="Tree68" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.4204, 0, -0.4422, 0, 0.6102, 0, 0.4422, 0, 0.4204, -2.8, 0, -9.19)
 model = ExtResource("m11_pine_1")
+harvestable_id = "arbre_friche"
 
 [node name="Tree69" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.1777, 0, 0.2734, 0, 0.326, 0, -0.2734, 0, -0.1777, 3.08, 0, 18.58)
 model = ExtResource("m19_commontree_3")
+harvestable_id = "arbre_friche"
 
 [node name="Tree70" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.3323, 0, 0.09253, 0, 0.3449, 0, -0.09253, 0, -0.3323, -18.13, 0, -7.14)
 model = ExtResource("m13_pine_5")
+harvestable_id = "arbre_friche"
 
 [node name="Tree71" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.4604, 0, -0.2962, 0, 0.5474, 0, 0.2962, 0, -0.4604, -9.18, 0, 18.05)
 model = ExtResource("m11_pine_1")
+harvestable_id = "arbre_friche"
 
 [node name="Tree72" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.3878, 0, -0.06486, 0, 0.3932, 0, 0.06486, 0, -0.3878, -18.66, 0, 2.72)
 model = ExtResource("m19_commontree_3")
+harvestable_id = "arbre_friche"
 
 [node name="Tree73" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.522, 0, 0.1183, 0, 0.5352, 0, -0.1183, 0, -0.522, -4.26, 0, -11.42)
 model = ExtResource("m18_commontree_4")
+harvestable_id = "arbre_friche"
 
 [node name="Tree74" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.3506, 0, -0.1297, 0, 0.3738, 0, 0.1297, 0, -0.3506, 4.21, 0, 0.08)
 model = ExtResource("m16_commontree_2")
+harvestable_id = "arbre_friche"
 
 [node name="Tree75" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.09309, 0, -0.524, 0, 0.5322, 0, 0.524, 0, 0.09309, 1.54, 0, 1.45)
 model = ExtResource("m18_commontree_4")
+harvestable_id = "arbre_friche"
 
 [node name="Tree76" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.2302, 0, 0.3321, 0, 0.4041, 0, -0.3321, 0, -0.2302, -16.44, 0, 15.46)
 model = ExtResource("m16_commontree_2")
+harvestable_id = "arbre_friche"
 
 [node name="Tree77" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.176, 0, 0.316, 0, 0.3617, 0, -0.316, 0, -0.176, 9.4, 0, -8.37)
 model = ExtResource("m15_pine_3")
+harvestable_id = "arbre_friche"
 
 [node name="Tree78" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.6678, 0, 0.0996, 0, 0.6752, 0, -0.0996, 0, -0.6678, 9.77, 0, -2.23)
 model = ExtResource("m13_pine_5")
+harvestable_id = "arbre_friche"
 
 [node name="Tree79" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.2531, 0, 0.4625, 0, 0.5272, 0, -0.4625, 0, 0.2531, 2.65, 0, -15.06)
 model = ExtResource("m17_commontree_1")
+harvestable_id = "arbre_friche"
 
 [node name="Tree80" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.2693, 0, -0.2882, 0, 0.3945, 0, 0.2882, 0, -0.2693, -7.92, 0, -20.54)
 model = ExtResource("m17_commontree_1")
+harvestable_id = "arbre_friche"
 
 [node name="Tree81" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.0146, 0, 0.3328, 0, 0.3332, 0, -0.3328, 0, 0.0146, -13.38, 0, 18.82)
 model = ExtResource("m16_commontree_2")
+harvestable_id = "arbre_friche"
 
 [node name="Tree82" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.4034, 0, -0.05969, 0, 0.4078, 0, 0.05969, 0, 0.4034, 3.71, 0, -11.3)
 model = ExtResource("m16_commontree_2")
+harvestable_id = "arbre_friche"
 
 [node name="Tree83" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.3624, 0, 0.3833, 0, 0.5275, 0, -0.3833, 0, 0.3624, -9.69, 0, -7.31)
 model = ExtResource("m17_commontree_1")
+harvestable_id = "arbre_friche"
 
 [node name="Tree84" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.1393, 0, 0.3667, 0, 0.3923, 0, -0.3667, 0, -0.1393, -13.2, 0, -15.6)
 model = ExtResource("m15_pine_3")
+harvestable_id = "arbre_friche"
 
 [node name="Tree85" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.2501, 0, 0.2664, 0, 0.3654, 0, -0.2664, 0, 0.2501, -14.01, 0, -5.12)
 model = ExtResource("m18_commontree_4")
+harvestable_id = "arbre_friche"
 
 [node name="Tree86" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.3605, 0, 0.5572, 0, 0.6636, 0, -0.5572, 0, 0.3605, 3.05, 0, 7.46)
 model = ExtResource("m17_commontree_1")
+harvestable_id = "arbre_friche"
 
 [node name="Tree87" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.1625, 0, 0.408, 0, 0.4392, 0, -0.408, 0, -0.1625, -15.68, 0, 13.18)
 model = ExtResource("m12_pine_4")
+harvestable_id = "arbre_friche"
 
 [node name="Tree88" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.1351, 0, -0.1594, 0, 0.209, 0, 0.1594, 0, 0.1351, -12.16, 0, 15.21)
 model = ExtResource("m20_deadtree_3")
+harvestable_id = "arbre_mort"
 
 [node name="Tree89" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.1776, 0, -0.381, 0, 0.4204, 0, 0.381, 0, -0.1776, -14.33, 0, 22.63)
 model = ExtResource("m12_pine_4")
+harvestable_id = "arbre_friche"
 
 [node name="Tree90" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.1251, 0, -0.3096, 0, 0.334, 0, 0.3096, 0, 0.1251, -0.24, 0, -10.21)
 model = ExtResource("m14_commontree_5")
+harvestable_id = "arbre_friche"
 
 [node name="Tree91" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.274, 0, 0.2721, 0, 0.3861, 0, -0.2721, 0, -0.274, 2.42, 0, -19.91)
 model = ExtResource("m13_pine_5")
+harvestable_id = "arbre_friche"
 
 [node name="Tree92" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.5315, 0, -0.2264, 0, 0.5777, 0, 0.2264, 0, -0.5315, -9.32, 0, -11.16)
 model = ExtResource("m13_pine_5")
+harvestable_id = "arbre_friche"
 
 [node name="Tree93" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.5438, 0, 0.2586, 0, 0.6021, 0, -0.2586, 0, 0.5438, -3.77, 0, -15.82)
 model = ExtResource("m17_commontree_1")
+harvestable_id = "arbre_friche"
 
 [node name="Tree94" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.3744, 0, 0.2281, 0, 0.4384, 0, -0.2281, 0, -0.3744, -18.08, 0, 5.51)
 model = ExtResource("m16_commontree_2")
+harvestable_id = "arbre_friche"
 
 [node name="Tree95" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.1571, 0, -0.3339, 0, 0.369, 0, 0.3339, 0, -0.1571, 6.22, 0, -6.85)
 model = ExtResource("m16_commontree_2")
+harvestable_id = "arbre_friche"
 
 [node name="Tree96" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.2273, 0, -0.5549, 0, 0.5997, 0, 0.5549, 0, 0.2273, -16.91, 0, -13.93)
 model = ExtResource("m16_commontree_2")
+harvestable_id = "arbre_friche"
 
 [node name="Tree97" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.3904, 0, -0.4363, 0, 0.5854, 0, 0.4363, 0, 0.3904, -6.36, 0, -7.3)
 model = ExtResource("m15_pine_3")
+harvestable_id = "arbre_friche"
 
 [node name="Tree98" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.4627, 0, -0.1873, 0, 0.4991, 0, 0.1873, 0, -0.4627, -16.12, 0, -6.44)
 model = ExtResource("m14_commontree_5")
+harvestable_id = "arbre_friche"
 
 [node name="Tree99" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.1522, 0, 0.4126, 0, 0.4398, 0, -0.4126, 0, 0.1522, -17.64, 0, 20.07)
 model = ExtResource("m13_pine_5")
+harvestable_id = "arbre_friche"
 
 [node name="Tree100" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(-0.2778, 0, 0.2129, 0, 0.35, 0, -0.2129, 0, -0.2778, -6.37, 0, 16.91)
 model = ExtResource("m13_pine_5")
+harvestable_id = "arbre_friche"
 
 [node name="Tree101" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.2068, 0, 0.149, 0, 0.2548, 0, -0.149, 0, 0.2068, -1.96, 0, -12.29)
 model = ExtResource("m22_deadtree_1")
+harvestable_id = "arbre_mort"
 
 [node name="Tree102" parent="Thicket" instance=ExtResource("nature_tree")]
 transform = Transform3D(0.3248, 0, 0.2182, 0, 0.3913, 0, -0.2182, 0, 0.3248, 5.71, 0, -14.64)
 model = ExtResource("m12_pine_4")
+harvestable_id = "arbre_friche"
 
 [node name="Landmarks" type="Node3D" parent="."]
 
@@ -2902,3 +3088,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.0, 0.5, 9.0)
 [node name="OrbitCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("1_camera")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.0, 0, 9.0)
 target = NodePath("../Player")
+
+[node name="Hud" parent="." node_paths=PackedStringArray("player") instance=ExtResource("hud")]
+player = NodePath("../Player")

@@ -1,0 +1,86 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/ui/hud.gd" id="1_script"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_text"]
+font_size = 22
+outline_size = 6
+outline_color = Color(0.12, 0.1, 0.08, 0.9)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 10.0
+bg_color = Color(0.16, 0.13, 0.1, 0.72)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="Theme" id="Theme_hud"]
+Label/font_sizes/font_size = 22
+Label/colors/font_color = Color(0.98, 0.95, 0.88, 1)
+Label/colors/font_outline_color = Color(0.12, 0.1, 0.08, 0.9)
+Label/constants/outline_size = 6
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="Hud" type="CanvasLayer"]
+script = ExtResource("1_script")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = SubResource("Theme_hud")
+
+[node name="InventoryPanel" type="PanelContainer" parent="Root"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 60.0
+offset_bottom = 60.0
+mouse_filter = 2
+
+[node name="InventoryList" type="VBoxContainer" parent="Root/InventoryPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="PromptPanel" type="PanelContainer" parent="Root"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_top = -90.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="PromptLabel" type="Label" parent="Root/PromptPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+label_settings = SubResource("LabelSettings_text")
+horizontal_alignment = 1
+
+[node name="Toasts" type="Control" parent="Root"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_top = 120.0
+offset_right = 150.0
+offset_bottom = 300.0
+grow_horizontal = 2
+mouse_filter = 2

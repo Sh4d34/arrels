@@ -1,0 +1,26 @@
+[
+	{
+		"id": "arbre_friche",
+		"nom": "Jeune arbre",
+		"invite": "Couper le jeune arbre",
+		"coups": 3,
+		"recolte": [{ "item": "bois", "qte": 2 }],
+		"repousse_secondes": null
+	},
+	{
+		"id": "arbre_mort",
+		"nom": "Arbre mort",
+		"invite": "Abattre l'arbre mort",
+		"coups": 2,
+		"recolte": [{ "item": "bois", "qte": 1 }],
+		"repousse_secondes": null
+	},
+	{
+		"id": "arbre_lisiere",
+		"nom": "Arbre de lisière",
+		"invite": "Couper l'arbre",
+		"coups": 5,
+		"recolte": [{ "item": "bois", "qte": 4 }],
+		"repousse_secondes": 180
+	}
+]

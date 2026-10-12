@@ -2,6 +2,7 @@
 class_name NatureTree
 extends StaticBody3D
 ## A tree built from an imported model, with a simple cylinder collision around its trunk.
+## With a harvestable_id, it can be cut (see Harvestable and data/harvestables.json).
 
 @export var model: PackedScene:
 	set(value):
@@ -10,6 +11,7 @@ extends StaticBody3D
 			_build()
 @export var trunk_radius: float = 0.35
 @export var trunk_height: float = 3.0
+@export var harvestable_id: String = "" ## Empty for a purely decorative tree.
 
 var _model_instance: Node3D
 var _trunk_shape: CollisionShape3D
@@ -17,6 +19,10 @@ var _trunk_shape: CollisionShape3D
 
 func _ready() -> void:
 	_build()
+	if harvestable_id != "" and not Engine.is_editor_hint():
+		var harvestable := Harvestable.new()
+		harvestable.harvestable_id = harvestable_id
+		add_child(harvestable)
 
 
 func _build() -> void:

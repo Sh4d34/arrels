@@ -55,7 +55,8 @@ projet/
 │   ├── items.json
 │   ├── crops.json
 │   ├── recipes.json
-│   └── buildables.json
+│   ├── buildables.json
+│   └── harvestables.json    # arbres et autres éléments récoltables
 ├── autoload/                # singletons globaux
 │   ├── game_data.gd         # charge et expose les JSON
 │   ├── inventory.gd

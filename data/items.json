@@ -1,1 +1,9 @@
-[]
+[
+	{
+		"id": "bois",
+		"nom": "Bois",
+		"description": "Bois coupé en défrichant ou en lisière de forêt.",
+		"empilable": true,
+		"max_pile": 50
+	}
+]
