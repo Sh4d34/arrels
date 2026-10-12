@@ -7,12 +7,14 @@ const DATA_DIR := "res://data/"
 var items: Dictionary = {}
 var harvestables: Dictionary = {}
 var buildables: Dictionary = {}
+var crops: Dictionary = {}
 
 
 func _ready() -> void:
 	items = _load_collection("items.json")
 	harvestables = _load_collection("harvestables.json")
 	buildables = _load_collection("buildables.json")
+	crops = _load_collection("crops.json")
 	_validate()
 
 
@@ -26,6 +28,26 @@ func get_harvestable(id: String) -> Dictionary:
 
 func get_buildable(id: String) -> Dictionary:
 	return buildables.get(id, {})
+
+
+func get_crop(id: String) -> Dictionary:
+	return crops.get(id, {})
+
+
+## The crop grown from a seed item, or an empty dictionary.
+func crop_for_seed(seed_id: String) -> Dictionary:
+	for crop: Dictionary in crops.values():
+		if crop.get("graine") == seed_id:
+			return crop
+	return {}
+
+
+## A cost or drop list as readable text, e.g. "2 herbes, 1 compost".
+func describe(lines: Array) -> String:
+	var parts: PackedStringArray = []
+	for line: Dictionary in lines:
+		parts.append("%d %s" % [int(line.qte), item_name(line.item).to_lower()])
+	return ", ".join(parts)
 
 
 ## Display name of an item, falling back to its id.
@@ -57,12 +79,26 @@ func _load_collection(file_name: String) -> Dictionary:
 func _validate() -> void:
 	# Catch broken references early, with a readable message.
 	for harvestable: Dictionary in harvestables.values():
-		for drop: Dictionary in harvestable.get("recolte", []):
-			if not items.has(drop.get("item", "")):
-				push_error("GameData: harvestable '%s' drops unknown item '%s'" % [harvestable.id, drop.get("item", "")])
+		_check_items(harvestable.get("recolte", []), "harvestable '%s'" % harvestable.id)
 	for buildable: Dictionary in buildables.values():
-		for cost: Dictionary in buildable.get("cout", []):
-			if not items.has(cost.get("item", "")):
-				push_error("GameData: buildable '%s' costs unknown item '%s'" % [buildable.id, cost.get("item", "")])
+		var context := "buildable '%s'" % buildable.id
+		_check_items(buildable.get("cout", []), context)
+		var composting: Dictionary = buildable.get("compostage", {})
+		_check_items(composting.get("entree", []) + composting.get("sortie", []), context)
+		if buildable.has("arrosage"):
+			_check_items([buildable.arrosage], context)
+		for step: Dictionary in buildable.get("preparation", {}).values():
+			_check_items(step.get("cout", []) + step.get("recolte", []), context)
 		if not ResourceLoader.exists(buildable.get("scene", "")):
-			push_error("GameData: buildable '%s' has no scene at '%s'" % [buildable.id, buildable.get("scene", "")])
+			push_error("GameData: %s has no scene at '%s'" % [context, buildable.get("scene", "")])
+	for crop: Dictionary in crops.values():
+		var context := "crop '%s'" % crop.id
+		_check_items(crop.get("recolte", []) + [{"item": crop.get("graine", "")}], context)
+		if not ResourceLoader.exists(crop.get("modele_plant", "")):
+			push_error("GameData: %s has no plant model at '%s'" % [context, crop.get("modele_plant", "")])
+
+
+func _check_items(lines: Array, context: String) -> void:
+	for line: Dictionary in lines:
+		if not items.has(line.get("item", "")):
+			push_error("GameData: %s refers to unknown item '%s'" % [context, line.get("item", "")])

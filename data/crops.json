@@ -1,1 +1,17 @@
-[]
+[
+	{
+		"id": "tomate",
+		"nom": "Tomate",
+		"graine": "graine_tomate",
+		"mois_semis": [3, 4, 5],
+		"jours_pousse": 6,
+		"stades": 4,
+		"eau_par_jour": 1,
+		"recolte": [{ "item": "tomate", "qte": 3 }, { "item": "graine_tomate", "qte": 1 }],
+		"associations": ["basilic", "oeillet_inde"],
+		"couleur_fruit": "#d8452f",
+		"modele_plant": "res://assets/models/quaternius_nature/Plant_1_Big.gltf",
+		"invite_recolte": "Récolter les tomates",
+		"carnet": "La tomate aime la chaleur. On la sème au printemps, à l'abri des dernières gelées."
+	}
+]

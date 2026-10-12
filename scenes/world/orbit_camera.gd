@@ -1,7 +1,8 @@
 class_name OrbitCamera
 extends Node3D
 ## Orbit camera around a ground pivot, following a target when one is set.
-## Right drag or A / E (AZERTY): rotate. Wheel / pinch: zoom.
+## Right drag: rotate (the cursor is hidden and held in place meanwhile). Wheel / pinch: zoom.
+## Trackpad two-finger swipe: horizontal rotates, vertical zooms.
 ## Without a target, middle drag or Shift + right drag: pan.
 ## With a moving target, the camera slowly swings back behind it unless rotated by hand recently.
 
@@ -13,7 +14,7 @@ extends Node3D
 @export var rotate_sensitivity: float = 0.3 ## Degrees per pixel.
 @export_range(-89.0, 0.0) var min_pitch_deg: float = -80.0
 @export_range(-89.0, 0.0) var max_pitch_deg: float = -6.0
-@export var keyboard_rotate_speed: float = 100.0 ## Degrees per second.
+@export var trackpad_rotate_sensitivity: float = 6.0 ## Degrees per unit of two-finger swipe.
 
 @export_group("Auto follow")
 @export var auto_follow_enabled: bool = true
@@ -37,6 +38,7 @@ extends Node3D
 
 var _current_distance: float
 var _time_since_manual_rotation: float = INF
+var _cursor_before_drag: Vector2
 
 @onready var _pitch: Node3D = $Pitch
 @onready var _camera: Camera3D = $Pitch/Camera3D
@@ -55,17 +57,20 @@ func _process(delta: float) -> void:
 	_current_distance = lerpf(_current_distance, distance, 1.0 - exp(-zoom_smoothing * delta))
 	_camera.position.z = _current_distance
 	_time_since_manual_rotation += delta
-	var key_axis := Input.get_axis("camera_rotate_right", "camera_rotate_left")
-	if key_axis != 0.0:
-		rotation.y += deg_to_rad(key_axis * keyboard_rotate_speed * delta)
-		_time_since_manual_rotation = 0.0
 	if target:
 		global_position = global_position.lerp(_target_point(), 1.0 - exp(-follow_smoothing * delta))
 		_auto_follow(delta)
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion:
+	if event.is_action_pressed("camera_rotate"):
+		# Hide and hold the cursor while rotating, so it never hits the screen edges.
+		_cursor_before_drag = get_viewport().get_mouse_position()
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	elif event.is_action_released("camera_rotate") and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		Input.warp_mouse(_cursor_before_drag)
+	elif event is InputEventMouseMotion:
 		var motion := event as InputEventMouseMotion
 		var panning := Input.is_action_pressed("camera_pan") or (motion.shift_pressed and Input.is_action_pressed("camera_rotate"))
 		if panning:
@@ -81,8 +86,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		# Trackpad pinch: factor > 1 means fingers spreading, i.e. zoom in.
 		distance = clampf(distance / (event as InputEventMagnifyGesture).factor, min_distance, max_distance)
 	elif event is InputEventPanGesture:
-		# Trackpad two-finger scroll.
-		_zoom((event as InputEventPanGesture).delta.y * zoom_step * 0.5)
+		# Trackpad two-finger swipe: the dominant direction decides between rotating and zooming.
+		var swipe := (event as InputEventPanGesture).delta
+		if absf(swipe.x) > absf(swipe.y):
+			rotation.y -= deg_to_rad(swipe.x * trackpad_rotate_sensitivity)
+			_time_since_manual_rotation = 0.0
+		else:
+			_zoom(swipe.y * zoom_step * 0.5)
 
 
 func _rotate(relative: Vector2) -> void:

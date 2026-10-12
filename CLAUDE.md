@@ -21,6 +21,10 @@ Cadre inspiré des environs de Prades (Conflent, Pyrénées-Orientales). Textes 
 - Commentaires et noms de variables en anglais, textes visibles en français
 - Identifiants de contenu uniques en snake_case dans data/*.json
 
+## Éléments interactifs
+- Tout élément interactif rejoint le groupe `interactable` et porte la métadonnée `interactable`, qui pointe vers l'objet exposant `get_interaction_prompt()`, `get_interaction_hint()`, `can_interact()` et `interact(actor)`
+- Tout élément interactif doit être mis en surbrillance quand il est visé : c'est automatique pour un objet qui a ses propres maillages (`TargetHighlight`) ; un élément sans maillage propre (comme la rivière) implémente `set_highlighted(on, tint)`
+
 ## Arborescence
 - assets/ : modèles, textures, sons (Git LFS)
 - data/ : contenus du jeu en JSON

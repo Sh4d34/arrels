@@ -1,6 +1,7 @@
 class_name Harvestable
 extends Node
-## Makes its parent body harvestable. Hits, drops and regrowth come from data/harvestables.json.
+## Makes its parent body harvestable. Hits, drops, regrowth and how it disappears
+## ("chute" for trees, "ramassage" for small objects) come from data/harvestables.json.
 ## The parent body joins the "interactable" group and points back to this component through
 ## its "interactable" metadata, so the player can find it from a physics body.
 
@@ -70,6 +71,9 @@ func _fell(actor: Node3D) -> void:
 		Inventory.add(drop.item, int(drop.qte))
 	harvested.emit(harvestable_id)
 
+	if _data.get("disparition", "chute") == "ramassage":
+		_pick_up()
+		return
 	# Tip the tree over, away from the actor, then shrink it out of sight.
 	var away := _body.global_position - actor.global_position
 	away.y = 0.0
@@ -81,6 +85,14 @@ func _fell(actor: Node3D) -> void:
 		_body.transform.basis = Basis(axis, angle) * _rest_basis,
 		0.0, deg_to_rad(85.0), fall_duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	tween.tween_property(_body, "scale", _body.scale * 0.01, 0.6).set_delay(0.4)
+	tween.tween_callback(_after_fall)
+
+
+func _pick_up() -> void:
+	# Small objects: a little hop, then shrink away.
+	var tween := create_tween()
+	tween.tween_property(_body, "position:y", _body.position.y + 0.3, 0.15).set_ease(Tween.EASE_OUT)
+	tween.tween_property(_body, "scale", _body.scale * 0.01, 0.25).set_ease(Tween.EASE_IN)
 	tween.tween_callback(_after_fall)
 
 

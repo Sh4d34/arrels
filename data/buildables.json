@@ -6,6 +6,44 @@
 		"taille_grille": [1, 1],
 		"cout": [{ "item": "bois", "qte": 8 }],
 		"scene": "res://scenes/buildables/composteur.tscn",
-		"carnet": "Le compost transforme les déchets verts en terre fertile."
+		"carnet": "Le compost transforme les déchets verts en terre fertile.",
+		"compostage": {
+			"entree": [{ "item": "herbes", "qte": 2 }],
+			"jours": 3,
+			"sortie": [{ "item": "compost", "qte": 1 }],
+			"lots_max": 3,
+			"carnet": "Herbes, épluchures et feuilles se décomposent en quelques semaines grâce aux vers et aux micro-organismes."
+		}
+	},
+	{
+		"id": "parcelle",
+		"nom": "Parcelle de potager",
+		"palier": "debutant",
+		"taille_grille": [1, 1],
+		"cout": [],
+		"scene": "res://scenes/crops/parcelle.tscn",
+		"carnet": "Un potager se prépare : on désherbe, on aère la terre, puis on la protège avant de semer.",
+		"arrosage": { "item": "eau", "qte": 1 },
+		"preparation": {
+			"desherber": {
+				"coups": 2,
+				"recolte": [{ "item": "herbes", "qte": 2 }],
+				"carnet": "Les herbes arrachées ne sont pas des déchets : elles nourriront le compost."
+			},
+			"ameublir": {
+				"coups": 2,
+				"carnet": "La grelinette aère la terre sans la retourner, pour garder la vie du sol en place."
+			},
+			"compost": {
+				"cout": [{ "item": "compost", "qte": 1 }],
+				"bonus_recolte": 1,
+				"carnet": "Un peu de compost avant de semer, et la terre nourrit mieux la plante."
+			},
+			"pailler": {
+				"cout": [{ "item": "branchages", "qte": 2 }],
+				"retention_jours": 2,
+				"carnet": "Le bois raméal fragmenté garde l'humidité, nourrit le sol et freine les herbes."
+			}
+		}
 	}
 ]

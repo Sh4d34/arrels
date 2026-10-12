@@ -3,7 +3,9 @@ extends CharacterBody3D
 ## Player character: camera-relative movement on foot, with a simple walk bob for the placeholder model,
 ## and interaction with nearby interactables (Space or left click, hold to repeat).
 
-signal interaction_prompt_changed(prompt: String) ## Empty when nothing can be interacted with.
+## prompt is empty when nothing can be interacted with; hint is an optional carnet text;
+## possible is false for information-only prompts.
+signal interaction_prompt_changed(prompt: String, hint: String, possible: bool)
 
 @export_group("Movement")
 @export var walk_speed: float = 3.5
@@ -30,10 +32,13 @@ var _bob_phase: float = 0.0
 var interaction_enabled: bool = true ## Turned off by modes that use the same inputs (building).
 var _target: Node3D ## The physics body currently targeted, or null.
 var _target_prompt: String = ""
+var _target_hint: String = ""
+var _target_possible: bool = false
 var _cooldown_left: float = 0.0
 var _swinging: bool = false
 
 @onready var _model: Node3D = $Model
+@onready var _highlight: TargetHighlight = $TargetHighlight
 
 
 func _ready() -> void:
@@ -74,22 +79,34 @@ func _update_interaction(delta: float) -> void:
 		if target == null:
 			target = _find_nearest_interactable()
 	var prompt := ""
+	var hint := ""
+	var possible := false
 	if target:
-		prompt = (target.get_meta("interactable") as Object).call("get_interaction_prompt")
-	if target != _target or prompt != _target_prompt:
+		var interactable: Object = target.get_meta("interactable")
+		prompt = interactable.call("get_interaction_prompt")
+		if interactable.has_method("get_interaction_hint"):
+			hint = interactable.call("get_interaction_hint")
+		possible = interactable.call("can_interact")
+	if target != _target or prompt != _target_prompt or hint != _target_hint or possible != _target_possible:
 		_target = target
 		_target_prompt = prompt
-		interaction_prompt_changed.emit(prompt)
+		_target_hint = hint
+		_target_possible = possible
+		_highlight.set_target(target, possible)
+		interaction_prompt_changed.emit(prompt, hint, possible)
 	if _target and Input.is_action_pressed("interact") and _cooldown_left == 0.0:
 		_interact_with_target()
 
 
 func _interact_with_target() -> void:
+	var interactable: Object = _target.get_meta("interactable")
+	if not interactable.call("can_interact"):
+		return
 	_cooldown_left = interact_cooldown
 	var to_target := _target.global_position - global_position
 	_model.rotation.y = atan2(-to_target.x, -to_target.z)
 	_play_swing()
-	(_target.get_meta("interactable") as Object).call("interact", self)
+	interactable.call("interact", self)
 
 
 func _is_reachable(body: Node3D) -> bool:

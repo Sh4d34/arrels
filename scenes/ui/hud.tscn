@@ -72,17 +72,29 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_top = -90.0
-offset_bottom = -40.0
+offset_top = -60.0
+offset_bottom = -30.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
 
-[node name="PromptLabel" type="Label" parent="Root/PromptPanel"]
+[node name="PromptList" type="VBoxContainer" parent="Root/PromptPanel"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="PromptLabel" type="Label" parent="Root/PromptPanel/PromptList"]
 unique_name_in_owner = true
 layout_mode = 2
 label_settings = SubResource("LabelSettings_text")
 horizontal_alignment = 1
+
+[node name="PromptHint" type="Label" parent="Root/PromptPanel/PromptList"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(420, 0)
+layout_mode = 2
+label_settings = SubResource("LabelSettings_carnet")
+horizontal_alignment = 1
+autowrap_mode = 3
 
 [node name="Toasts" type="Control" parent="Root"]
 unique_name_in_owner = true
@@ -119,6 +131,11 @@ theme_override_constants/separation = 6
 unique_name_in_owner = true
 layout_mode = 2
 
+[node name="BuildChoices" type="Label" parent="Root/BuildPanel/BuildList"]
+unique_name_in_owner = true
+layout_mode = 2
+label_settings = SubResource("LabelSettings_help")
+
 [node name="BuildCost" type="Label" parent="Root/BuildPanel/BuildList"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -135,5 +152,19 @@ layout_mode = 2
 
 [node name="BuildHelp" type="Label" parent="Root/BuildPanel/BuildList"]
 layout_mode = 2
-text = "Clic : poser · R : tourner · Échap : quitter"
+text = "Clic : poser · 1, 2 : choisir · R : tourner · Échap : quitter"
 label_settings = SubResource("LabelSettings_help")
+
+[node name="DayLabel" type="Label" parent="Root"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = 16.0
+offset_right = 100.0
+offset_bottom = 46.0
+grow_horizontal = 2
+label_settings = SubResource("LabelSettings_text")
+horizontal_alignment = 1

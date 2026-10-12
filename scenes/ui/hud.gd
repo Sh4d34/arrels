@@ -1,6 +1,7 @@
 class_name Hud
 extends CanvasLayer
-## On-screen information: inventory, interaction prompt, short pickup messages and the build panel.
+## On-screen information: day, inventory, interaction prompt with its carnet hint,
+## short messages and the build panel.
 
 const PROMPT_KEYS := "Espace / clic"
 
@@ -17,9 +18,12 @@ var _known_quantities: Dictionary[String, int] = {}
 @onready var _inventory_list: VBoxContainer = %InventoryList
 @onready var _prompt_panel: PanelContainer = %PromptPanel
 @onready var _prompt_label: Label = %PromptLabel
+@onready var _prompt_hint: Label = %PromptHint
+@onready var _day_label: Label = %DayLabel
 @onready var _toasts: Control = %Toasts
 @onready var _build_panel: PanelContainer = %BuildPanel
 @onready var _build_title: Label = %BuildTitle
+@onready var _build_choices: Label = %BuildChoices
 @onready var _build_cost: Label = %BuildCost
 @onready var _build_carnet: Label = %BuildCarnet
 @onready var _build_status: Label = %BuildStatus
@@ -27,20 +31,29 @@ var _known_quantities: Dictionary[String, int] = {}
 
 func _ready() -> void:
 	Inventory.changed.connect(_on_inventory_changed)
+	TimeManager.new_day.connect(_on_new_day)
+	_day_label.text = "Jour %d" % TimeManager.day
 	if player:
 		player.interaction_prompt_changed.connect(_on_prompt_changed)
 	if build_mode:
 		build_mode.mode_changed.connect(_on_build_mode_changed)
 		build_mode.placement_changed.connect(_on_placement_changed)
 		build_mode.built.connect(_on_built)
-	_on_prompt_changed("")
+	_on_prompt_changed("", "", false)
 	_on_build_mode_changed(false, "")
 	_refresh_inventory()
 
 
-func _on_prompt_changed(prompt: String) -> void:
+func _on_prompt_changed(prompt: String, hint: String, possible: bool) -> void:
 	_prompt_panel.visible = prompt != ""
-	_prompt_label.text = "%s — %s" % [PROMPT_KEYS, prompt]
+	_prompt_label.text = "%s — %s" % [PROMPT_KEYS, prompt] if possible else prompt
+	_prompt_hint.text = hint
+	_prompt_hint.visible = hint != ""
+
+
+func _on_new_day(day: int) -> void:
+	_day_label.text = "Jour %d" % day
+	_show_toast("Un nouveau jour se lève (jour %d)" % day)
 
 
 func _on_inventory_changed(item_id: String, quantity: int) -> void:
@@ -57,6 +70,12 @@ func _on_build_mode_changed(active: bool, buildable_id: String) -> void:
 		return
 	var data := GameData.get_buildable(buildable_id)
 	_build_title.text = "Construire : %s" % data.get("nom", buildable_id)
+	var choices: PackedStringArray = []
+	var ids := GameData.buildables.keys()
+	for i in ids.size():
+		var marker := "▸ " if ids[i] == buildable_id else "   "
+		choices.append("%s%d · %s" % [marker, i + 1, GameData.get_buildable(ids[i]).get("nom", ids[i])])
+	_build_choices.text = "\n".join(choices)
 	_build_carnet.text = data.get("carnet", "")
 	_build_carnet.visible = _build_carnet.text != ""
 	_on_placement_changed(false, "")
@@ -83,7 +102,7 @@ func _refresh_build_cost() -> void:
 	var lines: PackedStringArray = []
 	for cost: Dictionary in GameData.get_buildable(build_mode.get_buildable_id()).get("cout", []):
 		lines.append("%d %s (tu en as %d)" % [int(cost.qte), GameData.item_name(cost.item).to_lower(), Inventory.count(cost.item)])
-	_build_cost.text = "Coût : " + ", ".join(lines)
+	_build_cost.text = "Coût : " + (", ".join(lines) if not lines.is_empty() else "gratuit")
 
 
 func _refresh_inventory() -> void:

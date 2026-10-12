@@ -1,0 +1,29 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/crops/parcelle.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://assets/models/quaternius_nature/Grass_Common_Short.gltf" id="2_grass"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_soil"]
+albedo_color = Color(0.36, 0.5, 0.24, 1)
+roughness = 1.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_slab"]
+material = SubResource("StandardMaterial3D_soil")
+size = Vector3(0.96, 0.1, 0.96)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_plot"]
+size = Vector3(0.98, 0.3, 0.98)
+
+[node name="Parcelle" type="StaticBody3D"]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_script")
+grass_tuft = ExtResource("2_grass")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+shape = SubResource("BoxShape3D_plot")
+
+[node name="Slab" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 0)
+mesh = SubResource("BoxMesh_slab")

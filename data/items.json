@@ -5,5 +5,47 @@
 		"description": "Bois coupé en défrichant ou en lisière de forêt.",
 		"empilable": true,
 		"max_pile": 50
+	},
+	{
+		"id": "branchages",
+		"nom": "Branchages",
+		"description": "Petites branches broyées en bois raméal fragmenté (BRF), un excellent paillage.",
+		"empilable": true,
+		"max_pile": 50
+	},
+	{
+		"id": "herbes",
+		"nom": "Herbes",
+		"description": "Herbes arrachées au désherbage, de la nourriture pour le compost.",
+		"empilable": true,
+		"max_pile": 50
+	},
+	{
+		"id": "compost",
+		"nom": "Compost",
+		"description": "Terre fertile issue du composteur.",
+		"empilable": true,
+		"max_pile": 20
+	},
+	{
+		"id": "eau",
+		"nom": "Eau (arrosoir)",
+		"description": "Eau puisée à la rivière. L'arrosoir contient de quoi arroser cinq fois.",
+		"empilable": true,
+		"max_pile": 5
+	},
+	{
+		"id": "graine_tomate",
+		"nom": "Graine de tomate",
+		"description": "Graine de tomate, à semer au printemps.",
+		"empilable": true,
+		"max_pile": 50
+	},
+	{
+		"id": "tomate",
+		"nom": "Tomate",
+		"description": "Tomate mûre cueillie au potager.",
+		"empilable": true,
+		"max_pile": 50
 	}
 ]

@@ -109,6 +109,10 @@ Sept jalons dans l'ordre, chacun jouable et commité avant de passer au suivant.
 **Jalon 5 — Cultiver**
 
 - [ ] Parcelle de terre à préparer, puis graine à planter.
+- [ ] Préparation du sol en étapes : désherber (donne des herbes), ameublir à la grelinette, pailler au BRF (branchages issus de la coupe), puis semer.
+- [ ] Compost en bonus facultatif : les herbes deviennent du compost en 3 jours dans le composteur ; une parcelle amendée donne une récolte de plus.
+- [ ] Le paillage garde la terre humide 2 jours ; une plante non arrosée attend sans jamais mourir.
+- [ ] Premières graines dans un colis posé dans la clairière d'arrivée.
 - [ ] Croissance en plusieurs stades visuels, pilotée par `crops.json`.
 - [ ] Arrosage nécessaire, avec de l'eau puisée à la rivière.
 - [ ] Récolte qui rapporte des légumes et des graines.

@@ -1,5 +1,7 @@
 [gd_scene format=3]
 
+[ext_resource type="Script" path="res://scenes/buildables/composteur.gd" id="1_script"]
+
 [sub_resource type="StandardMaterial3D" id="wood0"]
 albedo_color = Color(0.693, 0.573, 0.393, 1)
 roughness = 1.0
@@ -52,6 +54,7 @@ size = Vector3(0.16, 0.05, 0.12)
 size = Vector3(1.0, 0.85, 1.0)
 
 [node name="Composteur" type="StaticBody3D"]
+script = ExtResource("1_script")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.425, 0)

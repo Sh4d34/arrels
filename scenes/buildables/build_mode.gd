@@ -51,10 +51,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		if active:
 			exit()
 		elif not GameData.buildables.is_empty():
-			# Only one buildable for now; a selection menu will come with more of them.
 			enter(GameData.buildables.keys()[0])
 	elif not active:
 		return
+	elif _slot_pressed(event) >= 0:
+		enter(GameData.buildables.keys()[_slot_pressed(event)])
 	elif event.is_action_pressed("build_cancel"):
 		exit()
 	elif event.is_action_pressed("build_rotate"):
@@ -66,10 +67,13 @@ func _unhandled_input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 
 
+## Enters build mode with this buildable, or switches to it when already building.
 func enter(buildable_id: String) -> void:
 	_data = GameData.get_buildable(buildable_id)
 	if _data.is_empty():
 		return
+	if _ghost:
+		_ghost.queue_free()
 	_buildable_id = buildable_id
 	_scene = load(_data.scene)
 	_ghost = _make_ghost()
@@ -94,6 +98,15 @@ func exit() -> void:
 
 func get_buildable_id() -> String:
 	return _buildable_id
+
+
+## Index of the buildable chosen with the number keys (build_slot_1, build_slot_2...), or -1.
+func _slot_pressed(event: InputEvent) -> int:
+	for i in GameData.buildables.size():
+		var action := "build_slot_%d" % (i + 1)
+		if InputMap.has_action(action) and event.is_action_pressed(action):
+			return i
+	return -1
 
 
 func _physics_process(_delta: float) -> void:
@@ -199,6 +212,9 @@ func _set_placement(valid: bool, reason: String) -> void:
 
 func _make_ghost() -> Node3D:
 	var ghost: Node3D = _scene.instantiate()
+	# A ghost is only a picture: no gameplay script must run on it.
+	for node in ghost.find_children("*", "", true, false) + [ghost]:
+		node.set_script(null)
 	for body in ghost.find_children("*", "CollisionObject3D", true, false) + [ghost]:
 		if body is CollisionObject3D:
 			body.collision_layer = 0

@@ -8,7 +8,7 @@ extends Node3D
 @export var small_cover_view_distance: float = 45.0
 
 @onready var _terrain: Terrain = $Terrain
-@onready var _snapped_groups: Array[Node3D] = [$ForestEdge, $Riparian, $Thicket, $Landmarks, $GroundCover]
+@onready var _snapped_groups: Array[Node3D] = [$ForestEdge, $Riparian, $Thicket, $Landmarks, $Props, $GroundCover]
 
 
 func _ready() -> void:
