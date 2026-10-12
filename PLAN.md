@@ -228,3 +228,7 @@ La phase 2 ne démarre que si des testeurs extérieurs trouvent la boucle agréa
 - [ ] Une fois la boucle validée, démarrer la phase 2 (tranche verticale) décrite dans le document de conception.
 
 Si la boucle ne convainc pas, mieux vaut la retravailler maintenant que de construire du contenu par-dessus.
+
+## Idées pour plus tard
+
+- Un petit drapeau catalan (senyera) sur la cabane du joueur, en écho aux drapeaux qui ornent la croix du Canigou.

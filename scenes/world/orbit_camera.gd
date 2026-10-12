@@ -6,7 +6,7 @@ extends Node3D
 @export_group("Rotation")
 @export var rotate_sensitivity: float = 0.3 ## Degrees per pixel.
 @export_range(-89.0, 0.0) var min_pitch_deg: float = -80.0
-@export_range(-89.0, 0.0) var max_pitch_deg: float = -20.0
+@export_range(-89.0, 0.0) var max_pitch_deg: float = -6.0
 
 @export_group("Zoom")
 @export var min_distance: float = 6.0

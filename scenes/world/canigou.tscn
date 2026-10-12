@@ -1,0 +1,12 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/world/canigou.gd" id="1_script"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ridges"]
+seed = 3
+frequency = 0.004
+fractal_octaves = 4
+
+[node name="Canigou" type="Node3D"]
+script = ExtResource("1_script")
+noise = SubResource("FastNoiseLite_ridges")

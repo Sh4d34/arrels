@@ -10,3 +10,6 @@ builds/
 
 # macOS
 .DS_Store
+
+# Windows
+desktop.ini

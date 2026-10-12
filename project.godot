@@ -50,3 +50,4 @@ camera_zoom_out={
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+mesh_lod/lod_change/threshold_pixels=4.0
