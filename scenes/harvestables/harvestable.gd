@@ -46,8 +46,10 @@ func interact(actor: Node3D) -> void:
 		return
 	_hits_left -= 1
 	if _hits_left > 0:
+		Sfx.play(_data.get("son_coup", ""), _body.global_position)
 		_shake()
 	else:
+		Sfx.play(_data.get("son_fin", ""), _body.global_position)
 		_fell(actor)
 
 

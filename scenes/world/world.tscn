@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" path="res://scenes/buildables/build_mode.tscn" id="build_mode"]
 [ext_resource type="PackedScene" path="res://scenes/harvestables/colis_graines.tscn" id="colis_graines"]
 [ext_resource type="Script" path="res://scenes/world/river_water_source.gd" id="river_water_source"]
+[ext_resource type="Script" path="res://scenes/world/ambience.gd" id="ambience"]
 [ext_resource type="PackedScene" path="res://assets/models/quaternius_nature/Pine_2.gltf" id="m10_pine_2"]
 [ext_resource type="PackedScene" path="res://assets/models/quaternius_nature/Pine_1.gltf" id="m11_pine_1"]
 [ext_resource type="PackedScene" path="res://assets/models/quaternius_nature/Pine_4.gltf" id="m12_pine_4"]
@@ -3157,6 +3158,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.0, 0, 9.0)
 target = NodePath("../Player")
 
 [node name="Buildings" type="Node3D" parent="."]
+
+[node name="Ambience" type="Node3D" parent="." node_paths=PackedStringArray("terrain", "player")]
+script = ExtResource("ambience")
+terrain = NodePath("../Terrain")
+player = NodePath("../Player")
 
 [node name="Props" type="Node3D" parent="."]
 

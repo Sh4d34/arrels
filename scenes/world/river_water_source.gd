@@ -49,6 +49,7 @@ func can_interact() -> bool:
 
 func interact(_actor: Node3D) -> void:
 	if can_interact():
+		Sfx.play("remplir_arrosoir", global_position)
 		Inventory.add(water_item, _capacity() - Inventory.count(water_item))
 
 

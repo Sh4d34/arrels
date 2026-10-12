@@ -83,6 +83,7 @@ material = SubResource("wood_dark")
 size = Vector3(0.24, 2.1, 0.24)
 
 [node name="Bridge" type="StaticBody3D"]
+metadata/surface = "bois"
 
 [node name="Visual" type="Node3D" parent="."]
 

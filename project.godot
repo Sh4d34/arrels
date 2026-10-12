@@ -20,10 +20,12 @@ config/icon="res://icon.svg"
 GameData="*res://autoload/game_data.gd"
 Inventory="*res://autoload/inventory.gd"
 TimeManager="*res://autoload/time_manager.gd"
+Sfx="*res://autoload/sfx.gd"
 
 [display]
 
 window/stretch/mode="canvas_items"
+window/dpi/allow_hidpi.web=false
 window/stretch/aspect="expand"
 
 [input]
@@ -130,6 +132,8 @@ sprint={
 common/physics_interpolation=true
 
 [rendering]
+
+textures/vram_compression/import_etc2_astc=true
 
 rendering_device/driver.windows="d3d12"
 mesh_lod/lod_change/threshold_pixels=4.0

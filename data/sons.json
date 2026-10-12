@@ -1,0 +1,200 @@
+{
+	"ambiances": {
+		"riviere": {
+			"fichier": "res://assets/audio/ambiance/ambiance_riviere.wav",
+			"volume_db": -4
+		},
+		"vent": {
+			"fichier": "res://assets/audio/ambiance/ambiance_vent.wav",
+			"volume_db": -20
+		},
+		"oiseaux": {
+			"fichier": "res://assets/audio/ambiance/ambiance_oiseaux.wav",
+			"volume_db": -16
+		},
+		"grillons": {
+			"fichier": "res://assets/audio/ambiance/ambiance_grillons.wav",
+			"volume_db": -20
+		}
+	},
+	"evenements": {
+		"coupe": {
+			"fichiers": [
+				"res://assets/audio/kenney_impact/impactWood_medium_000.ogg",
+				"res://assets/audio/kenney_impact/impactWood_medium_001.ogg",
+				"res://assets/audio/kenney_impact/impactWood_medium_002.ogg",
+				"res://assets/audio/kenney_impact/impactWood_medium_003.ogg",
+				"res://assets/audio/kenney_impact/impactWood_medium_004.ogg",
+				"res://assets/audio/kenney_rpg/chop.ogg"
+			],
+			"volume_db": -4,
+			"variation_hauteur": 0.08
+		},
+		"chute_arbre": {
+			"fichiers": [
+				"res://assets/audio/kenney_impact/impactWood_heavy_000.ogg",
+				"res://assets/audio/kenney_impact/impactWood_heavy_001.ogg",
+				"res://assets/audio/kenney_impact/impactWood_heavy_002.ogg",
+				"res://assets/audio/kenney_impact/impactWood_heavy_003.ogg",
+				"res://assets/audio/kenney_impact/impactWood_heavy_004.ogg"
+			],
+			"volume_db": -2,
+			"variation_hauteur": 0.05
+		},
+		"ouvrir_colis": {
+			"fichiers": [
+				"res://assets/audio/kenney_rpg/bookOpen.ogg",
+				"res://assets/audio/kenney_rpg/handleSmallLeather.ogg"
+			],
+			"volume_db": -6,
+			"variation_hauteur": 0.05
+		},
+		"desherber": {
+			"fichiers": [
+				"res://assets/audio/kenney_rpg/cloth1.ogg",
+				"res://assets/audio/kenney_rpg/cloth2.ogg",
+				"res://assets/audio/kenney_rpg/cloth3.ogg",
+				"res://assets/audio/kenney_rpg/cloth4.ogg"
+			],
+			"volume_db": -6,
+			"variation_hauteur": 0.1
+		},
+		"ameublir": {
+			"fichiers": [
+				"res://assets/audio/kenney_impact/impactSoft_medium_000.ogg",
+				"res://assets/audio/kenney_impact/impactSoft_medium_001.ogg",
+				"res://assets/audio/kenney_impact/impactSoft_medium_002.ogg",
+				"res://assets/audio/kenney_impact/impactSoft_medium_003.ogg",
+				"res://assets/audio/kenney_impact/impactSoft_medium_004.ogg"
+			],
+			"volume_db": -6,
+			"variation_hauteur": 0.1
+		},
+		"compost": {
+			"fichiers": [
+				"res://assets/audio/kenney_impact/impactSoft_heavy_000.ogg",
+				"res://assets/audio/kenney_impact/impactSoft_heavy_001.ogg",
+				"res://assets/audio/kenney_impact/impactSoft_heavy_002.ogg",
+				"res://assets/audio/kenney_impact/impactSoft_heavy_003.ogg",
+				"res://assets/audio/kenney_impact/impactSoft_heavy_004.ogg"
+			],
+			"volume_db": -6,
+			"variation_hauteur": 0.08
+		},
+		"pailler": {
+			"fichiers": [
+				"res://assets/audio/kenney_impact/footstep_snow_000.ogg",
+				"res://assets/audio/kenney_impact/footstep_snow_001.ogg",
+				"res://assets/audio/kenney_impact/footstep_snow_002.ogg",
+				"res://assets/audio/kenney_impact/footstep_snow_003.ogg",
+				"res://assets/audio/kenney_impact/footstep_snow_004.ogg"
+			],
+			"volume_db": -6,
+			"variation_hauteur": 0.08
+		},
+		"semer": {
+			"fichiers": [
+				"res://assets/audio/kenney_rpg/handleSmallLeather.ogg",
+				"res://assets/audio/kenney_rpg/handleSmallLeather2.ogg"
+			],
+			"volume_db": -8,
+			"variation_hauteur": 0.08
+		},
+		"arroser": {
+			"fichiers": [
+				"res://assets/audio/eau/arrosage_0.wav",
+				"res://assets/audio/eau/arrosage_1.wav"
+			],
+			"volume_db": -6,
+			"variation_hauteur": 0.05
+		},
+		"recolter": {
+			"fichiers": [
+				"res://assets/audio/kenney_rpg/dropLeather.ogg",
+				"res://assets/audio/kenney_rpg/cloth2.ogg"
+			],
+			"volume_db": -6,
+			"variation_hauteur": 0.08
+		},
+		"deposer": {
+			"fichiers": [
+				"res://assets/audio/kenney_impact/impactSoft_medium_000.ogg",
+				"res://assets/audio/kenney_impact/impactSoft_medium_001.ogg",
+				"res://assets/audio/kenney_impact/impactSoft_medium_002.ogg",
+				"res://assets/audio/kenney_impact/impactSoft_medium_003.ogg",
+				"res://assets/audio/kenney_impact/impactSoft_medium_004.ogg"
+			],
+			"volume_db": -6,
+			"variation_hauteur": 0.08
+		},
+		"recuperer": {
+			"fichiers": [
+				"res://assets/audio/kenney_impact/impactSoft_heavy_000.ogg",
+				"res://assets/audio/kenney_impact/impactSoft_heavy_001.ogg",
+				"res://assets/audio/kenney_impact/impactSoft_heavy_002.ogg",
+				"res://assets/audio/kenney_impact/impactSoft_heavy_003.ogg",
+				"res://assets/audio/kenney_impact/impactSoft_heavy_004.ogg",
+				"res://assets/audio/kenney_rpg/dropLeather.ogg"
+			],
+			"volume_db": -6,
+			"variation_hauteur": 0.08
+		},
+		"remplir_arrosoir": {
+			"fichiers": [
+				"res://assets/audio/eau/remplissage_0.wav",
+				"res://assets/audio/eau/remplissage_1.wav"
+			],
+			"volume_db": -6,
+			"variation_hauteur": 0.05
+		},
+		"construire": {
+			"fichiers": [
+				"res://assets/audio/kenney_impact/impactPlank_medium_000.ogg",
+				"res://assets/audio/kenney_impact/impactPlank_medium_001.ogg",
+				"res://assets/audio/kenney_impact/impactPlank_medium_002.ogg",
+				"res://assets/audio/kenney_impact/impactPlank_medium_003.ogg",
+				"res://assets/audio/kenney_impact/impactPlank_medium_004.ogg"
+			],
+			"volume_db": -4,
+			"variation_hauteur": 0.05
+		},
+		"pas_herbe": {
+			"fichiers": [
+				"res://assets/audio/kenney_impact/footstep_grass_000.ogg",
+				"res://assets/audio/kenney_impact/footstep_grass_001.ogg",
+				"res://assets/audio/kenney_impact/footstep_grass_002.ogg",
+				"res://assets/audio/kenney_impact/footstep_grass_003.ogg",
+				"res://assets/audio/kenney_impact/footstep_grass_004.ogg"
+			],
+			"volume_db": -14,
+			"variation_hauteur": 0.1
+		},
+		"pas_terre": {
+			"fichiers": [
+				"res://assets/audio/kenney_rpg/footstep00.ogg",
+				"res://assets/audio/kenney_rpg/footstep01.ogg",
+				"res://assets/audio/kenney_rpg/footstep02.ogg",
+				"res://assets/audio/kenney_rpg/footstep03.ogg",
+				"res://assets/audio/kenney_rpg/footstep04.ogg",
+				"res://assets/audio/kenney_rpg/footstep05.ogg",
+				"res://assets/audio/kenney_rpg/footstep06.ogg",
+				"res://assets/audio/kenney_rpg/footstep07.ogg",
+				"res://assets/audio/kenney_rpg/footstep08.ogg",
+				"res://assets/audio/kenney_rpg/footstep09.ogg"
+			],
+			"volume_db": -14,
+			"variation_hauteur": 0.1
+		},
+		"pas_bois": {
+			"fichiers": [
+				"res://assets/audio/kenney_impact/footstep_wood_000.ogg",
+				"res://assets/audio/kenney_impact/footstep_wood_001.ogg",
+				"res://assets/audio/kenney_impact/footstep_wood_002.ogg",
+				"res://assets/audio/kenney_impact/footstep_wood_003.ogg",
+				"res://assets/audio/kenney_impact/footstep_wood_004.ogg"
+			],
+			"volume_db": -12,
+			"variation_hauteur": 0.1
+		}
+	}
+}

@@ -36,14 +36,29 @@ var _rotation_steps: int = 0
 var _valid: bool = false
 var _reason: String = ""
 
+var _grid_mesh: MeshInstance3D ## Fallback grid where decals are not supported (web).
+var _grid_mesh_cell := Vector2i(1 << 30, 0)
+
 @onready var _grid: Decal = $GridDecal
 
 
 func _ready() -> void:
-	_grid.texture_albedo = _make_grid_texture()
+	var texture := _make_grid_texture()
+	_grid.texture_albedo = texture
 	_grid.size = Vector3(grid_extent, 6.0, grid_extent)
 	_grid.cull_mask = grid_layer
 	_grid.visible = false
+	if RenderingServer.get_current_rendering_method() == "gl_compatibility":
+		# The Compatibility renderer (web) ignores decals: draw the grid on a mesh hugging the ground.
+		_grid_mesh = MeshInstance3D.new()
+		_grid_mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		var material := StandardMaterial3D.new()
+		material.albedo_texture = texture
+		material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		_grid_mesh.material_override = material
+		_grid_mesh.visible = false
+		add_child(_grid_mesh)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -79,7 +94,9 @@ func enter(buildable_id: String) -> void:
 	_ghost = _make_ghost()
 	add_child(_ghost)
 	active = true
-	_grid.visible = true
+	_grid.visible = _grid_mesh == null
+	if _grid_mesh:
+		_grid_mesh.visible = true
 	player.interaction_enabled = false
 	_valid = false
 	_reason = ""
@@ -92,6 +109,8 @@ func exit() -> void:
 		_ghost = null
 	active = false
 	_grid.visible = false
+	if _grid_mesh:
+		_grid_mesh.visible = false
 	player.interaction_enabled = true
 	mode_changed.emit(false, "")
 
@@ -132,6 +151,8 @@ func update_preview(point: Vector3) -> void:
 	_ghost.global_transform = Transform3D(Basis(Vector3.UP, _rotation_steps * PI * 0.5), Vector3(center.x, y, center.y))
 	# Keep grid lines on cell boundaries.
 	_grid.global_position = Vector3(roundf(point.x / cell_size) * cell_size, y, roundf(point.z / cell_size) * cell_size)
+	if _grid_mesh:
+		_update_grid_mesh(Vector2i(roundi(point.x / cell_size), roundi(point.z / cell_size)))
 	var reason := _check_placement(center, size, heights)
 	_set_placement(reason == "", reason)
 
@@ -195,6 +216,7 @@ func _try_place() -> void:
 	var building: Node3D = _scene.instantiate()
 	buildings.add_child(building)
 	building.global_transform = _ghost.global_transform
+	Sfx.play("construire", building.global_position)
 	var full_scale := building.scale
 	building.scale = full_scale * 0.6
 	building.create_tween().tween_property(building, "scale", full_scale, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
@@ -257,6 +279,31 @@ func _mouse_ground_point() -> Variant:
 			return origin + direction * high
 		t += STEP
 	return null
+
+
+## Rebuilds the fallback grid around a cell corner, following the terrain heights.
+func _update_grid_mesh(center: Vector2i) -> void:
+	if center == _grid_mesh_cell:
+		return
+	_grid_mesh_cell = center
+	const SUBDIVISIONS := 2 ## Vertices per cell, so the grid follows small bumps.
+	var cells := roundi(grid_extent / cell_size)
+	var count := cells * SUBDIVISIONS
+	var step := cell_size / SUBDIVISIONS
+	var origin := Vector2(center) * cell_size - Vector2.ONE * grid_extent * 0.5
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for j in count:
+		for i in count:
+			var quad: Array[Vector2] = [Vector2(i, j), Vector2(i + 1, j), Vector2(i, j + 1), Vector2(i + 1, j + 1)]
+			var points: Array[Vector3] = []
+			for corner in quad:
+				var p := origin + corner * step
+				points.append(Vector3(p.x, terrain.surface_height_at(p.x, p.y) + 0.04, p.y))
+			for index in [0, 1, 2, 1, 3, 2]:
+				st.set_uv(quad[index] / count)
+				st.add_vertex(points[index])
+	_grid_mesh.mesh = st.commit()
 
 
 func _make_grid_texture() -> ImageTexture:

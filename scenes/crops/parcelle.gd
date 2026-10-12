@@ -62,6 +62,7 @@ func interact(_actor: Node3D) -> void:
 	var action := _current_action()
 	if not action.possible:
 		return
+	Sfx.play(action.id, global_position) # Sound events are named after the actions.
 	match action.id:
 		"desherber", "ameublir":
 			_hits_left -= 1

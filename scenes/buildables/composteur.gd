@@ -37,6 +37,7 @@ func interact(_actor: Node3D) -> void:
 	var action := _current_action()
 	if not action.possible:
 		return
+	Sfx.play(action.id, global_position)
 	if action.id == "recuperer":
 		var ready_count := ready_batches()
 		for i in ready_count:

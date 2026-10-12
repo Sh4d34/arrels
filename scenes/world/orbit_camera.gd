@@ -3,6 +3,8 @@ extends Node3D
 ## Orbit camera around a ground pivot, following a target when one is set.
 ## Right drag: rotate (the cursor is hidden and held in place meanwhile). Wheel / pinch: zoom.
 ## Trackpad two-finger swipe: horizontal rotates around, vertical tilts up and down.
+## On the web, browsers turn trackpad swipes into wheel events and pinches into Ctrl + wheel:
+## there, the wheel tilts and rotates, and Ctrl + wheel zooms.
 ## Without a target, middle drag or Shift + right drag: pan.
 ## With a moving target, the camera slowly swings back behind it unless rotated by hand recently.
 
@@ -16,6 +18,8 @@ extends Node3D
 @export_range(-89.0, 0.0) var max_pitch_deg: float = -6.0
 @export var trackpad_rotate_sensitivity: float = 6.0 ## Degrees per unit of two-finger swipe.
 @export var trackpad_tilt_sensitivity: float = 4.0 ## Degrees per unit; negative inverts the tilt.
+@export var web_wheel_rotate_sensitivity: float = 3.0 ## Degrees per wheel unit, web only.
+@export var web_wheel_tilt_sensitivity: float = 2.0
 
 @export_group("Auto follow")
 @export var auto_follow_enabled: bool = true
@@ -71,6 +75,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_released("camera_rotate") and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		Input.warp_mouse(_cursor_before_drag)
+	elif OS.has_feature("web") and _is_wheel(event):
+		_handle_web_wheel(event as InputEventMouseButton)
 	elif event is InputEventMouseMotion:
 		var motion := event as InputEventMouseMotion
 		var panning := Input.is_action_pressed("camera_pan") or (motion.shift_pressed and Input.is_action_pressed("camera_rotate"))
@@ -93,6 +99,30 @@ func _unhandled_input(event: InputEvent) -> void:
 		pitch_deg -= swipe.y * trackpad_tilt_sensitivity
 		_apply_pitch()
 		_time_since_manual_rotation = 0.0
+
+
+func _is_wheel(event: InputEvent) -> bool:
+	var button := event as InputEventMouseButton
+	return button != null and button.pressed and button.button_index in [
+		MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN, MOUSE_BUTTON_WHEEL_LEFT, MOUSE_BUTTON_WHEEL_RIGHT]
+
+
+func _handle_web_wheel(wheel: InputEventMouseButton) -> void:
+	var amount := wheel.factor if wheel.factor > 0.0 else 1.0
+	match wheel.button_index:
+		MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN:
+			var direction := -1.0 if wheel.button_index == MOUSE_BUTTON_WHEEL_UP else 1.0
+			if wheel.ctrl_pressed:
+				_zoom(direction * zoom_step * 0.5 * amount) # Pinch.
+			else:
+				pitch_deg -= direction * amount * web_wheel_tilt_sensitivity
+				_apply_pitch()
+				_time_since_manual_rotation = 0.0
+		MOUSE_BUTTON_WHEEL_LEFT, MOUSE_BUTTON_WHEEL_RIGHT:
+			var direction := -1.0 if wheel.button_index == MOUSE_BUTTON_WHEEL_LEFT else 1.0
+			rotation.y -= deg_to_rad(direction * amount * web_wheel_rotate_sensitivity)
+			_time_since_manual_rotation = 0.0
+	get_viewport().set_input_as_handled()
 
 
 func _rotate(relative: Vector2) -> void:

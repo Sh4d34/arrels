@@ -61,6 +61,7 @@ var _ground_shape: CollisionShape3D
 var _river_blockers: Array[CollisionShape3D] = []
 var _bound_walls: Array[CollisionShape3D] = []
 var _heights := PackedFloat32Array()
+var _track_cache := PackedVector2Array()
 var _count: int = 0
 
 
@@ -107,6 +108,15 @@ func surface_height_at(x: float, z: float) -> float:
 	if u >= v:
 		return ha + (hb - ha) * u + (hd - hb) * v
 	return ha + (hd - hc) * u + (hc - ha) * v
+
+
+## True when the point lies on the dirt track.
+func is_on_track(x: float, z: float) -> bool:
+	var point := Vector2(x, z)
+	for sample in _track_cache:
+		if sample.distance_to(point) < track_width * 0.5:
+			return true
+	return false
 
 
 ## Track centerline sampled every track_sample_spacing meters (Catmull-Rom through track_points).
@@ -172,6 +182,7 @@ func _build_track() -> void:
 	# A dirt ribbon laid on the surface, a few vertices across so it hugs the ground.
 	_track_instance.mesh = null
 	var samples := track_samples()
+	_track_cache = samples
 	if samples.size() < 2:
 		return
 	const ACROSS := 4

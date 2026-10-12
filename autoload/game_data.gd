@@ -9,6 +9,7 @@ var harvestables: Dictionary = {}
 var buildables: Dictionary = {}
 var crops: Dictionary = {}
 var time_settings: Dictionary = {} ## data/temps.json: day length, dawn and dusk hours, periods.
+var sounds: Dictionary = {} ## data/sons.json: ambience loops and sound effect events.
 
 
 func _ready() -> void:
@@ -17,6 +18,7 @@ func _ready() -> void:
 	buildables = _load_collection("buildables.json")
 	crops = _load_collection("crops.json")
 	time_settings = _load_object("temps.json")
+	sounds = _load_object("sons.json")
 	_validate()
 
 

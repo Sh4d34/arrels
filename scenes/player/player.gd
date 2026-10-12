@@ -29,6 +29,7 @@ signal interaction_prompt_changed(prompt: String, hint: String, possible: bool)
 
 var _spawn_position: Vector3
 var _bob_phase: float = 0.0
+var _last_step: int = 0
 var interaction_enabled: bool = true ## Turned off by modes that use the same inputs (building).
 var _target: Node3D ## The physics body currently targeted, or null.
 var _target_prompt: String = ""
@@ -165,6 +166,21 @@ func _play_swing() -> void:
 	tween.tween_callback(func() -> void: _swinging = false)
 
 
+## "bois", "terre" or "herbe": a "surface" metadata on the floor body wins (the bridge),
+## then the terrain tells whether the player walks on the track.
+func _floor_surface() -> String:
+	for i in get_slide_collision_count():
+		var collision := get_slide_collision(i)
+		if collision.get_normal().y < 0.7:
+			continue
+		var floor_body := collision.get_collider() as Node
+		if floor_body and floor_body.has_meta("surface"):
+			return floor_body.get_meta("surface")
+		if floor_body is Terrain:
+			return "terre" if (floor_body as Terrain).is_on_track(global_position.x, global_position.z) else "herbe"
+	return "herbe"
+
+
 func _camera_relative_direction(input: Vector2) -> Vector3:
 	var camera := get_viewport().get_camera_3d()
 	if camera == null or input == Vector2.ZERO:
@@ -181,6 +197,12 @@ func _update_bob(delta: float, speed: float) -> void:
 	if speed > 0.1 and is_on_floor():
 		_bob_phase += delta * bob_frequency * (speed / walk_speed)
 		_model.position.y = absf(sin(_bob_phase)) * bob_height
+		# One step each time the bob touches the ground.
+		var step := floori(_bob_phase / PI)
+		if step != _last_step:
+			_last_step = step
+			Sfx.play("pas_" + _floor_surface(), global_position)
 	else:
 		_bob_phase = 0.0
+		_last_step = 0
 		_model.position.y = move_toward(_model.position.y, 0.0, delta)

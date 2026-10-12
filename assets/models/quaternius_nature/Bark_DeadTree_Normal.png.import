@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bfeqgcqj0mrfy"
 path.s3tc="res://.godot/imported/Bark_DeadTree_Normal.png-b7fc8af9601aa95d75589d2f01c2c656.s3tc.ctex"
+path.etc2="res://.godot/imported/Bark_DeadTree_Normal.png-b7fc8af9601aa95d75589d2f01c2c656.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/models/quaternius_nature/Bark_DeadTree_Normal.png"
-dest_files=["res://.godot/imported/Bark_DeadTree_Normal.png-b7fc8af9601aa95d75589d2f01c2c656.s3tc.ctex"]
+dest_files=["res://.godot/imported/Bark_DeadTree_Normal.png-b7fc8af9601aa95d75589d2f01c2c656.s3tc.ctex", "res://.godot/imported/Bark_DeadTree_Normal.png-b7fc8af9601aa95d75589d2f01c2c656.etc2.ctex"]
 
 [params]
 

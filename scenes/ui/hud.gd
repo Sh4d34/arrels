@@ -78,7 +78,7 @@ func _on_build_mode_changed(active: bool, buildable_id: String) -> void:
 	var choices: PackedStringArray = []
 	var ids := GameData.buildables.keys()
 	for i in ids.size():
-		var marker := "▸ " if ids[i] == buildable_id else "   "
+		var marker := "» " if ids[i] == buildable_id else "   "
 		choices.append("%s%d · %s" % [marker, i + 1, GameData.get_buildable(ids[i]).get("nom", ids[i])])
 	_build_choices.text = "\n".join(choices)
 	_build_carnet.text = data.get("carnet", "")

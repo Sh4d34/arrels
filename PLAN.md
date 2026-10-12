@@ -130,6 +130,8 @@ Sept jalons dans l'ordre, chacun jouable et commité avant de passer au suivant.
 - [ ] Sons d'ambiance : rivière, oiseaux, vent dans les arbres.
 - [ ] Sons de récolte et de construction.
 - [ ] Export Windows et macOS, puis version web sur itch.io pour les testeurs.
+- [ ] Sons pilotés par `data/sons.json` ; ambiances générées par programme, actions issues des packs Kenney (CC0).
+- [ ] La version web utilise le rendu Compatibilité : grille de construction de secours, rendu non HiDPI, caméra adaptée à la molette du navigateur.
 
 ## Format des données JSON
 
