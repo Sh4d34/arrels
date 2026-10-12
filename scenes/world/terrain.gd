@@ -31,6 +31,10 @@ extends StaticBody3D
 @export var meander_frequency: float = 0.07
 @export var blocker_segment_length: float = 4.0
 
+@export_group("World bounds")
+@export var walk_bounds: Rect2 = Rect2(-45.0, -45.0, 90.0, 90.0) ## Invisible walls keep the player inside.
+@export var wall_height: float = 80.0
+
 @export_group("Track")
 @export var track_points: PackedVector2Array = PackedVector2Array() ## Control points on the XZ plane, smoothed into a curve.
 @export var track_width: float = 2.6
@@ -49,6 +53,7 @@ var _mesh_instance: MeshInstance3D
 var _track_instance: MeshInstance3D
 var _ground_shape: CollisionShape3D
 var _river_blockers: Array[CollisionShape3D] = []
+var _bound_walls: Array[CollisionShape3D] = []
 var _heights := PackedFloat32Array()
 var _count: int = 0
 
@@ -153,6 +158,7 @@ func generate() -> void:
 	_mesh_instance.material_override = material
 	_ground_shape.shape = mesh.create_trimesh_shape()
 	_build_river_blockers()
+	_build_bound_walls()
 	_build_track()
 
 
@@ -254,6 +260,29 @@ func _build_river_blockers() -> void:
 		add_child(blocker, false, Node.INTERNAL_MODE_BACK)
 		_river_blockers.append(blocker)
 		z += blocker_segment_length
+
+
+func _build_bound_walls() -> void:
+	for wall in _bound_walls:
+		wall.queue_free()
+	_bound_walls.clear()
+	var center := walk_bounds.get_center()
+	var thickness := 2.0
+	# Each wall: position on the XZ plane and its size along X and Z.
+	var walls := [
+		[Vector2(walk_bounds.position.x - thickness * 0.5, center.y), Vector2(thickness, walk_bounds.size.y)],
+		[Vector2(walk_bounds.end.x + thickness * 0.5, center.y), Vector2(thickness, walk_bounds.size.y)],
+		[Vector2(center.x, walk_bounds.position.y - thickness * 0.5), Vector2(walk_bounds.size.x, thickness)],
+		[Vector2(center.x, walk_bounds.end.y + thickness * 0.5), Vector2(walk_bounds.size.x, thickness)],
+	]
+	for w in walls:
+		var box := BoxShape3D.new()
+		box.size = Vector3(w[1].x, wall_height, w[1].y)
+		var wall := CollisionShape3D.new()
+		wall.shape = box
+		wall.position = Vector3(w[0].x, wall_height * 0.25, w[0].y)
+		add_child(wall, false, Node.INTERNAL_MODE_BACK)
+		_bound_walls.append(wall)
 
 
 func _distance_to_rect(x: float, z: float, rect: Rect2) -> float:

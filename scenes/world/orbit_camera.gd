@@ -1,7 +1,11 @@
 class_name OrbitCamera
 extends Node3D
-## Orbit camera around a ground pivot.
-## Right drag: rotate. Middle drag or Shift + right drag: pan. Wheel / pinch: zoom.
+## Orbit camera around a ground pivot, following a target when one is set.
+## Right drag: rotate. Wheel / pinch: zoom. Without a target, middle drag or Shift + right drag: pan.
+
+@export var target: Node3D ## When set, the pivot follows it and panning is disabled.
+@export var target_height: float = 1.2 ## Point looked at, above the target's origin.
+@export var follow_smoothing: float = 8.0
 
 @export_group("Rotation")
 @export var rotate_sensitivity: float = 0.3 ## Degrees per pixel.
@@ -9,7 +13,7 @@ extends Node3D
 @export_range(-89.0, 0.0) var max_pitch_deg: float = -6.0
 
 @export_group("Zoom")
-@export var min_distance: float = 6.0
+@export var min_distance: float = 4.0
 @export var max_distance: float = 45.0
 @export var zoom_step: float = 2.5
 @export var zoom_smoothing: float = 10.0
@@ -19,8 +23,8 @@ extends Node3D
 @export var bounds: Rect2 = Rect2(-28.0, -28.0, 56.0, 56.0) ## Pivot limits on the XZ plane.
 
 @export_group("Initial view")
-@export var distance: float = 30.0
-@export var pitch_deg: float = -45.0
+@export var distance: float = 14.0
+@export var pitch_deg: float = -35.0
 
 var _current_distance: float
 
@@ -33,18 +37,24 @@ func _ready() -> void:
 	_current_distance = distance
 	_apply_pitch()
 	_camera.position = Vector3(0.0, 0.0, _current_distance)
+	if target:
+		global_position = _target_point()
 
 
 func _process(delta: float) -> void:
 	_current_distance = lerpf(_current_distance, distance, 1.0 - exp(-zoom_smoothing * delta))
 	_camera.position.z = _current_distance
+	if target:
+		global_position = global_position.lerp(_target_point(), 1.0 - exp(-follow_smoothing * delta))
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		var motion := event as InputEventMouseMotion
-		if Input.is_action_pressed("camera_pan") or (motion.shift_pressed and Input.is_action_pressed("camera_rotate")):
-			_pan(motion.relative)
+		var panning := Input.is_action_pressed("camera_pan") or (motion.shift_pressed and Input.is_action_pressed("camera_rotate"))
+		if panning:
+			if target == null:
+				_pan(motion.relative)
 		elif Input.is_action_pressed("camera_rotate"):
 			_rotate(motion.relative)
 	elif event.is_action_pressed("camera_zoom_in"):
@@ -76,6 +86,11 @@ func _pan(relative: Vector2) -> void:
 
 func _zoom(amount: float) -> void:
 	distance = clampf(distance + amount, min_distance, max_distance)
+
+
+func _target_point() -> Vector3:
+	# Interpolated transform: the target moves in physics ticks, the camera every frame.
+	return target.get_global_transform_interpolated().origin + Vector3.UP * target_height
 
 
 func _apply_pitch() -> void:
