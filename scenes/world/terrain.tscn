@@ -1,0 +1,18 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/world/terrain.gd" id="1_script"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_relief"]
+seed = 7
+frequency = 0.025
+fractal_octaves = 3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ground"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 1.0
+
+[node name="Terrain" type="StaticBody3D"]
+script = ExtResource("1_script")
+material = SubResource("StandardMaterial3D_ground")
+noise = SubResource("FastNoiseLite_relief")

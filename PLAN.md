@@ -79,6 +79,8 @@ Sept jalons dans l'ordre, chacun jouable et commité avant de passer au suivant.
 **Jalon 1 — Le terrain**
 
 - [ ] Scène `world` avec un sol plat, une rivière simple (plan d'eau), une lisière d'arbres placés à la main.
+- [ ] Relief vallonné autour d'une zone centrale quasi plate, ripisylve de feuillus le long de la rivière.
+- [ ] Friche d'arbres à défricher au centre, chemin de terre menant à une petite clairière d'arrivée.
 - [ ] Lumière du soleil et environnement (ciel, brouillard léger) pour l'ambiance.
 - [ ] Caméra orbitale : rotation, zoom, déplacement limité au terrain.
 
@@ -93,7 +95,8 @@ Sept jalons dans l'ordre, chacun jouable et commité avant de passer au suivant.
 - [ ] Autoload `game_data` qui charge `items.json`.
 - [ ] Autoload `inventory` avec ajout, retrait et signal de changement.
 - [ ] Arbre récoltable : on s'approche, une invite apparaît, quelques coups le font tomber et donnent du bois.
-- [ ] L'arbre repousse après un délai, pour amorcer la forêt durable.
+- [ ] Les arbres de la friche (`Thicket`) se coupent sans repousser : défricher est durable et ouvre l'espace pour construire et cultiver.
+- [ ] Les arbres de la lisière (`ForestEdge`) repoussent après un délai, pour amorcer la forêt durable. La ripisylve (`Riparian`) reste du décor.
 - [ ] HUD minimal qui affiche l'inventaire.
 
 **Jalon 4 — Construire**
