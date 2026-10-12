@@ -1,0 +1,36 @@
+# Arrels — Une vie au pied du Canigou
+
+Jeu 3D low-poly relaxant (cozy game) : transformer un terrain entre forêt et rivière
+en lieu de vie autonome, en apprenant de vraies techniques (écoconstruction, potager).
+Cadre inspiré des environs de Prades (Conflent, Pyrénées-Orientales). Textes du jeu en français.
+
+## Technique
+- Godot 4, GDScript typé uniquement (pas de C#)
+- Cible : PC (Windows prioritaire, macOS, Linux), développement sur Mac
+- Projet ouvert et communautaire
+
+## Principes
+- Piloté par les données : tout contenu (objets, cultures, recettes, constructions) vit dans data/*.json
+- Aucune valeur de contenu en dur dans le code
+- Communication entre systèmes par signaux ; état global dans les autoloads
+- Pas de mort, pas de combat, aucune mécanique punitive
+
+## Conventions
+- Fichiers et dossiers en snake_case, classes en PascalCase
+- Une scène et son script portent le même nom
+- Commentaires et noms de variables en anglais, textes visibles en français
+- Identifiants de contenu uniques en snake_case dans data/*.json
+
+## Arborescence
+- assets/ : modèles, textures, sons (Git LFS)
+- data/ : contenus du jeu en JSON
+- autoload/ : singletons globaux (game_data, inventory, time_manager)
+- scenes/ : world, player, harvestables, buildables, crops, ui
+- tests/
+
+## Phase actuelle
+Phase 1, prototype. Voir PLAN.md pour les jalons.
+
+## Façon de travailler
+- Un jalon à la fois ; proposer un plan d'implémentation et attendre validation avant d'écrire le code
+- Le développeur apprend Godot (vient du web) : expliquer les concepts Godot utilisés
