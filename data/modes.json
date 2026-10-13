@@ -1,0 +1,14 @@
+[
+	{
+		"id": "construction",
+		"nom": "Construction",
+		"action": "mode_construction",
+		"touche": "B"
+	},
+	{
+		"id": "potager",
+		"nom": "Potager",
+		"action": "mode_potager",
+		"touche": "P"
+	}
+]

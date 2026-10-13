@@ -47,5 +47,26 @@
 		"description": "Tomate mûre cueillie au potager.",
 		"empilable": true,
 		"max_pile": 50
+	},
+	{
+		"id": "pierres",
+		"nom": "Pierres",
+		"description": "Pierres détachées des rochers, pour monter un foyer.",
+		"empilable": true,
+		"max_pile": 50
+	},
+	{
+		"id": "petit_bois",
+		"nom": "Petit bois",
+		"description": "Brindilles et bois mort bien sec : il prend vite et allume les bûches.",
+		"empilable": true,
+		"max_pile": 50
+	},
+	{
+		"id": "allumettes",
+		"nom": "Allumettes",
+		"description": "Une boîte d'allumettes, de quoi allumer quelques feux.",
+		"empilable": true,
+		"max_pile": 20
 	}
 ]

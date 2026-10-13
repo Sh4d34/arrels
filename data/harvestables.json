@@ -32,6 +32,10 @@
 			{
 				"item": "branchages",
 				"qte": 1
+			},
+			{
+				"item": "petit_bois",
+				"qte": 3
 			}
 		],
 		"repousse_jours": null,
@@ -60,19 +64,55 @@
 		"son_fin": "chute_arbre"
 	},
 	{
-		"id": "colis_graines",
-		"nom": "Colis de graines",
-		"invite": "Ouvrir le colis de graines",
+		"id": "paquet_bienvenue",
+		"nom": "Paquet de bienvenue",
+		"invite": "Ouvrir le paquet de bienvenue",
 		"coups": 1,
 		"recolte": [
 			{
 				"item": "graine_tomate",
 				"qte": 3
+			},
+			{
+				"item": "allumettes",
+				"qte": 5
 			}
 		],
 		"repousse_jours": null,
 		"disparition": "ramassage",
 		"son_coup": "",
-		"son_fin": "ouvrir_colis"
+		"son_fin": "ouvrir_paquet"
+	},
+	{
+		"id": "rocher",
+		"nom": "Rocher",
+		"invite": "Casser des pierres",
+		"coups": 3,
+		"recolte": [
+			{
+				"item": "pierres",
+				"qte": 2
+			}
+		],
+		"repousse_jours": null,
+		"disparition": "ramassage",
+		"son_coup": "casser_pierre",
+		"son_fin": "casser_pierre"
+	},
+	{
+		"id": "brindilles",
+		"nom": "Brindilles",
+		"invite": "Ramasser les brindilles",
+		"coups": 1,
+		"recolte": [
+			{
+				"item": "petit_bois",
+				"qte": 1
+			}
+		],
+		"repousse_jours": 1,
+		"disparition": "ramassage",
+		"son_coup": "",
+		"son_fin": "ramasser"
 	}
 ]

@@ -22,7 +22,9 @@ func snap_to_terrain() -> void:
 			var node := child as Node3D
 			if node:
 				var p := node.global_position
-				node.global_position.y = _terrain.surface_height_at(p.x, p.z) - tree_sink_depth
+				# Only trees are sunk: small props (twigs, pebbles, the seed parcel) would disappear.
+				var is_tree := node is NatureProp and (node as NatureProp).kind == "arbre"
+				node.global_position.y = _terrain.surface_height_at(p.x, p.z) - (tree_sink_depth if is_tree else 0.0)
 
 
 func _lighten_small_cover() -> void:

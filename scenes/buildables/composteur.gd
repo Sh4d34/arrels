@@ -62,13 +62,13 @@ func ready_batches() -> int:
 func _current_action() -> Dictionary:
 	var input: Array = _rules.get("entree", [])
 	if ready_batches() > 0:
-		return {"id": "recuperer", "prompt": "Récupérer le compost", "possible": true}
+		return {"id": "recuperer", "prompt": GameData.text("composteur.recuperer"), "possible": true}
 	if _batches.size() < int(_rules.get("lots_max", 1)) and Inventory.has_all(input):
-		return {"id": "deposer", "prompt": "Déposer %s" % GameData.describe(input), "possible": true}
+		return {"id": "deposer", "prompt": GameData.text("composteur.deposer", {"entree": GameData.describe(input)}), "possible": true}
 	if not _batches.is_empty():
 		var days_left := int(_rules.get("jours", 1)) - (TimeManager.day - _batches[0])
-		return {"id": "attendre", "prompt": "Le compost mûrit (encore %d jour%s)" % [days_left, "s" if days_left > 1 else ""], "possible": false}
-	return {"id": "deposer", "prompt": "Il faut %s pour composter" % GameData.describe(input), "possible": false}
+		return {"id": "attendre", "prompt": GameData.text("composteur.murit", {"n": days_left}), "possible": false}
+	return {"id": "deposer", "prompt": GameData.text("composteur.manque", {"entree": GameData.describe(input)}), "possible": false}
 
 
 func _refresh_visual() -> void:

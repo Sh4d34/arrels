@@ -1,7 +1,9 @@
 class_name Player
 extends CharacterBody3D
-## Player character: camera-relative movement on foot, with a simple walk bob for the placeholder model,
-## and interaction with nearby interactables (Space or left click, hold to repeat).
+## Player character: the keys give a direction relative to the camera; the character turns toward it
+## at a limited rate and always walks the way it faces, so changes of direction draw curves.
+## Simple walk bob for the placeholder model, and interaction with nearby interactables
+## (E or left click, hold to repeat).
 
 ## prompt is empty when nothing can be interacted with; hint is an optional carnet text;
 ## possible is false for information-only prompts.
@@ -10,9 +12,10 @@ signal interaction_prompt_changed(prompt: String, hint: String, possible: bool)
 @export_group("Movement")
 @export var walk_speed: float = 3.5
 @export var run_speed: float = 6.5
-@export var acceleration: float = 20.0
-@export var deceleration: float = 25.0
-@export var turn_speed: float = 12.0 ## Higher turns faster toward the movement direction.
+@export var acceleration: float = 14.0
+@export var deceleration: float = 20.0
+@export var turn_rate_deg: float = 400.0 ## Degrees per second when turning toward the input direction.
+@export_range(0.0, 1.0) var sharp_turn_speed: float = 0.25 ## Speed kept when the input points behind.
 
 @export_group("Walk bob")
 @export var bob_height: float = 0.06
@@ -28,6 +31,7 @@ signal interaction_prompt_changed(prompt: String, hint: String, possible: bool)
 @export var fall_limit: float = -20.0 ## Below this height, the player is put back at the spawn point.
 
 var _spawn_position: Vector3
+var _speed: float = 0.0 ## Current walking speed along the facing direction.
 var _bob_phase: float = 0.0
 var _last_step: int = 0
 var interaction_enabled: bool = true ## Turned off by modes that use the same inputs (building).
@@ -52,24 +56,33 @@ func _physics_process(delta: float) -> void:
 
 	var input := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var direction := _camera_relative_direction(input)
-	var target_speed := run_speed if Input.is_action_pressed("sprint") else walk_speed
-	var horizontal := Vector3(velocity.x, 0.0, velocity.z)
+	var target_speed := 0.0
 	if direction != Vector3.ZERO:
-		horizontal = horizontal.move_toward(direction * target_speed, acceleration * delta)
-		# The model faces -Z, so this yaw points it along the movement direction.
-		var target_yaw := atan2(-direction.x, -direction.z)
-		_model.rotation.y = lerp_angle(_model.rotation.y, target_yaw, 1.0 - exp(-turn_speed * delta))
-	else:
-		horizontal = horizontal.move_toward(Vector3.ZERO, deceleration * delta)
-	velocity.x = horizontal.x
-	velocity.z = horizontal.z
+		# Turn toward the wanted direction at a limited rate (the model faces -Z).
+		var wanted_yaw := atan2(-direction.x, -direction.z)
+		var turn := angle_difference(_model.rotation.y, wanted_yaw)
+		var max_step := deg_to_rad(turn_rate_deg) * delta
+		_model.rotation.y += clampf(turn, -max_step, max_step)
+		# Slow down in sharp turns: nearly on the spot when asked to go back.
+		var alignment := cos(absf(turn))
+		var full_speed := run_speed if Input.is_action_pressed("sprint") else walk_speed
+		target_speed = full_speed * direction.length() * lerpf(sharp_turn_speed, 1.0, maxf(alignment, 0.0))
+	var rate := acceleration if target_speed > _speed else deceleration
+	_speed = move_toward(_speed, target_speed, rate * delta)
+	# Always walk the way the character faces.
+	var facing := Vector3(-sin(_model.rotation.y), 0.0, -cos(_model.rotation.y))
+	velocity.x = facing.x * _speed
+	velocity.z = facing.z * _speed
 	move_and_slide()
+	# Walls and trunks stop the walk instead of pushing back.
+	_speed = minf(_speed, Vector2(get_real_velocity().x, get_real_velocity().z).length())
 
-	_update_bob(delta, horizontal.length())
+	_update_bob(delta, _speed)
 	_update_interaction(delta)
 	if global_position.y < fall_limit:
 		global_position = _spawn_position
 		velocity = Vector3.ZERO
+		_speed = 0.0
 
 
 func _update_interaction(delta: float) -> void:

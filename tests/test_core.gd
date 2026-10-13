@@ -16,6 +16,8 @@ func _initialize() -> void:
 	_test_parcel()
 	_test_composter()
 	_test_clock()
+	_test_modes()
+	_test_campfire()
 	print("Tests: %s (%d vérifications)" % ["OK" if _failures == 0 else "%d échec(s)" % _failures, _checks])
 	quit(1 if _failures > 0 else 0)
 
@@ -40,6 +42,10 @@ func _test_game_data() -> void:
 	_check(int(game_data.get_harvestable("arbre_lisiere").get("repousse_jours", 0)) > 0, "la lisière repousse en jours")
 	_check(game_data.crop_for_seed("graine_tomate").get("id") == "tomate", "la graine de tomate donne la tomate")
 	_check(game_data.describe([{"item": "herbes", "qte": 2}]) == "2 herbes", "description d'un coût")
+	_check(game_data.text("parcelle.desherber") == "Désherber", "texte simple depuis textes.json")
+	_check(game_data.text("construction.manque", {"quantite": 3, "objet": "bois"}) == "Il manque 3 bois", "texte avec marqueurs")
+	_check(game_data.text("composteur.murit", {"n": 1}) == "Le compost mûrit (encore 1 jour)", "texte au singulier")
+	_check(game_data.text("composteur.murit", {"n": 3}) == "Le compost mûrit (encore 3 jours)", "texte au pluriel")
 
 
 func _test_inventory() -> void:
@@ -171,3 +177,38 @@ func _test_clock() -> void:
 	time._process(time.day_length * time.night_share * 0.5 + 0.01)
 	_check(time.day == start_day + 1, "un nouveau jour commence à l'aube")
 	_check(absf(time.hour() - time.dawn_hour) < 0.05, "le jour commence à 6 h")
+
+
+func _test_modes() -> void:
+	var game_data: Node = root.get_node("GameData")
+	_check(game_data.buildables_in_mode("construction") == ["composteur", "foyer"], "mode construction : composteur et foyer")
+	_check(game_data.buildables_in_mode("potager") == ["parcelle"], "mode potager : la parcelle")
+	var drops: Array = game_data.get_harvestable("paquet_bienvenue").get("recolte", [])
+	_check(drops.any(func(d: Dictionary) -> bool: return d.item == "allumettes" and int(d.qte) == 5), "le paquet de bienvenue contient 5 allumettes")
+
+
+func _test_campfire() -> void:
+	var inventory: Node = root.get_node("Inventory")
+	var time: Node = root.get_node("TimeManager")
+	var fire: Node3D = load("res://scenes/buildables/foyer.tscn").instantiate()
+	root.add_child(fire)
+	time.set_hour(18.0)
+	_check(not fire.can_interact(), "préparer le feu demande du petit bois et du bois")
+	_check(fire.get_interaction_prompt() == "Il faut 2 petit bois, 2 bois pour préparer le feu", "invite quand il manque du bois")
+	inventory.add("petit_bois", 2)
+	inventory.add("bois", 3)
+	fire.interact(null)
+	_check(fire.state == fire.State.PREPARED and inventory.count("petit_bois") == 0, "le feu est préparé")
+	_check(fire.get_interaction_prompt() == "Il te faut une allumette", "allumer demande une allumette")
+	inventory.add("allumettes", 1)
+	fire.interact(null)
+	_check(fire.state == fire.State.BURNING and fire.hours_left() == 6, "le feu brûle pour 6 heures")
+	fire.interact(null)
+	_check(fire.hours_left() == 8 and inventory.count("bois") == 0, "une bûche ajoute 2 heures")
+	time.set_hour(3.0) # 18 h + 8 h = 2 h du matin : le feu s'est éteint.
+	fire._process(0.0)
+	_check(fire.state == fire.State.EMBERS, "il reste des braises après le feu")
+	time.set_hour(5.0)
+	fire._process(0.0)
+	_check(fire.state == fire.State.EMPTY, "les braises finissent par s'éteindre")
+	fire.queue_free()

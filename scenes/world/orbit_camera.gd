@@ -9,6 +9,8 @@ extends Node3D
 ## With a moving target, the camera slowly swings back behind it unless rotated by hand recently.
 
 @export var target: Node3D ## When set, the pivot follows it and panning is disabled.
+@export var terrain: Terrain ## When set, the camera moves closer rather than dipping under the ground.
+@export var ground_clearance: float = 0.8 ## Minimum height of the camera above the terrain.
 @export var target_height: float = 1.2 ## Point looked at, above the target's origin.
 @export var follow_smoothing: float = 8.0
 
@@ -59,12 +61,13 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	_current_distance = lerpf(_current_distance, distance, 1.0 - exp(-zoom_smoothing * delta))
-	_camera.position.z = _current_distance
 	_time_since_manual_rotation += delta
 	if target:
 		global_position = global_position.lerp(_target_point(), 1.0 - exp(-follow_smoothing * delta))
 		_auto_follow(delta)
+	var wanted := minf(distance, _distance_above_ground(distance))
+	_current_distance = lerpf(_current_distance, wanted, 1.0 - exp(-zoom_smoothing * delta))
+	_camera.position.z = _current_distance
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -154,11 +157,25 @@ func _auto_follow(delta: float) -> void:
 		return
 	var move_dir := move.normalized()
 	var view_dir := Vector2(-sin(rotation.y), -cos(rotation.y))
-	# Only swing when walking away from the camera: strafing or walking toward it
-	# would otherwise make the camera (and so the controls) spin.
-	var alignment := maxf(move_dir.dot(view_dir), 0.0)
+	# Full speed when walking away, half speed in side turns, none when walking toward the camera
+	# (it would otherwise turn around, and the controls with it).
+	var alignment := smoothstep(-0.3, 0.6, move_dir.dot(view_dir))
 	var target_yaw := atan2(-move_dir.x, -move_dir.y)
 	rotation.y = lerp_angle(rotation.y, target_yaw, (1.0 - exp(-auto_follow_speed * delta)) * alignment)
+
+
+## Longest camera distance (up to max_length) that keeps the camera above the terrain.
+func _distance_above_ground(max_length: float) -> float:
+	if terrain == null:
+		return max_length
+	var back := _camera.global_basis.z # From the pivot toward the camera.
+	var length := max_length
+	while length > min_distance:
+		var p := global_position + back * length
+		if p.y >= terrain.surface_height_at(p.x, p.z) + ground_clearance:
+			return length
+		length -= 0.5
+	return min_distance
 
 
 func _target_point() -> Vector3:

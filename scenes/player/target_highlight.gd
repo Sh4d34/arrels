@@ -35,12 +35,12 @@ func _process(_delta: float) -> void:
 		return
 	if _target.has_method("set_highlighted"):
 		return
+	_forget_freed_meshes()
 	for mesh in _meshes_in(_target):
 		_apply(mesh)
 	var pulse := 0.5 + 0.5 * sin(Time.get_ticks_msec() * 0.001 * pulse_speed)
 	var tint := (action_tint if _possible else info_tint) * lerpf(brightness_min, brightness_max, pulse)
-	for mesh: MeshInstance3D in _entries:
-		var entry: Dictionary = _entries[mesh]
+	for entry: Dictionary in _entries.values():
 		var pairs: Array = entry.surfaces.values()
 		if not entry.override.is_empty():
 			pairs.append(entry.override)
@@ -48,6 +48,13 @@ func _process(_delta: float) -> void:
 			var base: Color = pair[0].albedo_color if pair[0] is BaseMaterial3D else Color.WHITE
 			# Above 1.0 on purpose: the color multiplies the texture and vertex colors.
 			pair[1].albedo_color = Color(base.r * tint.r, base.g * tint.g, base.b * tint.b, base.a)
+
+
+## Targets such as plots rebuild their meshes: drop the ones freed since the last frame.
+func _forget_freed_meshes() -> void:
+	for mesh: Variant in _entries.keys():
+		if not is_instance_valid(mesh):
+			_entries.erase(mesh)
 
 
 func _apply(mesh: MeshInstance3D) -> void:

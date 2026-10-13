@@ -19,6 +19,7 @@ var _body: CollisionObject3D
 var _rest_basis: Basis ## Only the basis: world.gd moves trees onto the terrain after this _ready().
 var _collision_layer: int
 var _regrow_day: int = 0
+var _fall_position: Vector3 ## Where the body stood when harvested, restored when it regrows.
 
 
 func _ready() -> void:
@@ -70,6 +71,7 @@ func _shake() -> void:
 func _fell(actor: Node3D) -> void:
 	_body.remove_from_group(INTERACTABLE_GROUP)
 	_body.collision_layer = 0
+	_fall_position = _body.position
 	for drop: Dictionary in _data.get("recolte", []):
 		Inventory.add(drop.item, int(drop.qte))
 	harvested.emit(harvestable_id)
@@ -117,6 +119,7 @@ func _on_new_day(day: int) -> void:
 
 func _regrow() -> void:
 	_body.transform.basis = _rest_basis
+	_body.position = _fall_position
 	var full_scale := _body.scale
 	_body.scale = full_scale * 0.1
 	_body.visible = true

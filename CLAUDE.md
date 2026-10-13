@@ -12,6 +12,7 @@ Cadre inspiré des environs de Prades (Conflent, Pyrénées-Orientales). Textes 
 ## Principes
 - Piloté par les données : tout contenu (objets, cultures, recettes, constructions) vit dans data/*.json
 - Aucune valeur de contenu en dur dans le code
+- Aucun texte visible en dur dans le code : les textes de l'interface vivent dans data/textes.json et passent par `GameData.text("section.cle", {marqueurs})` ; les noms et textes propres à un contenu restent dans son fichier (items, crops…)
 - Communication entre systèmes par signaux ; état global dans les autoloads
 - Pas de mort, pas de combat, aucune mécanique punitive
 

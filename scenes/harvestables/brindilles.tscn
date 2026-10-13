@@ -1,0 +1,62 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/harvestables/harvestable.gd" id="1_harvestable"]
+
+[sub_resource type="StandardMaterial3D" id="dry_wood"]
+albedo_color = Color(0.55, 0.42, 0.28, 1)
+roughness = 1.0
+
+[sub_resource type="StandardMaterial3D" id="dry_wood_dark"]
+albedo_color = Color(0.4, 0.3, 0.2, 1)
+roughness = 1.0
+
+[sub_resource type="BoxMesh" id="stick"]
+material = SubResource("dry_wood")
+size = Vector3(0.03, 0.03, 0.45)
+
+[sub_resource type="BoxMesh" id="stick_dark"]
+material = SubResource("dry_wood_dark")
+size = Vector3(0.025, 0.025, 0.35)
+
+[sub_resource type="BoxShape3D" id="shape"]
+size = Vector3(0.5, 0.2, 0.5)
+
+[node name="Brindilles" type="StaticBody3D"]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+shape = SubResource("shape")
+
+[node name="Stick0" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.9731, -0.008752, 0.2302, 0, 0.9993, 0.038, -0.2303, 0.03698, -0.9724, -0.07229, 0.02, 0.07331)
+mesh = SubResource("stick")
+
+[node name="Stick1" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.9992, 3.374e-05, 0.04042, 0, 1, -0.0008346, -0.04042, 0.0008339, 0.9992, 0.07966, 0.032, -0.08384)
+mesh = SubResource("stick_dark")
+
+[node name="Stick2" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.9424, -0.0117, -0.3342, 0, 0.9994, -0.03499, 0.3344, -0.03297, -0.9418, -0.09182, 0.044, -0.0242)
+mesh = SubResource("stick")
+
+[node name="Stick3" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.2881, 0.01378, -0.9575, 0, 0.9999, 0.01439, 0.9576, 0.004147, -0.2881, 0.04501, 0.056, -0.06857)
+mesh = SubResource("stick_dark")
+
+[node name="Stick4" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.07525, -0.1161, 0.9904, 0, 0.9932, 0.1165, -0.9972, -0.008763, 0.07474, 0.001254, 0.068, 0.08477)
+mesh = SubResource("stick")
+
+[node name="Stick5" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.8429, -0.04422, -0.5363, 0, 0.9966, -0.08217, 0.5381, -0.06926, -0.84, -0.02327, 0.08, 0.04922)
+mesh = SubResource("stick_dark")
+
+[node name="Stick6" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.8028, -0.03733, 0.5951, 0, 0.998, 0.06261, -0.5962, -0.05026, 0.8012, 0.03485, 0.092, 0.04514)
+mesh = SubResource("stick")
+
+[node name="Harvestable" type="Node" parent="."]
+script = ExtResource("1_harvestable")
+harvestable_id = "brindilles"

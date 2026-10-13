@@ -1,7 +1,8 @@
 class_name BuildMode
 extends Node3D
-## Build mode: a grid projected around the cursor, a ghost preview snapped to the grid,
-## placement checks and construction of the buildables defined in data/buildables.json.
+## Building modes (construction, garden... from data/modes.json): each mode offers the buildables
+## of data/buildables.json that belong to it. A grid is projected around the cursor, a ghost preview
+## snaps to the grid, placements are checked, then built.
 
 signal mode_changed(active: bool, buildable_id: String)
 signal placement_changed(valid: bool, reason: String) ## reason is empty when valid.
@@ -26,6 +27,7 @@ signal built(buildable_id: String)
 @export var invalid_color: Color = Color(1.0, 0.35, 0.3, 0.5)
 
 var active: bool = false
+var mode_id: String = "" ## The open mode, empty when closed.
 
 var _buildable_id: String = ""
 var _data: Dictionary
@@ -62,15 +64,17 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("build_mode"):
-		if active:
+	var pressed_mode := _mode_pressed(event)
+	if pressed_mode != "":
+		# The key of the open mode closes it; another mode key switches to that mode.
+		if active and pressed_mode == mode_id:
 			exit()
-		elif not GameData.buildables.is_empty():
-			enter(GameData.buildables.keys()[0])
+		else:
+			enter_mode(pressed_mode)
 	elif not active:
 		return
 	elif _slot_pressed(event) >= 0:
-		enter(GameData.buildables.keys()[_slot_pressed(event)])
+		enter(GameData.buildables_in_mode(mode_id)[_slot_pressed(event)])
 	elif event.is_action_pressed("build_cancel"):
 		exit()
 	elif event.is_action_pressed("build_rotate"):
@@ -82,11 +86,19 @@ func _unhandled_input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 
 
-## Enters build mode with this buildable, or switches to it when already building.
+## Opens a mode on its first buildable.
+func enter_mode(new_mode_id: String) -> void:
+	var ids := GameData.buildables_in_mode(new_mode_id)
+	if not ids.is_empty():
+		enter(ids[0])
+
+
+## Enters the buildable's mode with it selected, or switches to it when already building.
 func enter(buildable_id: String) -> void:
 	_data = GameData.get_buildable(buildable_id)
 	if _data.is_empty():
 		return
+	mode_id = _data.get("mode", "")
 	if _ghost:
 		_ghost.queue_free()
 	_buildable_id = buildable_id
@@ -108,6 +120,7 @@ func exit() -> void:
 		_ghost.queue_free()
 		_ghost = null
 	active = false
+	mode_id = ""
 	_grid.visible = false
 	if _grid_mesh:
 		_grid_mesh.visible = false
@@ -119,9 +132,18 @@ func get_buildable_id() -> String:
 	return _buildable_id
 
 
-## Index of the buildable chosen with the number keys (build_slot_1, build_slot_2...), or -1.
+## The mode whose key was pressed, or an empty string.
+func _mode_pressed(event: InputEvent) -> String:
+	for id: String in GameData.modes:
+		var action: String = GameData.modes[id].get("action", "")
+		if InputMap.has_action(action) and event.is_action_pressed(action):
+			return id
+	return ""
+
+
+## Index, within the open mode, of the buildable chosen with the number keys, or -1.
 func _slot_pressed(event: InputEvent) -> int:
-	for i in GameData.buildables.size():
+	for i in GameData.buildables_in_mode(mode_id).size():
 		var action := "build_slot_%d" % (i + 1)
 		if InputMap.has_action(action) and event.is_action_pressed(action):
 			return i
@@ -175,21 +197,21 @@ func _footprint_heights(corner: Vector2, size: Vector2) -> Array[float]:
 func _check_placement(center: Vector2, size: Vector2, heights: Array[float]) -> String:
 	var to_player := Vector2(player.global_position.x, player.global_position.z) - center
 	if to_player.length() > max_distance:
-		return "Trop loin"
+		return GameData.text("construction.trop_loin")
 	if not terrain.walk_bounds.grow(-1.0).has_point(center):
-		return "Hors du terrain"
+		return GameData.text("construction.hors_terrain")
 	var half_diagonal := size.length() * 0.5
 	if absf(center.x - terrain.river_center_x(center.y)) < terrain.blocker_half_width + water_margin + half_diagonal:
-		return "Trop près de l'eau"
+		return GameData.text("construction.trop_pres_eau")
 	if heights.max() - heights.min() > max_height_difference:
-		return "Terrain trop pentu"
+		return GameData.text("construction.trop_pentu")
 	var obstacle := _find_obstacle(center, size, heights.min())
 	if obstacle != "":
 		return obstacle
 	for cost: Dictionary in _data.get("cout", []):
 		var missing := int(cost.qte) - Inventory.count(cost.item)
 		if missing > 0:
-			return "Il manque %d %s" % [missing, GameData.item_name(cost.item).to_lower()]
+			return GameData.text("construction.manque", {"quantite": missing, "objet": GameData.item_name(cost.item).to_lower()})
 	return ""
 
 
@@ -203,10 +225,10 @@ func _find_obstacle(center: Vector2, size: Vector2, ground_y: float) -> String:
 	for result in get_world_3d().direct_space_state.intersect_shape(query, 8):
 		var collider: Object = result.collider
 		if collider == player:
-			return "Tu es sur l'emplacement"
-		if collider is NatureTree:
-			return "Un arbre gêne"
-		return "La place est occupée"
+			return GameData.text("construction.joueur")
+		if collider is NatureProp:
+			return GameData.text("construction." + (collider as NatureProp).kind)
+		return GameData.text("construction.occupe")
 	return ""
 
 

@@ -151,8 +151,8 @@ unique_name_in_owner = true
 layout_mode = 2
 
 [node name="BuildHelp" type="Label" parent="Root/BuildPanel/BuildList"]
+unique_name_in_owner = true
 layout_mode = 2
-text = "Clic : poser · 1, 2 : choisir · R : tourner · Échap : quitter"
 label_settings = SubResource("LabelSettings_help")
 
 [node name="DayLabel" type="Label" parent="Root"]
@@ -168,3 +168,16 @@ offset_bottom = 46.0
 grow_horizontal = 2
 label_settings = SubResource("LabelSettings_text")
 horizontal_alignment = 1
+
+[node name="Shortcuts" type="Label" parent="Root"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -44.0
+offset_right = 420.0
+offset_bottom = -16.0
+grow_vertical = 0
+label_settings = SubResource("LabelSettings_help")

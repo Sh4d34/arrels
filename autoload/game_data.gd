@@ -10,6 +10,8 @@ var buildables: Dictionary = {}
 var crops: Dictionary = {}
 var time_settings: Dictionary = {} ## data/temps.json: day length, dawn and dusk hours, periods.
 var sounds: Dictionary = {} ## data/sons.json: ambience loops and sound effect events.
+var texts: Dictionary = {} ## data/textes.json: every text shown to the player, outside content data.
+var modes: Dictionary = {} ## data/modes.json: building modes (construction, garden...), by id.
 
 
 func _ready() -> void:
@@ -19,6 +21,8 @@ func _ready() -> void:
 	crops = _load_collection("crops.json")
 	time_settings = _load_object("temps.json")
 	sounds = _load_object("sons.json")
+	texts = _load_object("textes.json")
+	modes = _load_collection("modes.json")
 	_validate()
 
 
@@ -34,6 +38,15 @@ func get_buildable(id: String) -> Dictionary:
 	return buildables.get(id, {})
 
 
+## Ids of the buildables offered in a mode, in data order.
+func buildables_in_mode(mode_id: String) -> Array[String]:
+	var ids: Array[String] = []
+	for buildable: Dictionary in buildables.values():
+		if buildable.get("mode", "") == mode_id:
+			ids.append(buildable.id)
+	return ids
+
+
 func get_crop(id: String) -> Dictionary:
 	return crops.get(id, {})
 
@@ -44,6 +57,20 @@ func crop_for_seed(seed_id: String) -> Dictionary:
 		if crop.get("graine") == seed_id:
 			return crop
 	return {}
+
+
+## A text from data/textes.json by dotted path ("parcelle.desherber"), with {name} placeholders
+## filled from params. An entry with "un" / "plusieurs" variants picks one from params.n.
+func text(path: String, params: Dictionary = {}) -> String:
+	var entry: Variant = texts
+	for part in path.split("."):
+		entry = entry.get(part) if entry is Dictionary else null
+	if entry is Dictionary:
+		entry = entry.get("un" if int(params.get("n", 0)) <= 1 else "plusieurs")
+	if not entry is String:
+		push_error("GameData: missing text '%s' in textes.json" % path)
+		return path
+	return (entry as String).format(params)
 
 
 ## A cost or drop list as readable text, e.g. "2 herbes, 1 compost".
@@ -100,6 +127,11 @@ func _validate() -> void:
 		_check_items(composting.get("entree", []) + composting.get("sortie", []), context)
 		if buildable.has("arrosage"):
 			_check_items([buildable.arrosage], context)
+		if not modes.has(buildable.get("mode", "")):
+			push_error("GameData: %s has unknown mode '%s'" % [context, buildable.get("mode", "")])
+		for step: Variant in buildable.get("feu", {}).values():
+			if step is Dictionary:
+				_check_items(step.get("cout", []), context)
 		for step: Dictionary in buildable.get("preparation", {}).values():
 			_check_items(step.get("cout", []) + step.get("recolte", []), context)
 		if not ResourceLoader.exists(buildable.get("scene", "")):

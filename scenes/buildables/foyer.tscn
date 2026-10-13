@@ -1,0 +1,221 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/buildables/foyer.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://assets/models/quaternius_nature/Rock_Medium_1.gltf" id="2_rock1"]
+[ext_resource type="PackedScene" path="res://assets/models/quaternius_nature/Rock_Medium_2.gltf" id="3_rock2"]
+[ext_resource type="PackedScene" path="res://assets/models/quaternius_nature/Rock_Medium_3.gltf" id="4_rock3"]
+
+[sub_resource type="CylinderShape3D" id="shape"]
+height = 0.35
+radius = 0.55
+
+[sub_resource type="StandardMaterial3D" id="bark"]
+albedo_color = Color(0.38, 0.26, 0.17, 1)
+roughness = 1.0
+
+[sub_resource type="StandardMaterial3D" id="wood_end"]
+albedo_color = Color(0.7, 0.55, 0.36, 1)
+roughness = 1.0
+
+[sub_resource type="CylinderMesh" id="log"]
+material = SubResource("bark")
+top_radius = 0.05
+bottom_radius = 0.055
+height = 0.6
+radial_segments = 7
+rings = 1
+
+[sub_resource type="BoxMesh" id="twig"]
+material = SubResource("wood_end")
+size = Vector3(0.025, 0.025, 0.3)
+
+[sub_resource type="StandardMaterial3D" id="embers_mat"]
+shading_mode = 0
+albedo_color = Color(0.95, 0.32, 0.08, 1)
+
+[sub_resource type="SphereMesh" id="embers_mesh"]
+material = SubResource("embers_mat")
+radius = 0.22
+height = 0.12
+radial_segments = 10
+rings = 4
+
+[sub_resource type="Gradient" id="soft_dot"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.5, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="soft_dot_texture"]
+gradient = SubResource("soft_dot")
+width = 64
+height = 64
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StandardMaterial3D" id="flame_mat"]
+transparency = 1
+blend_mode = 1
+shading_mode = 0
+albedo_color = Color(1, 0.55, 0.2, 0.85)
+albedo_texture = SubResource("soft_dot_texture")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="flame_quad"]
+material = SubResource("flame_mat")
+size = Vector2(0.28, 0.28)
+
+[sub_resource type="Curve" id="flame_size"]
+_data = [Vector2(0, 0.6), 0.0, 0.0, 0, 0, Vector2(0.3, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.15), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="StandardMaterial3D" id="smoke_mat"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.62, 0.62, 0.65, 0.18)
+albedo_texture = SubResource("soft_dot_texture")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="smoke_quad"]
+material = SubResource("smoke_mat")
+size = Vector2(0.5, 0.5)
+
+[sub_resource type="Curve" id="smoke_size"]
+_data = [Vector2(0, 0.4), 0.0, 0.0, 0, 0, Vector2(1, 1.6), 0.0, 0.0, 0, 0]
+point_count = 2
+max_value = 2.0
+
+[node name="Foyer" type="StaticBody3D"]
+script = ExtResource("1_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.17, 0)
+shape = SubResource("shape")
+
+[node name="Stones" type="Node3D" parent="."]
+
+[node name="Stone0" parent="Stones" instance=ExtResource("2_rock1")]
+transform = Transform3D(-0.1007, 0, 0.01345, 0, 0.1016, 0, -0.01345, 0, -0.1007, 0.4194, 0, -0.02216)
+
+[node name="Stone1" parent="Stones" instance=ExtResource("2_rock1")]
+transform = Transform3D(0.08009, 0, -0.04538, 0, 0.09205, 0, 0.04538, 0, 0.08009, 0.3428, 0, 0.2427)
+
+[node name="Stone2" parent="Stones" instance=ExtResource("2_rock1")]
+transform = Transform3D(-0.08437, 0, -0.0198, 0, 0.08666, 0, 0.0198, 0, -0.08437, 0.04796, 0, 0.4173)
+
+[node name="Stone3" parent="Stones" instance=ExtResource("2_rock1")]
+transform = Transform3D(-0.007711, 0, 0.1045, 0, 0.1048, 0, -0.1045, 0, -0.007711, -0.1936, 0, 0.3727)
+
+[node name="Stone4" parent="Stones" instance=ExtResource("2_rock1")]
+transform = Transform3D(0.03655, 0, -0.09829, 0, 0.1049, 0, 0.09829, 0, 0.03655, -0.4058, 0, 0.1082)
+
+[node name="Stone5" parent="Stones" instance=ExtResource("2_rock1")]
+transform = Transform3D(-0.02094, 0, 0.08232, 0, 0.08494, 0, -0.08232, 0, -0.02094, -0.3853, 0, -0.1671)
+
+[node name="Stone6" parent="Stones" instance=ExtResource("3_rock2")]
+transform = Transform3D(-0.065, 0, -0.05098, 0, 0.0826, 0, 0.05098, 0, -0.065, -0.1827, 0, -0.3782)
+
+[node name="Stone7" parent="Stones" instance=ExtResource("4_rock3")]
+transform = Transform3D(0.001472, 0, 0.08745, 0, 0.08747, 0, -0.08745, 0, 0.001472, 0.08709, 0, -0.4109)
+
+[node name="Stone8" parent="Stones" instance=ExtResource("4_rock3")]
+transform = Transform3D(0.1051, 0, 0.004766, 0, 0.1052, 0, -0.004766, 0, 0.1051, 0.3096, 0, -0.2839)
+
+[node name="Wood" type="Node3D" parent="."]
+visible = false
+
+[node name="Log0" type="MeshInstance3D" parent="Wood"]
+transform = Transform3D(1, 0, 0, 0, 0.2079, -0.9781, 0, 0.9781, 0.2079, 0, 0.1, 0.16)
+mesh = SubResource("log")
+
+[node name="Log1" type="MeshInstance3D" parent="Wood"]
+transform = Transform3D(-0.5, 0.8471, 0.1801, 0, 0.2079, -0.9781, -0.866, -0.4891, -0.104, 0.1386, 0.1, -0.08)
+mesh = SubResource("log")
+
+[node name="Log2" type="MeshInstance3D" parent="Wood"]
+transform = Transform3D(-0.5, -0.8471, -0.1801, 0, 0.2079, -0.9781, 0.866, -0.4891, -0.104, -0.1386, 0.1, -0.08)
+mesh = SubResource("log")
+
+[node name="Twig0" type="MeshInstance3D" parent="Wood"]
+transform = Transform3D(-0.2605, 0, 0.9655, 0, 1, 0, -0.9655, 0, -0.2605, 0.03279, 0.03, -0.03012)
+mesh = SubResource("twig")
+
+[node name="Twig1" type="MeshInstance3D" parent="Wood"]
+transform = Transform3D(0.09541, 0, -0.9954, 0, 1, 0, 0.9954, 0, 0.09541, -0.04878, 0.03, -0.0122)
+mesh = SubResource("twig")
+
+[node name="Twig2" type="MeshInstance3D" parent="Wood"]
+transform = Transform3D(-0.2377, 0, 0.9713, 0, 1, 0, -0.9713, 0, -0.2377, -0.00778, 0.03, -0.04268)
+mesh = SubResource("twig")
+
+[node name="Twig3" type="MeshInstance3D" parent="Wood"]
+transform = Transform3D(-0.06063, 0, 0.9982, 0, 1, 0, -0.9982, 0, -0.06063, 0.04758, 0.03, -0.06703)
+mesh = SubResource("twig")
+
+[node name="Twig4" type="MeshInstance3D" parent="Wood"]
+transform = Transform3D(-0.9726, 0, 0.2324, 0, 1, 0, -0.2324, 0, -0.9726, 0.0796, 0.03, 0.00302)
+mesh = SubResource("twig")
+
+[node name="Twig5" type="MeshInstance3D" parent="Wood"]
+transform = Transform3D(-0.5979, 0, -0.8016, 0, 1, 0, 0.8016, 0, -0.5979, 0.03214, 0.03, -0.05679)
+mesh = SubResource("twig")
+
+[node name="Embers" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0)
+visible = false
+cast_shadow = 0
+mesh = SubResource("embers_mesh")
+
+[node name="Flames" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0)
+emitting = false
+amount = 40
+lifetime = 0.8
+cast_shadow = 0
+mesh = SubResource("flame_quad")
+emission_shape = 1
+emission_sphere_radius = 0.12
+direction = Vector3(0, 1, 0)
+spread = 12.0
+gravity = Vector3(0, 0.8, 0)
+initial_velocity_min = 0.25
+initial_velocity_max = 0.6
+scale_amount_min = 0.8
+scale_amount_max = 1.3
+scale_amount_curve = SubResource("flame_size")
+
+[node name="Smoke" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+emitting = false
+amount = 10
+lifetime = 3.5
+cast_shadow = 0
+mesh = SubResource("smoke_quad")
+emission_shape = 1
+emission_sphere_radius = 0.1
+direction = Vector3(0, 1, 0)
+spread = 15.0
+gravity = Vector3(0.15, 0.25, 0)
+initial_velocity_min = 0.3
+initial_velocity_max = 0.5
+scale_amount_curve = SubResource("smoke_size")
+
+[node name="Light" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+visible = false
+light_color = Color(1, 0.62, 0.32, 1)
+light_energy = 2.4
+omni_range = 9.0
+omni_attenuation = 1.4
+
+[node name="Crackle" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+unit_size = 4.0
+max_distance = 30.0
+bus = &"Ambiance"
+

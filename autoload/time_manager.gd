@@ -57,6 +57,14 @@ func hour() -> float:
 	return fposmod(dusk_hour + (_elapsed - daylight) / (day_length - daylight) * night_hours, 24.0)
 
 
+## Hours elapsed since the start of day 1 at midnight: a clock that never wraps.
+func total_hours() -> float:
+	var h := hour()
+	# Hours after midnight but before dawn belong to the night that started the previous evening.
+	var day_index := day if h >= dawn_hour else day + 1
+	return (day_index - 1) * 24.0 + h
+
+
 func is_night() -> bool:
 	return _elapsed >= _daylight_seconds()
 

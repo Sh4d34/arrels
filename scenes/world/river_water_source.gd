@@ -36,7 +36,7 @@ func _physics_process(_delta: float) -> void:
 
 
 func get_interaction_prompt() -> String:
-	return "Remplir l'arrosoir" if can_interact() else "L'arrosoir est plein"
+	return GameData.text("riviere.remplir" if can_interact() else "riviere.plein")
 
 
 func get_interaction_hint() -> String:

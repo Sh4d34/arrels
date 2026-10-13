@@ -1,0 +1,72 @@
+{
+	"hud": {
+		"touches_action": "E / clic",
+		"invite_action": "{touches} — {invite}",
+		"nouveau_jour": "Un nouveau jour se lève (jour {jour})",
+		"horloge": "Jour {jour} · {heure} h · {moment}",
+		"gain": "+{quantite} {objet}",
+		"inventaire_ligne": "{objet} : {quantite}",
+		"raccourcis": "B : construction · P : potager"
+	},
+	"construction": {
+		"titre": "{mode} : {nom}",
+		"choix": "{marqueur}{numero} · {nom}",
+		"marqueur_choisi": "» ",
+		"marqueur_autre": "   ",
+		"cout": "Coût : {lignes}",
+		"cout_ligne": "{quantite} {objet} (tu en as {possede})",
+		"gratuit": "gratuit",
+		"construit": "{nom} construit !",
+		"aide": "Clic : poser · 1, 2… : choisir · R : tourner · {touche} ou Échap : quitter",
+		"libre": "Emplacement libre",
+		"viser": "Vise le sol pour placer",
+		"trop_loin": "Trop loin",
+		"hors_terrain": "Hors du terrain",
+		"trop_pres_eau": "Trop près de l'eau",
+		"trop_pentu": "Terrain trop pentu",
+		"manque": "Il manque {quantite} {objet}",
+		"joueur": "Tu es sur l'emplacement",
+		"arbre": "Un arbre gêne",
+		"occupe": "La place est occupée",
+		"rocher": "Un rocher gêne"
+	},
+	"parcelle": {
+		"desherber": "Désherber",
+		"ameublir": "Ameublir à la grelinette",
+		"compost": "Ajouter du compost",
+		"pailler": "Pailler au BRF ({cout})",
+		"pailler_manque": "Il faut {cout} pour pailler",
+		"semer": "Semer une {graine}",
+		"sans_graine": "Il te faut des graines",
+		"recolter": "Récolter",
+		"humide": "La terre est encore humide",
+		"arroser": "Arroser le plant de {culture}",
+		"arrosoir_vide": "Arrosoir vide : va puiser à la rivière",
+		"pousse": "Pousse : {jours} / {total} jours"
+	},
+	"composteur": {
+		"recuperer": "Récupérer le compost",
+		"deposer": "Déposer {entree}",
+		"murit": {
+			"un": "Le compost mûrit (encore 1 jour)",
+			"plusieurs": "Le compost mûrit (encore {n} jours)"
+		},
+		"manque": "Il faut {entree} pour composter"
+	},
+	"riviere": {
+		"remplir": "Remplir l'arrosoir",
+		"plein": "L'arrosoir est plein"
+	},
+	"foyer": {
+		"preparer": "Préparer le feu ({cout})",
+		"preparer_manque": "Il faut {cout} pour préparer le feu",
+		"allumer": "Allumer le feu",
+		"sans_allumette": "Il te faut une allumette",
+		"ajouter": "Ajouter une bûche",
+		"brule": "Le feu crépite",
+		"reste": {
+			"un": "Encore environ 1 heure de feu",
+			"plusieurs": "Encore environ {n} heures de feu"
+		}
+	}
+}

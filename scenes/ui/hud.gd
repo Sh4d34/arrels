@@ -3,8 +3,6 @@ extends CanvasLayer
 ## On-screen information: day, inventory, interaction prompt with its carnet hint,
 ## short messages and the build panel.
 
-const PROMPT_KEYS := "Espace / clic"
-
 @export var player: Player
 @export var build_mode: BuildMode
 @export var valid_status_color: Color = Color(0.7, 0.95, 0.6)
@@ -27,6 +25,8 @@ var _known_quantities: Dictionary[String, int] = {}
 @onready var _build_cost: Label = %BuildCost
 @onready var _build_carnet: Label = %BuildCarnet
 @onready var _build_status: Label = %BuildStatus
+@onready var _build_help: Label = %BuildHelp
+@onready var _shortcuts: Label = %Shortcuts
 
 
 func _ready() -> void:
@@ -40,6 +40,7 @@ func _ready() -> void:
 		build_mode.mode_changed.connect(_on_build_mode_changed)
 		build_mode.placement_changed.connect(_on_placement_changed)
 		build_mode.built.connect(_on_built)
+	_shortcuts.text = GameData.text("hud.raccourcis")
 	_on_prompt_changed("", "", false)
 	_on_build_mode_changed(false, "")
 	_refresh_inventory()
@@ -47,39 +48,45 @@ func _ready() -> void:
 
 func _on_prompt_changed(prompt: String, hint: String, possible: bool) -> void:
 	_prompt_panel.visible = prompt != ""
-	_prompt_label.text = "%s — %s" % [PROMPT_KEYS, prompt] if possible else prompt
+	if possible:
+		_prompt_label.text = GameData.text("hud.invite_action", {"touches": GameData.text("hud.touches_action"), "invite": prompt})
+	else:
+		_prompt_label.text = prompt
 	_prompt_hint.text = hint
 	_prompt_hint.visible = hint != ""
 
 
 func _on_new_day(day: int) -> void:
 	_refresh_clock()
-	_show_toast("Un nouveau jour se lève (jour %d)" % day)
+	_show_toast(GameData.text("hud.nouveau_jour", {"jour": day}))
 
 
 func _refresh_clock() -> void:
-	_day_label.text = "Jour %d · %d h · %s" % [TimeManager.day, int(TimeManager.hour()), TimeManager.period_name()]
+	_day_label.text = GameData.text("hud.horloge", {"jour": TimeManager.day, "heure": int(TimeManager.hour()), "moment": TimeManager.period_name()})
 
 
 func _on_inventory_changed(item_id: String, quantity: int) -> void:
 	var gained: int = quantity - _known_quantities.get(item_id, 0)
 	if gained > 0:
-		_show_toast("+%d %s" % [gained, GameData.item_name(item_id)])
+		_show_toast(GameData.text("hud.gain", {"quantite": gained, "objet": GameData.item_name(item_id)}))
 	_refresh_inventory()
 	_refresh_build_cost()
 
 
 func _on_build_mode_changed(active: bool, buildable_id: String) -> void:
 	_build_panel.visible = active
+	_shortcuts.visible = not active
 	if not active:
 		return
 	var data := GameData.get_buildable(buildable_id)
-	_build_title.text = "Construire : %s" % data.get("nom", buildable_id)
+	var mode: Dictionary = GameData.modes.get(data.get("mode", ""), {})
+	_build_title.text = GameData.text("construction.titre", {"mode": mode.get("nom", ""), "nom": data.get("nom", buildable_id)})
+	_build_help.text = GameData.text("construction.aide", {"touche": mode.get("touche", "")})
 	var choices: PackedStringArray = []
-	var ids := GameData.buildables.keys()
+	var ids := GameData.buildables_in_mode(data.get("mode", ""))
 	for i in ids.size():
-		var marker := "» " if ids[i] == buildable_id else "   "
-		choices.append("%s%d · %s" % [marker, i + 1, GameData.get_buildable(ids[i]).get("nom", ids[i])])
+		var marker := GameData.text("construction.marqueur_choisi" if ids[i] == buildable_id else "construction.marqueur_autre")
+		choices.append(GameData.text("construction.choix", {"marqueur": marker, "numero": i + 1, "nom": GameData.get_buildable(ids[i]).get("nom", ids[i])}))
 	_build_choices.text = "\n".join(choices)
 	_build_carnet.text = data.get("carnet", "")
 	_build_carnet.visible = _build_carnet.text != ""
@@ -89,16 +96,16 @@ func _on_build_mode_changed(active: bool, buildable_id: String) -> void:
 
 func _on_placement_changed(valid: bool, reason: String) -> void:
 	if valid:
-		_build_status.text = "Emplacement libre"
+		_build_status.text = GameData.text("construction.libre")
 	elif reason != "":
 		_build_status.text = reason
 	else:
-		_build_status.text = "Vise le sol pour placer"
+		_build_status.text = GameData.text("construction.viser")
 	_build_status.modulate = valid_status_color if valid else invalid_status_color
 
 
 func _on_built(buildable_id: String) -> void:
-	_show_toast("%s construit !" % GameData.get_buildable(buildable_id).get("nom", buildable_id))
+	_show_toast(GameData.text("construction.construit", {"nom": GameData.get_buildable(buildable_id).get("nom", buildable_id)}))
 
 
 func _refresh_build_cost() -> void:
@@ -106,8 +113,9 @@ func _refresh_build_cost() -> void:
 		return
 	var lines: PackedStringArray = []
 	for cost: Dictionary in GameData.get_buildable(build_mode.get_buildable_id()).get("cout", []):
-		lines.append("%d %s (tu en as %d)" % [int(cost.qte), GameData.item_name(cost.item).to_lower(), Inventory.count(cost.item)])
-	_build_cost.text = "Coût : " + (", ".join(lines) if not lines.is_empty() else "gratuit")
+		lines.append(GameData.text("construction.cout_ligne", {"quantite": int(cost.qte), "objet": GameData.item_name(cost.item).to_lower(), "possede": Inventory.count(cost.item)}))
+	var listed := ", ".join(lines) if not lines.is_empty() else GameData.text("construction.gratuit")
+	_build_cost.text = GameData.text("construction.cout", {"lignes": listed})
 
 
 func _refresh_inventory() -> void:
@@ -116,7 +124,7 @@ func _refresh_inventory() -> void:
 		child.queue_free()
 	for item_id in _known_quantities:
 		var label := Label.new()
-		label.text = "%s : %d" % [GameData.item_name(item_id), _known_quantities[item_id]]
+		label.text = GameData.text("hud.inventaire_ligne", {"objet": GameData.item_name(item_id), "quantite": _known_quantities[item_id]})
 		_inventory_list.add_child(label)
 	_inventory_panel.visible = not _known_quantities.is_empty()
 

@@ -110,32 +110,32 @@ func is_moist(day: int = TimeManager.day) -> bool:
 func _current_action() -> Dictionary:
 	match stage:
 		Stage.GRASS:
-			return _action("desherber", "Désherber", true, _step("desherber").get("carnet", ""))
+			return _action("desherber", GameData.text("parcelle.desherber"), true, _step("desherber").get("carnet", ""))
 		Stage.WEEDED:
-			return _action("ameublir", "Ameublir à la grelinette", true, _step("ameublir").get("carnet", ""))
+			return _action("ameublir", GameData.text("parcelle.ameublir"), true, _step("ameublir").get("carnet", ""))
 		Stage.LOOSENED, Stage.MULCHED:
 			if not composted and Inventory.has_all(_step("compost").get("cout", [])):
-				return _action("compost", "Ajouter du compost", true, _step("compost").get("carnet", ""))
+				return _action("compost", GameData.text("parcelle.compost"), true, _step("compost").get("carnet", ""))
 			if stage == Stage.LOOSENED:
 				var cost: Array = _step("pailler").get("cout", [])
 				if Inventory.has_all(cost):
-					return _action("pailler", "Pailler au BRF (%s)" % GameData.describe(cost), true, _step("pailler").get("carnet", ""))
-				return _action("pailler", "Il faut %s pour pailler" % GameData.describe(cost), false, _step("pailler").get("carnet", ""))
+					return _action("pailler", GameData.text("parcelle.pailler", {"cout": GameData.describe(cost)}), true, _step("pailler").get("carnet", ""))
+				return _action("pailler", GameData.text("parcelle.pailler_manque", {"cout": GameData.describe(cost)}), false, _step("pailler").get("carnet", ""))
 			var seed_id := _available_seed()
 			if seed_id != "":
-				return _action("semer", "Semer une %s" % GameData.item_name(seed_id).to_lower(), true, GameData.crop_for_seed(seed_id).get("carnet", ""))
-			return _action("semer", "Il te faut des graines", false, _rules.get("carnet", ""))
+				return _action("semer", GameData.text("parcelle.semer", {"graine": GameData.item_name(seed_id).to_lower()}), true, GameData.crop_for_seed(seed_id).get("carnet", ""))
+			return _action("semer", GameData.text("parcelle.sans_graine"), false, _rules.get("carnet", ""))
 		_:
 			var crop := _crop()
-			var growth := "Pousse : %d / %d jours" % [days_grown, int(crop.get("jours_pousse", 1))]
+			var growth := GameData.text("parcelle.pousse", {"jours": days_grown, "total": int(crop.get("jours_pousse", 1))})
 			var hint := "%s\n%s" % [crop.get("carnet", ""), growth]
 			if is_ripe():
-				return _action("recolter", crop.get("invite_recolte", "Récolter"), true, crop.get("carnet", ""))
+				return _action("recolter", crop.get("invite_recolte", GameData.text("parcelle.recolter")), true, crop.get("carnet", ""))
 			if is_moist():
-				return _action("arroser", "La terre est encore humide", false, hint)
+				return _action("arroser", GameData.text("parcelle.humide"), false, hint)
 			if Inventory.count(_water().item) >= int(_water().qte):
-				return _action("arroser", "Arroser le plant de %s" % crop.get("nom", "").to_lower(), true, hint)
-			return _action("arroser", "Arrosoir vide : va puiser à la rivière", false, hint)
+				return _action("arroser", GameData.text("parcelle.arroser", {"culture": crop.get("nom", "").to_lower()}), true, hint)
+			return _action("arroser", GameData.text("parcelle.arrosoir_vide"), false, hint)
 
 
 func _action(id: String, prompt: String, possible: bool, hint: String) -> Dictionary:
