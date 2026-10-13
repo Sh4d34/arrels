@@ -13,3 +13,6 @@ builds/
 
 # Windows
 desktop.ini
+
+# Original audio downloads, kept locally (processed versions are in assets/audio/)
+assets/audio/sources/

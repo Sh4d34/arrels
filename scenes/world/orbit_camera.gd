@@ -44,6 +44,9 @@ extends Node3D
 @export var pitch_deg: float = -35.0
 
 var _current_distance: float
+## 3D sounds are heard from the target's head, not from the camera far behind it,
+## but with the camera's orientation so left and right match the screen.
+var _listener := AudioListener3D.new()
 var _time_since_manual_rotation: float = INF
 var _cursor_before_drag: Vector2
 
@@ -56,6 +59,8 @@ func _ready() -> void:
 	_current_distance = distance
 	_apply_pitch()
 	_camera.position = Vector3(0.0, 0.0, _current_distance)
+	add_child(_listener)
+	_listener.make_current()
 	if target:
 		global_position = _target_point()
 
@@ -68,6 +73,8 @@ func _process(delta: float) -> void:
 	var wanted := minf(distance, _distance_above_ground(distance))
 	_current_distance = lerpf(_current_distance, wanted, 1.0 - exp(-zoom_smoothing * delta))
 	_camera.position.z = _current_distance
+	var ears := _target_point() if target else _camera.global_position
+	_listener.global_transform = Transform3D(_camera.global_basis, ears)
 
 
 func _unhandled_input(event: InputEvent) -> void:

@@ -10,7 +10,7 @@ const SILENT_DB := -60.0
 @export var terrain: Terrain
 @export var player: Node3D
 @export var crossfade_hours: float = 1.5 ## Birds and crickets fade over this time around dawn and dusk.
-@export var river_unit_size: float = 8.0
+@export var river_unit_size: float = 14.0 ## Higher carries the river sound farther.
 
 var _river: AudioStreamPlayer3D
 var _wind: AudioStreamPlayer

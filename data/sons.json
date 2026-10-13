@@ -1,8 +1,8 @@
 {
 	"ambiances": {
 		"riviere": {
-			"fichier": "res://assets/audio/ambiance/ambiance_riviere.wav",
-			"volume_db": -18
+			"fichier": "res://assets/audio/ambiance/ambiance_ruisseau.wav",
+			"volume_db": -7
 		},
 		"vent": {
 			"fichier": "res://assets/audio/ambiance/ambiance_vent.wav",
@@ -107,9 +107,10 @@
 		"arroser": {
 			"fichiers": [
 				"res://assets/audio/eau/arrosage_0.wav",
-				"res://assets/audio/eau/arrosage_1.wav"
+				"res://assets/audio/eau/arrosage_1.wav",
+				"res://assets/audio/eau/arrosage_2.wav"
 			],
-			"volume_db": -12,
+			"volume_db": 0,
 			"variation_hauteur": 0.05
 		},
 		"recolter": {
@@ -145,11 +146,12 @@
 		},
 		"remplir_arrosoir": {
 			"fichiers": [
-				"res://assets/audio/eau/remplissage_0.wav",
-				"res://assets/audio/eau/remplissage_1.wav"
+				"res://assets/audio/eau/arrosage_0.wav",
+				"res://assets/audio/eau/arrosage_1.wav",
+				"res://assets/audio/eau/arrosage_2.wav"
 			],
-			"volume_db": -12,
-			"variation_hauteur": 0.05
+			"volume_db": 0,
+			"variation_hauteur": 0.12
 		},
 		"construire": {
 			"fichiers": [
