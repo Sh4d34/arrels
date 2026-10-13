@@ -1,0 +1,76 @@
+{
+	"animations": "res://assets/models/quaternius_animations/Unreal-Godot/UAL1_Standard.glb",
+	"personnages": [
+		{
+			"id": "elle",
+			"corps": "res://assets/models/quaternius_characters/Base Characters/Godot - UE/Superhero_Female_FullBody.gltf",
+			"pieces": [
+				"res://assets/models/quaternius_characters/Hairstyles/Rigged to Head Bone/glTF (Godot -Unreal)/Hair_Long.gltf"
+			],
+			"couleur_cheveux": "#5a3a22",
+			"maillage_corps": "Superhero_Female",
+			"tenue": [
+				"res://assets/models/quaternius_outfits/Exports/glTF (Godot-Unreal)/Outfits/Female_Peasant.gltf"
+			],
+			"os_gardes": [
+				"Head",
+				"neck_01"
+			],
+			"prefixe_peau": "MI_Regular"
+		},
+		{
+			"id": "lui",
+			"corps": "res://assets/models/quaternius_characters/Base Characters/Godot - UE/Superhero_Male_FullBody.gltf",
+			"pieces": [
+				"res://assets/models/quaternius_characters/Hairstyles/Rigged to Head Bone/glTF (Godot -Unreal)/Hair_SimpleParted.gltf",
+				"res://assets/models/quaternius_characters/Hairstyles/Rigged to Head Bone/glTF (Godot -Unreal)/Hair_Beard.gltf"
+			],
+			"couleur_cheveux": "#3b2a1e",
+			"maillage_corps": "SuperHero_Male",
+			"tenue": [
+				"res://assets/models/quaternius_outfits/Exports/glTF (Godot-Unreal)/Outfits/Male_Peasant.gltf"
+			],
+			"os_gardes": [
+				"Head",
+				"neck_01"
+			],
+			"prefixe_peau": "MI_Regular"
+		}
+	],
+	"deplacement": [
+		{
+			"animation": "Idle",
+			"vitesse": 0.0
+		},
+		{
+			"animation": "Walk",
+			"vitesse": 1.6
+		},
+		{
+			"animation": "Jog_Fwd",
+			"vitesse": 3.5
+		},
+		{
+			"animation": "Sprint",
+			"vitesse": 6.5
+		}
+	],
+	"gestes": {
+		"couper": {
+			"animation": "Sword_Attack",
+			"vitesse": 1.6
+		},
+		"a_genoux": {
+			"animation": "Fixing_Kneeling",
+			"vitesse": 3.4
+		},
+		"ramasser": {
+			"animation": "PickUp_Table",
+			"vitesse": 1.0
+		},
+		"interagir": {
+			"animation": "Interact",
+			"vitesse": 1.5
+		}
+	}
+}

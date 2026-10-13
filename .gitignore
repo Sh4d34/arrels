@@ -16,3 +16,21 @@ desktop.ini
 
 # Original audio downloads, kept locally (processed versions are in assets/audio/)
 assets/audio/sources/
+
+# Character packs: only the glTF files used by Godot are versioned (copies for other engines,
+# unused textures and the root-motion animations stay local)
+assets/models/quaternius_animations/Unity/
+assets/models/quaternius_animations/Unreal-Godot/UAL1_Standard_RM.glb
+assets/models/quaternius_animations/Unreal-Godot/UAL1_Standard_RM.glb.import
+assets/models/quaternius_characters/Base Characters/Unity/
+assets/models/quaternius_characters/Base Characters/Textures/
+assets/models/quaternius_characters/Hairstyles/Origin at 0/
+assets/models/quaternius_characters/Hairstyles/Textures/
+assets/models/quaternius_characters/Hairstyles/Rigged to Head Bone/FBX (Unity)/
+assets/models/quaternius_outfits/Exports/FBX (Unity)/
+assets/models/quaternius_outfits/Textures/
+assets/models/quaternius_outfits/Exports/glTF (Godot-Unreal)/Modular Parts/
+# Unused ranger outfit (the peasant one is worn) and pack previews
+assets/models/quaternius_outfits/Exports/glTF (Godot-Unreal)/Outfits/*Ranger*
+assets/models/quaternius_characters/Preview.png
+assets/models/quaternius_characters/Preview.png.import

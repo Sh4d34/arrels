@@ -2,7 +2,8 @@ class_name Player
 extends CharacterBody3D
 ## Player character: the keys give a direction relative to the camera; the character turns toward it
 ## at a limited rate and always walks the way it faces, so changes of direction draw curves.
-## Simple walk bob for the placeholder model, and interaction with nearby interactables
+## Its look and animations come from CharacterModel; gestures are played when interacting with
+## nearby interactables
 ## (E or left click, hold to repeat).
 
 ## prompt is empty when nothing can be interacted with; hint is an optional carnet text;
@@ -17,9 +18,10 @@ signal interaction_prompt_changed(prompt: String, hint: String, possible: bool)
 @export var turn_rate_deg: float = 400.0 ## Degrees per second when turning toward the input direction.
 @export_range(0.0, 1.0) var sharp_turn_speed: float = 0.25 ## Speed kept when the input points behind.
 
-@export_group("Walk bob")
-@export var bob_height: float = 0.06
-@export var bob_frequency: float = 9.0
+@export var character_id: String = "elle" ## Default look, until the player picks one (data/personnages.json).
+
+@export_group("Footsteps")
+@export var step_frequency: float = 6.8 ## Steps cadence at walk speed (two steps per pi).
 
 @export_group("Interaction")
 @export var interact_reach: float = 2.6 ## Horizontal distance to an interactable's origin.
@@ -33,7 +35,8 @@ signal interaction_prompt_changed(prompt: String, hint: String, possible: bool)
 
 var _spawn_position: Vector3
 var _speed: float = 0.0 ## Current walking speed along the facing direction.
-var _bob_phase: float = 0.0
+var _step_phase: float = 0.0
+var _gesture_left: float = 0.0 ## While a gesture plays, the player stands still.
 var _last_step: int = 0
 var interaction_enabled: bool = true ## Turned off by modes that use the same inputs (building).
 var _target: Node3D ## The physics body currently targeted, or null.
@@ -41,14 +44,20 @@ var _target_prompt: String = ""
 var _target_hint: String = ""
 var _target_possible: bool = false
 var _cooldown_left: float = 0.0
-var _swinging: bool = false
 
 @onready var _model: Node3D = $Model
+@onready var _character: CharacterModel = $Model/Character
 @onready var _highlight: TargetHighlight = $TargetHighlight
 
 
 func _ready() -> void:
 	_spawn_position = global_position
+	_character.set_character(character_id)
+
+
+func set_character(new_character_id: String) -> void:
+	character_id = new_character_id
+	_character.set_character(character_id)
 
 
 func _physics_process(delta: float) -> void:
@@ -56,6 +65,9 @@ func _physics_process(delta: float) -> void:
 		velocity += get_gravity() * delta
 
 	var input := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
+	_gesture_left = maxf(_gesture_left - delta, 0.0)
+	if _gesture_left > 0.0:
+		input = Vector2.ZERO
 	var direction := _camera_relative_direction(input)
 	var target_speed := 0.0
 	if direction != Vector3.ZERO:
@@ -78,7 +90,8 @@ func _physics_process(delta: float) -> void:
 	# Walls and trunks stop the walk instead of pushing back.
 	_speed = minf(_speed, Vector2(get_real_velocity().x, get_real_velocity().z).length())
 
-	_update_bob(delta, _speed)
+	_character.set_speed(_speed)
+	_update_footsteps(delta, _speed)
 	_update_interaction(delta)
 	if global_position.y < fall_limit:
 		global_position = _spawn_position
@@ -117,10 +130,13 @@ func _interact_with_target() -> void:
 	var interactable: Object = _target.get_meta("interactable")
 	if not interactable.call("can_interact"):
 		return
-	_cooldown_left = interact_cooldown
 	var to_target := _target.global_position - global_position
 	_model.rotation.y = atan2(-to_target.x, -to_target.z)
-	_play_swing()
+	var gesture: String = interactable.call("get_interaction_gesture") if interactable.has_method("get_interaction_gesture") else "interagir"
+	_gesture_left = _character.play_gesture(gesture)
+	_speed = 0.0
+	# The next hit waits for the end of the gesture, so actions follow the animation.
+	_cooldown_left = maxf(interact_cooldown, _gesture_left)
 	interactable.call("interact", self)
 
 
@@ -175,15 +191,6 @@ func _find_hovered_interactable() -> Node3D:
 	return best
 
 
-func _play_swing() -> void:
-	if _swinging:
-		return
-	_swinging = true
-	var tween := create_tween()
-	tween.tween_property(_model, "rotation:x", -0.35, 0.1).set_ease(Tween.EASE_OUT)
-	tween.tween_property(_model, "rotation:x", 0.0, 0.2).set_ease(Tween.EASE_IN_OUT)
-	tween.tween_callback(func() -> void: _swinging = false)
-
 
 ## "bois", "terre" or "herbe": a "surface" metadata on the floor body wins (the bridge),
 ## then the terrain tells whether the player walks on the track. The floor is found with a short
@@ -212,16 +219,13 @@ func _camera_relative_direction(input: Vector2) -> Vector3:
 	return right.normalized() * input.x - forward.normalized() * input.y
 
 
-func _update_bob(delta: float, speed: float) -> void:
+func _update_footsteps(delta: float, speed: float) -> void:
 	if speed > 0.1 and is_on_floor():
-		_bob_phase += delta * bob_frequency * (speed / walk_speed)
-		_model.position.y = absf(sin(_bob_phase)) * bob_height
-		# One step each time the bob touches the ground.
-		var step := floori(_bob_phase / PI)
+		_step_phase += delta * step_frequency * (speed / walk_speed)
+		var step := floori(_step_phase / PI)
 		if step != _last_step:
 			_last_step = step
 			Sfx.play("pas_" + _floor_surface(), global_position)
 	else:
-		_bob_phase = 0.0
+		_step_phase = 0.0
 		_last_step = 0
-		_model.position.y = move_toward(_model.position.y, 0.0, delta)

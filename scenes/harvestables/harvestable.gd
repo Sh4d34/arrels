@@ -38,6 +38,11 @@ func get_interaction_prompt() -> String:
 	return _data.get("invite", "")
 
 
+## The player's gesture for this action (see the "gestes" of data/personnages.json).
+func get_interaction_gesture() -> String:
+	return _data.get("geste", "interagir")
+
+
 func can_interact() -> bool:
 	return _hits_left > 0
 

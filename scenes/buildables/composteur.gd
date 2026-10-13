@@ -29,6 +29,11 @@ func get_interaction_hint() -> String:
 	return _rules.get("carnet", "")
 
 
+## The player's gesture for this action (see the "gestes" of data/personnages.json).
+func get_interaction_gesture() -> String:
+	return _rules.get("geste", "interagir")
+
+
 func can_interact() -> bool:
 	return _current_action().possible
 

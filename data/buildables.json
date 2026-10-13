@@ -30,7 +30,8 @@
 				}
 			],
 			"lots_max": 3,
-			"carnet": "Herbes, épluchures et feuilles se décomposent en quelques semaines grâce aux vers et aux micro-organismes."
+			"carnet": "Herbes, épluchures et feuilles se décomposent en quelques semaines grâce aux vers et aux micro-organismes.",
+			"geste": "ramasser"
 		},
 		"mode": "construction"
 	},
@@ -85,7 +86,12 @@
 				"heures": 2,
 				"carnet": "Une bûche de plus, et le feu tient encore un moment."
 			},
-			"braises_heures": 2
+			"braises_heures": 2,
+			"gestes": {
+				"preparer": "a_genoux",
+				"allumer": "a_genoux",
+				"ajouter": "ramasser"
+			}
 		}
 	},
 	{
@@ -139,6 +145,15 @@
 				"carnet": "Le bois raméal fragmenté garde l'humidité, nourrit le sol et freine les herbes."
 			}
 		},
-		"mode": "potager"
+		"mode": "potager",
+		"gestes": {
+			"desherber": "a_genoux",
+			"ameublir": "a_genoux",
+			"compost": "a_genoux",
+			"pailler": "a_genoux",
+			"semer": "a_genoux",
+			"arroser": "interagir",
+			"recolter": "ramasser"
+		}
 	}
 ]

@@ -24,6 +24,7 @@ Cadre inspiré des environs de Prades (Conflent, Pyrénées-Orientales). Textes 
 
 ## Éléments interactifs
 - Tout élément interactif rejoint le groupe `interactable` et porte la métadonnée `interactable`, qui pointe vers l'objet exposant `get_interaction_prompt()`, `get_interaction_hint()`, `can_interact()` et `interact(actor)`
+- Un élément interactif peut déclarer `get_interaction_gesture()` : le geste joué par le personnage (voir `gestes` dans data/personnages.json)
 - Un grand élément (bâtiment) peut déclarer `get_interaction_radius()` pour être atteint depuis ses abords
 - Tout élément interactif doit être mis en surbrillance quand il est visé : c'est automatique pour un objet qui a ses propres maillages (`TargetHighlight`) ; un élément sans maillage propre (comme la rivière) implémente `set_highlighted(on, tint)`
 

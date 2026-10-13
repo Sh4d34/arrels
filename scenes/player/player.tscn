@@ -2,59 +2,11 @@
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_script"]
 [ext_resource type="Script" path="res://scenes/player/target_highlight.gd" id="2_highlight"]
+[ext_resource type="Script" path="res://scenes/player/character_model.gd" id="3_character"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.35
 height = 1.7
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_clothes"]
-albedo_color = Color(0.29, 0.43, 0.58, 1)
-roughness = 1.0
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_body"]
-material = SubResource("StandardMaterial3D_clothes")
-radius = 0.3
-height = 1.15
-radial_segments = 10
-rings = 3
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_skin"]
-albedo_color = Color(0.93, 0.76, 0.62, 1)
-roughness = 1.0
-
-[sub_resource type="SphereMesh" id="SphereMesh_head"]
-material = SubResource("StandardMaterial3D_skin")
-radius = 0.22
-height = 0.44
-radial_segments = 10
-rings = 5
-
-[sub_resource type="SphereMesh" id="SphereMesh_nose"]
-material = SubResource("StandardMaterial3D_skin")
-radius = 0.05
-height = 0.1
-radial_segments = 6
-rings = 3
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_straw"]
-albedo_color = Color(0.87, 0.74, 0.43, 1)
-roughness = 1.0
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_brim"]
-material = SubResource("StandardMaterial3D_straw")
-top_radius = 0.38
-bottom_radius = 0.38
-height = 0.04
-radial_segments = 12
-rings = 1
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_crown"]
-material = SubResource("StandardMaterial3D_straw")
-top_radius = 0.16
-bottom_radius = 0.2
-height = 0.16
-radial_segments = 12
-rings = 1
 
 [node name="Player" type="CharacterBody3D"]
 floor_snap_length = 0.4
@@ -66,25 +18,9 @@ shape = SubResource("CapsuleShape3D_body")
 
 [node name="Model" type="Node3D" parent="."]
 
-[node name="Body" type="MeshInstance3D" parent="Model"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.62, 0)
-mesh = SubResource("CapsuleMesh_body")
-
-[node name="Head" type="MeshInstance3D" parent="Model"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.43, 0)
-mesh = SubResource("SphereMesh_head")
-
-[node name="Nose" type="MeshInstance3D" parent="Model"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.42, -0.22)
-mesh = SubResource("SphereMesh_nose")
-
-[node name="HatBrim" type="MeshInstance3D" parent="Model"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
-mesh = SubResource("CylinderMesh_brim")
-
-[node name="HatCrown" type="MeshInstance3D" parent="Model"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.69, 0)
-mesh = SubResource("CylinderMesh_crown")
+[node name="Character" type="Node3D" parent="Model"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 0)
+script = ExtResource("3_character")
 
 [node name="TargetHighlight" type="Node" parent="."]
 script = ExtResource("2_highlight")

@@ -5,6 +5,7 @@ Arrels utilise des ressources libres. Merci à leurs auteurs.
 ## Modèles 3D
 
 - **Stylized Nature MegaKit** (version gratuite), par [Quaternius](https://quaternius.com) — licence CC0.
+- **Universal Base Characters**, **Universal Animation Library** et **Modular Character Outfits – Fantasy** (versions gratuites), par [Quaternius](https://quaternius.com) — licence CC0 : les personnages, leurs animations et leurs tenues.
 
 ## Sons
 

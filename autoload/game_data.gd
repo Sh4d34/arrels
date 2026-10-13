@@ -12,6 +12,7 @@ var time_settings: Dictionary = {} ## data/temps.json: day length, dawn and dusk
 var sounds: Dictionary = {} ## data/sons.json: ambience loops and sound effect events.
 var texts: Dictionary = {} ## data/textes.json: every text shown to the player, outside content data.
 var modes: Dictionary = {} ## data/modes.json: building modes (construction, garden...), by id.
+var characters: Dictionary = {} ## data/personnages.json: playable characters, animations and gestures.
 
 
 func _ready() -> void:
@@ -23,6 +24,7 @@ func _ready() -> void:
 	sounds = _load_object("sons.json")
 	texts = _load_object("textes.json")
 	modes = _load_collection("modes.json")
+	characters = _load_object("personnages.json")
 	_validate()
 
 

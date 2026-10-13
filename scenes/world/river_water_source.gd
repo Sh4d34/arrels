@@ -46,6 +46,11 @@ func get_interaction_hint() -> String:
 	return ""
 
 
+## The player's gesture for this action (see the "gestes" of data/personnages.json).
+func get_interaction_gesture() -> String:
+	return "ramasser"
+
+
 func can_interact() -> bool:
 	return Inventory.count(water_item) < _capacity()
 

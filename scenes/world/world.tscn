@@ -16,6 +16,7 @@
 [ext_resource type="Script" path="res://scenes/world/terrace_walls.gd" id="terrace_walls"]
 [ext_resource type="PackedScene" path="res://scenes/world/cortal.tscn" id="cortal"]
 [ext_resource type="Script" path="res://scenes/world/orchard_apples.gd" id="orchard_apples"]
+[ext_resource type="PackedScene" path="res://scenes/ui/character_choice.tscn" id="character_choice"]
 [ext_resource type="PackedScene" path="res://assets/models/quaternius_nature/Pine_2.gltf" id="m10_pine_2"]
 [ext_resource type="PackedScene" path="res://assets/models/quaternius_nature/Pine_1.gltf" id="m11_pine_1"]
 [ext_resource type="PackedScene" path="res://assets/models/quaternius_nature/Pine_4.gltf" id="m12_pine_4"]
@@ -3208,6 +3209,9 @@ water = NodePath("../Water")
 terrain = NodePath("../Terrain")
 player = NodePath("../Player")
 buildings = NodePath("../Buildings")
+
+[node name="CharacterChoice" parent="." node_paths=PackedStringArray("player") instance=ExtResource("character_choice")]
+player = NodePath("../Player")
 
 [node name="Hud" parent="." node_paths=PackedStringArray("player", "build_mode") instance=ExtResource("hud")]
 player = NodePath("../Player")

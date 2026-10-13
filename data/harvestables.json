@@ -17,7 +17,8 @@
 		"repousse_jours": null,
 		"disparition": "chute",
 		"son_coup": "coupe",
-		"son_fin": "chute_arbre"
+		"son_fin": "chute_arbre",
+		"geste": "couper"
 	},
 	{
 		"id": "arbre_mort",
@@ -41,7 +42,8 @@
 		"repousse_jours": null,
 		"disparition": "chute",
 		"son_coup": "coupe",
-		"son_fin": "chute_arbre"
+		"son_fin": "chute_arbre",
+		"geste": "couper"
 	},
 	{
 		"id": "arbre_lisiere",
@@ -61,7 +63,8 @@
 		"repousse_jours": 2,
 		"disparition": "chute",
 		"son_coup": "coupe",
-		"son_fin": "chute_arbre"
+		"son_fin": "chute_arbre",
+		"geste": "couper"
 	},
 	{
 		"id": "paquet_bienvenue",
@@ -81,7 +84,8 @@
 		"repousse_jours": null,
 		"disparition": "ramassage",
 		"son_coup": "",
-		"son_fin": "ouvrir_paquet"
+		"son_fin": "ouvrir_paquet",
+		"geste": "ramasser"
 	},
 	{
 		"id": "rocher",
@@ -97,7 +101,8 @@
 		"repousse_jours": null,
 		"disparition": "ramassage",
 		"son_coup": "casser_pierre",
-		"son_fin": "casser_pierre"
+		"son_fin": "casser_pierre",
+		"geste": "couper"
 	},
 	{
 		"id": "brindilles",
@@ -113,6 +118,7 @@
 		"repousse_jours": 1,
 		"disparition": "ramassage",
 		"son_coup": "",
-		"son_fin": "ramasser"
+		"son_fin": "ramasser",
+		"geste": "ramasser"
 	}
 ]
