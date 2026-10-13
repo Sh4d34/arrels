@@ -183,17 +183,17 @@ func _play_swing() -> void:
 
 
 ## "bois", "terre" or "herbe": a "surface" metadata on the floor body wins (the bridge),
-## then the terrain tells whether the player walks on the track.
+## then the terrain tells whether the player walks on the track. The floor is found with a short
+## ray under the feet: while walking, floor snapping records no collision to read it from.
 func _floor_surface() -> String:
-	for i in get_slide_collision_count():
-		var collision := get_slide_collision(i)
-		if collision.get_normal().y < 0.7:
-			continue
-		var floor_body := collision.get_collider() as Node
-		if floor_body and floor_body.has_meta("surface"):
-			return floor_body.get_meta("surface")
-		if floor_body is Terrain:
-			return "terre" if (floor_body as Terrain).is_on_track(global_position.x, global_position.z) else "herbe"
+	var query := PhysicsRayQueryParameters3D.create(global_position + Vector3.UP * 0.3, global_position + Vector3.DOWN * 0.6)
+	query.exclude = [get_rid()]
+	var hit := get_world_3d().direct_space_state.intersect_ray(query)
+	var floor_body := hit.get("collider") as Node
+	if floor_body and floor_body.has_meta("surface"):
+		return floor_body.get_meta("surface")
+	if floor_body is Terrain:
+		return "terre" if (floor_body as Terrain).is_on_track(global_position.x, global_position.z) else "herbe"
 	return "herbe"
 
 

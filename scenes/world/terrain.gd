@@ -9,7 +9,7 @@ extends StaticBody3D
 
 @export_group("Grid")
 @export var size: float = 140.0
-@export var cell_size: float = 2.0
+@export var cell_size: float = 1.5
 @export var material: Material
 @export var noise: FastNoiseLite
 
@@ -50,6 +50,11 @@ extends StaticBody3D
 @export_range(0.0, 1.0) var track_width_wander: float = 0.3 ## How much the width varies along the track.
 @export_range(0.0, 0.5) var track_tint_variation: float = 0.12
 @export var track_end_taper_samples: int = 6 ## The track narrows over this many meters where it ends.
+@export var track_bench_half_width: float = 0.75 ## Flattened ground across the track, in track widths.
+@export var track_bench_falloff: float = 2.5 ## Meters over which the cut blends back into the slope.
+@export var track_road_smoothing: int = 4 ## Samples averaged on each side for the road profile.
+@export var col_half_width: float = 14.0 ## Half width of the pass the hills open along the track.
+@export_range(0.0, 1.0) var col_depth: float = 0.55 ## How much of the hills is lowered at the pass.
 @export var track_sample_spacing: float = 1.0
 
 @export_group("Colors")
@@ -69,6 +74,11 @@ var _river_blockers: Array[CollisionShape3D] = []
 var _bound_walls: Array[CollisionShape3D] = []
 var _heights := PackedFloat32Array()
 var _track_cache := PackedVector2Array()
+var _track_buckets: Dictionary = {} ## Grid cell -> indices of the track samples in it.
+var _road_heights := PackedFloat32Array() ## Smoothed ground height along the track.
+
+const TRACK_BUCKET := 8.0 ## Size of the lookup cells for track samples, in meters.
+const TRACK_SEARCH := 2 ## Cells searched around a point: covers at least 16 m, more than the pass.
 var _count: int = 0
 
 
@@ -81,15 +91,76 @@ func river_center_x(z: float) -> float:
 
 
 func height_at(x: float, z: float) -> float:
+	var h := _land_height(x, z)
+	# The track is cut into the slopes: across its width, the ground follows the smoothed road profile.
+	if not _road_heights.is_empty():
+		var nearest := _nearest_track_sample(x, z)
+		if nearest.x >= 0.0:
+			var bench_t := 1.0 - smoothstep(track_width * track_bench_half_width, track_width * track_bench_half_width + track_bench_falloff, nearest.y)
+			h = lerpf(h, _road_heights[int(nearest.x)], bench_t)
+	# Clamp to stay above the water everywhere except in the river channel.
+	var bank_t := smoothstep(river_half_width, river_half_width + river_bank_width, absf(x - river_center_x(z)))
+	return lerpf(river_bed_height, maxf(h, 0.05), bank_t)
+
+
+## Meadow, rolling ground and hills, before the river and the track are carved in.
+func _land_height(x: float, z: float) -> float:
 	var n: float = noise.get_noise_2d(x, z) if noise else 0.0
 	var h := n * undulation_height
 	var meadow_t := 1.0 - smoothstep(0.0, meadow_falloff, _distance_to_rect(x, z, meadow))
 	h = lerpf(h, h * meadow_undulation, meadow_t)
 	var hills_t := smoothstep(0.0, hills_ramp, _distance_to_rect(x, z, play_area))
+	# A pass: the hills sink along the track, which crosses the ridge at its lowest point.
+	if not _track_cache.is_empty():
+		var nearest := _nearest_track_sample(x, z)
+		if nearest.x >= 0.0:
+			hills_t *= 1.0 - col_depth * (1.0 - smoothstep(col_half_width * 0.5, col_half_width, nearest.y))
 	h += hills_t * hills_height * (0.75 + 0.5 * n)
-	# Clamp to stay above the water everywhere except in the river channel.
-	var bank_t := smoothstep(river_half_width, river_half_width + river_bank_width, absf(x - river_center_x(z)))
-	return lerpf(river_bed_height, maxf(h, 0.05), bank_t)
+	return h
+
+
+## Distance from a point to the track centerline (INF when far from it).
+func distance_to_track(x: float, z: float) -> float:
+	return _nearest_track_sample(x, z).y
+
+
+## Index and distance of the track sample closest to a point, or (-1, INF) when far from the track.
+func _nearest_track_sample(x: float, z: float) -> Vector2:
+	var cell := Vector2i(floori(x / TRACK_BUCKET), floori(z / TRACK_BUCKET))
+	var best := Vector2(-1.0, INF)
+	for dz in range(-TRACK_SEARCH, TRACK_SEARCH + 1):
+		for dx in range(-TRACK_SEARCH, TRACK_SEARCH + 1):
+			for index: int in _track_buckets.get(cell + Vector2i(dx, dz), []):
+				var d := _track_cache[index].distance_to(Vector2(x, z))
+				if d < best.y:
+					best = Vector2(index, d)
+	return best
+
+
+## Track samples and the smoothed road profile, needed before the heights are computed.
+func _prepare_track() -> void:
+	_road_heights = PackedFloat32Array()
+	_track_cache = track_samples()
+	_track_buckets.clear()
+	for i in _track_cache.size():
+		var cell := Vector2i(floori(_track_cache[i].x / TRACK_BUCKET), floori(_track_cache[i].y / TRACK_BUCKET))
+		if not _track_buckets.has(cell):
+			_track_buckets[cell] = []
+		_track_buckets[cell].append(i)
+	var raw := PackedFloat32Array()
+	for sample in _track_cache:
+		raw.append(_land_height(sample.x, sample.y))
+	var road := PackedFloat32Array()
+	road.resize(raw.size())
+	for i in raw.size():
+		var total := 0.0
+		var weight := 0.0
+		for k in range(-track_road_smoothing, track_road_smoothing + 1):
+			var j := clampi(i + k, 0, raw.size() - 1)
+			total += raw[j]
+			weight += 1.0
+		road[i] = total / weight
+	_road_heights = road
 
 
 ## Height of the generated (triangulated) surface, matching exactly what is rendered.
@@ -151,6 +222,7 @@ func generate() -> void:
 	if not is_node_ready():
 		return
 	_ensure_nodes()
+	_prepare_track()
 	var count := roundi(size / cell_size)
 	var half := size * 0.5
 	var heights := PackedFloat32Array()
@@ -190,8 +262,7 @@ func _build_track() -> void:
 	# two darker wheel ruts and a grass strip in the middle. Its width wanders a little, and it
 	# narrows out where it ends. Vertex colors are interpolated, so the bands blend softly.
 	_track_instance.mesh = null
-	var samples := track_samples()
-	_track_cache = samples
+	var samples := _track_cache
 	if samples.size() < 2:
 		return
 	var profile := _track_profile()
