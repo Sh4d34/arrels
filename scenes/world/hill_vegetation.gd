@@ -17,6 +17,7 @@ extends Node3D
 @export var river_clearance: float = 3.0 ## Beyond the river walls.
 @export var pine_height: float = 9.0 ## Above this ground height, pines take over.
 @export_range(-1.0, 1.0) var clearing_threshold: float = -0.15 ## Higher leaves more clearings.
+@export var keep_clear: Array[Rect2] = [] ## Areas left free (terraces, orchard, cortal...), on the XZ plane.
 
 @export_group("Colors")
 @export var trunk_color: Color = Color(0.42, 0.28, 0.19)
@@ -82,6 +83,9 @@ func _in_reach(p: Vector2) -> bool:
 
 
 func _free(p: Vector2) -> bool:
+	for area in keep_clear:
+		if area.has_point(p):
+			return false
 	if absf(p.x - terrain.river_center_x(p.y)) < terrain.blocker_half_width + river_clearance:
 		return false
 	return terrain.distance_to_track(p.x, p.y) > track_clearance

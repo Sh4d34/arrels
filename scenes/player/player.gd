@@ -129,7 +129,10 @@ func _is_reachable(body: Node3D) -> bool:
 	if absf(to_body.y) > interact_max_height:
 		return false
 	to_body.y = 0.0
-	if to_body.length() > interact_reach:
+	# Large interactables (a hut) declare their own radius, measured from their center.
+	var interactable: Object = body.get_meta("interactable") if body.has_meta("interactable") else null
+	var extra: float = interactable.call("get_interaction_radius") if interactable and interactable.has_method("get_interaction_radius") else 0.0
+	if to_body.length() > interact_reach + extra:
 		return false
 	if to_body.length() < 0.5:
 		return true

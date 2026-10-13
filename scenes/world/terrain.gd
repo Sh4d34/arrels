@@ -39,6 +39,11 @@ extends StaticBody3D
 @export var walk_bounds: Rect2 = Rect2(-45.0, -45.0, 90.0, 90.0) ## Invisible walls keep the player inside.
 @export var wall_height: float = 80.0
 
+@export_group("Terraces")
+@export var terrace_rect: Rect2 = Rect2(-14.0, -44.5, 18.0, 12.0) ## Flat part (x, z); bands are cut along z.
+@export var terrace_count: int = 4
+@export var terrace_end_ramp: float = 3.0 ## Meters over which the bands join the slope at both ends.
+
 @export_group("Track")
 @export var track_points: PackedVector2Array = PackedVector2Array() ## Control points on the XZ plane, smoothed into a curve.
 @export var track_width: float = 2.6
@@ -76,6 +81,7 @@ var _heights := PackedFloat32Array()
 var _track_cache := PackedVector2Array()
 var _track_buckets: Dictionary = {} ## Grid cell -> indices of the track samples in it.
 var _road_heights := PackedFloat32Array() ## Smoothed ground height along the track.
+var _terrace_heights := PackedFloat32Array()
 
 const TRACK_BUCKET := 8.0 ## Size of the lookup cells for track samples, in meters.
 const TRACK_SEARCH := 2 ## Cells searched around a point: covers at least 16 m, more than the pass.
@@ -91,7 +97,7 @@ func river_center_x(z: float) -> float:
 
 
 func height_at(x: float, z: float) -> float:
-	var h := _land_height(x, z)
+	var h := _terraced(x, z, _land_height(x, z))
 	# The track is cut into the slopes: across its width, the ground follows the smoothed road profile.
 	if not _road_heights.is_empty():
 		var nearest := _nearest_track_sample(x, z)
@@ -101,6 +107,35 @@ func height_at(x: float, z: float) -> float:
 	# Clamp to stay above the water everywhere except in the river channel.
 	var bank_t := smoothstep(river_half_width, river_half_width + river_bank_width, absf(x - river_center_x(z)))
 	return lerpf(river_bed_height, maxf(h, 0.05), bank_t)
+
+
+## Old terraces (feixes) on a slope: flat bands stepping up the hill, joining the natural slope
+## at both ends so they can be climbed from the sides. Dry-stone walls are drawn by TerraceWalls.
+func _terraced(x: float, z: float, h: float) -> float:
+	var r := terrace_rect
+	if terrace_count <= 0 or z < r.position.y or z > r.end.y:
+		return h
+	var inside_x := minf(x - r.position.x, r.end.x - x) # Negative outside the rectangle.
+	if inside_x < -terrace_end_ramp:
+		return h
+	var band := terrace_band(z)
+	return lerpf(h, terrace_heights()[band], smoothstep(-terrace_end_ramp, 0.0, inside_x))
+
+
+## Index of the terrace band at a z, 0 being the highest (farthest from the meadow).
+func terrace_band(z: float) -> int:
+	var depth := terrace_rect.size.y / terrace_count
+	return clampi(floori((z - terrace_rect.position.y) / depth), 0, terrace_count - 1)
+
+
+## Ground height of each terrace band, from the natural slope along its middle line.
+func terrace_heights() -> PackedFloat32Array:
+	if _terrace_heights.size() != terrace_count:
+		_terrace_heights.resize(terrace_count)
+		var depth := terrace_rect.size.y / terrace_count
+		for k in terrace_count:
+			_terrace_heights[k] = _land_height(terrace_rect.get_center().x, terrace_rect.position.y + (k + 0.5) * depth)
+	return _terrace_heights
 
 
 ## Meadow, rolling ground and hills, before the river and the track are carved in.
@@ -222,6 +257,7 @@ func generate() -> void:
 	if not is_node_ready():
 		return
 	_ensure_nodes()
+	_terrace_heights = PackedFloat32Array()
 	_prepare_track()
 	var count := roundi(size / cell_size)
 	var half := size * 0.5

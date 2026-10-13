@@ -83,5 +83,9 @@
 			"un": "Encore environ 1 heure de feu",
 			"plusieurs": "Encore environ {n} heures de feu"
 		}
+	},
+	"lieux": {
+		"cortal": "Un vieux cortal",
+		"cortal_carnet": "Les bergers du Conflent montaient leurs bêtes en estive et s'abritaient dans ces cabanes de pierre sèche, bâties sans mortier avec les pierres du versant."
 	}
 }
