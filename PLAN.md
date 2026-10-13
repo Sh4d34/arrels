@@ -240,5 +240,7 @@ Si la boucle ne convainc pas, mieux vaut la retravailler maintenant que de const
 
 ## Idées pour plus tard
 
+- Ne jamais modifier les fichiers des musiques « Relaxation » et « Yoga » : leur licence (CC BY-ND 4.0) l'interdit.
+
 - Un petit drapeau catalan (senyera) sur la cabane du joueur, en écho aux drapeaux qui ornent la croix du Canigou.
 - La pêche dans la rivière (truites de la Têt et de ses affluents), avec un poste de pêche près du pont.

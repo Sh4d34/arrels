@@ -22,7 +22,10 @@ func _physics_process(_delta: float) -> void:
 	var center_x := terrain.river_center_x(z)
 	var side := signf(player.global_position.x - center_x)
 	var shore_x := center_x + side * terrain.blocker_half_width
-	global_position = Vector3(shore_x, terrain.surface_height_at(shore_x, z), z)
+	# At the water level, not on the bank: in the gorges the water runs far below the banks,
+	# and the player's height check then keeps it out of reach from the hilltops.
+	var water_y := water.global_position.y if water else terrain.surface_height_at(shore_x, z)
+	global_position = Vector3(shore_x, water_y, z)
 	var on_bridge := false
 	for crossing in terrain.river_crossings:
 		if absf(z - crossing.x) < crossing.y + bridge_margin:

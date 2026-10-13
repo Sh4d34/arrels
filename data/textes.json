@@ -1,12 +1,27 @@
 {
 	"hud": {
-		"touches_action": "E / clic",
-		"invite_action": "{touches} — {invite}",
 		"nouveau_jour": "Un nouveau jour se lève (jour {jour})",
 		"horloge": "Jour {jour} · {heure} h · {moment}",
 		"gain": "+{quantite} {objet}",
 		"inventaire_ligne": "{objet} : {quantite}",
-		"raccourcis": "B : construction · P : potager"
+		"raccourcis": [
+			{
+				"touche": "B",
+				"action": "Construction"
+			},
+			{
+				"touche": "P",
+				"action": "Potager"
+			},
+			{
+				"touche": "M",
+				"action": "Musique"
+			}
+		],
+		"musique_activee": "Musique activée",
+		"musique_coupee": "Musique coupée",
+		"touche_action": "E",
+		"ou_clic": "ou clic"
 	},
 	"construction": {
 		"titre": "{mode} : {nom}",

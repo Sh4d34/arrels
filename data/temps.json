@@ -1,14 +1,29 @@
 {
-	"duree_jour_secondes": 120,
+	"duree_jour_secondes": 240,
 	"part_nuit": 0.25,
 	"heure_aube": 6,
 	"heure_crepuscule": 21,
 	"heure_depart": 8,
 	"periodes": [
-		{ "debut": 0, "nom": "nuit" },
-		{ "debut": 6, "nom": "matin" },
-		{ "debut": 12, "nom": "après-midi" },
-		{ "debut": 18, "nom": "soir" },
-		{ "debut": 21, "nom": "nuit" }
+		{
+			"debut": 0,
+			"nom": "nuit"
+		},
+		{
+			"debut": 6,
+			"nom": "matin"
+		},
+		{
+			"debut": 12,
+			"nom": "après-midi"
+		},
+		{
+			"debut": 18,
+			"nom": "soir"
+		},
+		{
+			"debut": 21,
+			"nom": "nuit"
+		}
 	]
 }

@@ -13,6 +13,12 @@ Arrels utilise des ressources libres. Merci à leurs auteurs.
 - **Watering Plants**, par [Ultra-Edward](https://freesound.org/people/Ultra-Edward/sounds/839096/) sur Freesound — licence CC0 (l'arrosage).
 - Ambiances (vent, oiseaux, grillons) et sons du feu : générés par programme pour le projet — CC0.
 
+## Musique
+
+- **Echoes of Calm**, par Joseph Sacco (album *Stillness & Light*), sur [Free Music Archive](https://freemusicarchive.org/music/joseph-sacco/stillness-light/echoes-of-calm/) — licence [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+- **Relaxation**, par Happiness In Music (album *Ambient*), sur [Free Music Archive](https://freemusicarchive.org/music/happiness-in-music/ambient-2/relaxation-3/) — licence [CC BY-ND 4.0](https://creativecommons.org/licenses/by-nd/4.0/). Utilisé sans aucune modification du fichier.
+- **Yoga**, par VibeDepot (album *Ambient*), sur [Free Music Archive](https://freemusicarchive.org/music/vibedepot/ambient-1/yoga-2/) — licence [CC BY-ND 4.0](https://creativecommons.org/licenses/by-nd/4.0/). Utilisé sans aucune modification du fichier.
+
 ## Moteur
 
 - [Godot Engine](https://godotengine.org) — licence MIT.

@@ -31,6 +31,7 @@ extends StaticBody3D
 @export var meander_frequency: float = 0.07
 @export var blocker_segment_length: float = 4.0
 @export var blocker_half_width: float = 4.6 ## Covers the water up to its shoreline.
+@export var blocker_height: float = 60.0 ## From the riverbed up, above the highest hills.
 ## Gaps in the river walls for bridges: x = z of the crossing on the river centerline, y = half width.
 @export var river_crossings: PackedVector2Array = PackedVector2Array()
 
@@ -43,6 +44,12 @@ extends StaticBody3D
 @export var track_width: float = 2.6
 @export var track_color: Color = Color(0.46, 0.37, 0.25)
 @export var track_lift: float = 0.06 ## Height above the ground, to avoid flickering.
+@export var track_rut_color: Color = Color(0.36, 0.28, 0.19) ## The two wheel ruts.
+@export var track_center_color: Color = Color(0.4, 0.45, 0.24) ## Grass strip between the ruts.
+@export var track_center_strip: bool = true
+@export_range(0.0, 1.0) var track_width_wander: float = 0.3 ## How much the width varies along the track.
+@export_range(0.0, 0.5) var track_tint_variation: float = 0.12
+@export var track_end_taper_samples: int = 6 ## The track narrows over this many meters where it ends.
 @export var track_sample_spacing: float = 1.0
 
 @export_group("Colors")
@@ -179,45 +186,76 @@ func generate() -> void:
 
 
 func _build_track() -> void:
-	# A dirt ribbon laid on the surface, a few vertices across so it hugs the ground.
+	# A country track laid on the surface: grassy verges blending into the meadow, light dirt,
+	# two darker wheel ruts and a grass strip in the middle. Its width wanders a little, and it
+	# narrows out where it ends. Vertex colors are interpolated, so the bands blend softly.
 	_track_instance.mesh = null
 	var samples := track_samples()
 	_track_cache = samples
 	if samples.size() < 2:
 		return
-	const ACROSS := 4
+	var profile := _track_profile()
 	var rows: Array[PackedVector3Array] = []
+	var row_colors: Array[PackedColorArray] = []
 	for k in samples.size():
 		var dir := (samples[mini(k + 1, samples.size() - 1)] - samples[maxi(k - 1, 0)]).normalized()
-		var side := Vector2(-dir.y, dir.x) * track_width
+		var wander: float = noise.get_noise_2d(k * 9.0, 300.0) if noise else 0.0
+		var end_taper := pow(clampf(float(samples.size() - 1 - k) / track_end_taper_samples, 0.0, 1.0), 0.7)
+		var width := track_width * (1.0 + track_width_wander * wander) * lerpf(0.3, 1.0, end_taper)
+		var side := Vector2(-dir.y, dir.x) * width
+		var tint := 1.0 + (noise.get_noise_2d(k * 23.0, 900.0) if noise else 0.0) * track_tint_variation
 		var row := PackedVector3Array()
-		for a in ACROSS + 1:
-			var p := samples[k] + side * (float(a) / ACROSS - 0.5)
-			row.append(Vector3(p.x, surface_height_at(p.x, p.y) + track_lift, p.y))
+		var colors := PackedColorArray()
+		for band: Array in profile:
+			var p := samples[k] + side * float(band[0])
+			row.append(Vector3(p.x, surface_height_at(p.x, p.y) + float(band[1]), p.y))
+			var color: Color = band[2]
+			colors.append(color if band[3] else Color(color.r * tint, color.g * tint, color.b * tint))
 		rows.append(row)
+		row_colors.append(colors)
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	st.set_color(track_color)
 	for k in rows.size() - 1:
-		for a in ACROSS:
-			_add_track_triangle(st, rows[k][a], rows[k][a + 1], rows[k + 1][a])
-			_add_track_triangle(st, rows[k][a + 1], rows[k + 1][a + 1], rows[k + 1][a])
+		for a in profile.size() - 1:
+			_add_track_triangle(st, [rows[k][a], rows[k][a + 1], rows[k + 1][a]],
+				[row_colors[k][a], row_colors[k][a + 1], row_colors[k + 1][a]])
+			_add_track_triangle(st, [rows[k][a + 1], rows[k + 1][a + 1], rows[k + 1][a]],
+				[row_colors[k][a + 1], row_colors[k + 1][a + 1], row_colors[k + 1][a]])
 	_track_instance.mesh = st.commit()
 	_track_instance.material_override = material
 
 
-func _add_track_triangle(st: SurfaceTool, v0: Vector3, v1: Vector3, v2: Vector3) -> void:
-	var normal := (v0 - v2).cross(v0 - v1).normalized()
+## Bands across the track, from one side to the other: offset (in track widths from the centerline),
+## lift above the ground, color, and whether the color stays exact (verges match the meadow).
+func _track_profile() -> Array:
+	# Verges take the meadow's average tint (its faces mix fresh and dry grass).
+	var verge := grass_color.lerp(dry_grass_color, 0.5)
+	var center := track_center_color if track_center_strip else track_color
+	return [
+		[-0.62, 0.02, verge, true],
+		[-0.5, track_lift, track_color.lightened(0.08), false],
+		[-0.34, track_lift - 0.02, track_rut_color, false],
+		[-0.18, track_lift, track_color, false],
+		[-0.06, track_lift, center, false],
+		[0.06, track_lift, center, false],
+		[0.18, track_lift, track_color, false],
+		[0.34, track_lift - 0.02, track_rut_color, false],
+		[0.5, track_lift, track_color.lightened(0.08), false],
+		[0.62, 0.02, verge, true],
+	]
+
+
+func _add_track_triangle(st: SurfaceTool, points: Array, colors: Array) -> void:
+	var normal: Vector3 = (points[0] - points[2]).cross(points[0] - points[1]).normalized()
 	if normal.y < 0.0:
 		# Winding depends on the track direction: flip to keep the face pointing up.
-		var tmp := v1
-		v1 = v2
-		v2 = tmp
+		points = [points[0], points[2], points[1]]
+		colors = [colors[0], colors[2], colors[1]]
 		normal = -normal
 	st.set_normal(normal)
-	st.add_vertex(v0)
-	st.add_vertex(v1)
-	st.add_vertex(v2)
+	for i in 3:
+		st.set_color(colors[i])
+		st.add_vertex(points[i])
 
 
 func _ensure_nodes() -> void:
@@ -297,10 +335,12 @@ func _add_river_blocker(z0: float, z1: float) -> void:
 	var x0 := river_center_x(z0)
 	var x1 := river_center_x(z1)
 	var box := BoxShape3D.new()
-	box.size = Vector3(blocker_half_width * 2.0, 4.0, Vector2(x1 - x0, z1 - z0).length() + 0.5)
+	# Taller than any hill: the river crosses the hills in a gorge, and lower walls could be
+	# walked over from the hilltops (or landed on from above).
+	box.size = Vector3(blocker_half_width * 2.0, blocker_height, Vector2(x1 - x0, z1 - z0).length() + 0.5)
 	var blocker := CollisionShape3D.new()
 	blocker.shape = box
-	blocker.position = Vector3((x0 + x1) * 0.5, river_bed_height + 2.0, (z0 + z1) * 0.5)
+	blocker.position = Vector3((x0 + x1) * 0.5, river_bed_height + blocker_height * 0.5, (z0 + z1) * 0.5)
 	blocker.rotation.y = atan2(x1 - x0, z1 - z0)
 	add_child(blocker, false, Node.INTERNAL_MODE_BACK)
 	_river_blockers.append(blocker)

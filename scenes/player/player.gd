@@ -23,6 +23,7 @@ signal interaction_prompt_changed(prompt: String, hint: String, possible: bool)
 
 @export_group("Interaction")
 @export var interact_reach: float = 2.6 ## Horizontal distance to an interactable's origin.
+@export var interact_max_height: float = 2.0 ## Vertical gap allowed (no reaching the river from a cliff).
 @export var interact_cooldown: float = 0.45 ## Seconds between two hits when holding the key.
 @export_range(0.0, 180.0) var interact_max_angle_deg: float = 110.0 ## Ignored behind the player.
 @export var hover_pick_radius: float = 90.0 ## Pixels around the mouse to pick an interactable on screen.
@@ -125,6 +126,8 @@ func _interact_with_target() -> void:
 
 func _is_reachable(body: Node3D) -> bool:
 	var to_body := body.global_position - global_position
+	if absf(to_body.y) > interact_max_height:
+		return false
 	to_body.y = 0.0
 	if to_body.length() > interact_reach:
 		return false

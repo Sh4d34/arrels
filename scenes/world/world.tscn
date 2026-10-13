@@ -3148,6 +3148,24 @@ transform = Transform3D(-1.436, 0, -0.3853, 0, 1.487, 0, 0.3853, 0, -1.436, 11.6
 [node name="Pebble_Round_5_634" parent="GroundCover" instance=ExtResource("m44_pebble_round_5")]
 transform = Transform3D(-1.002, 0, 1.207, 0, 1.569, 0, -1.207, 0, -1.002, 11.28, 0, -7.11)
 
+[node name="Pebble_Square_4_635" parent="GroundCover" instance=ExtResource("m43_pebble_square_4")]
+transform = Transform3D(0.1317, 0, 1.147, 0, 1.155, 0, -1.147, 0, 0.1317, 2.65, 0, 60.09)
+
+[node name="Pebble_Square_4_636" parent="GroundCover" instance=ExtResource("m43_pebble_square_4")]
+transform = Transform3D(-0.1123, 0, -1.009, 0, 1.016, 0, 1.009, 0, -0.1123, 4.02, 0, 53.85)
+
+[node name="Pebble_Square_2_637" parent="GroundCover" instance=ExtResource("m51_pebble_square_2")]
+transform = Transform3D(-0.448, 0, 0.6911, 0, 0.8236, 0, -0.6911, 0, -0.448, 7.16, 0, 48.35)
+
+[node name="Pebble_Round_4_638" parent="GroundCover" instance=ExtResource("m50_pebble_round_4")]
+transform = Transform3D(-0.9494, 0, 0.5508, 0, 1.098, 0, -0.5508, 0, -0.9494, 8.36, 0, 43.18)
+
+[node name="Pebble_Square_4_639" parent="GroundCover" instance=ExtResource("m43_pebble_square_4")]
+transform = Transform3D(0.7384, 0, -0.8028, 0, 1.091, 0, 0.8028, 0, 0.7384, 1.93, 0, 26.63)
+
+[node name="Pebble_Square_6_640" parent="GroundCover" instance=ExtResource("m46_pebble_square_6")]
+transform = Transform3D(0.4146, 0, -0.8982, 0, 0.9893, 0, 0.8982, 0, 0.4146, -0.15, 0, 21.6)
+
 [node name="Canigou" parent="." instance=ExtResource("canigou")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -420, 0, -1450)
 

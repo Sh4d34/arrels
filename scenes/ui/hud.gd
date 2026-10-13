@@ -26,12 +26,16 @@ var _known_quantities: Dictionary[String, int] = {}
 @onready var _build_carnet: Label = %BuildCarnet
 @onready var _build_status: Label = %BuildStatus
 @onready var _build_help: Label = %BuildHelp
-@onready var _shortcuts: Label = %Shortcuts
+@onready var _shortcuts: PanelContainer = %Shortcuts
+@onready var _shortcut_row: HBoxContainer = %ShortcutRow
+@onready var _prompt_key: KeyCap = %PromptKey
+@onready var _prompt_or: Label = %PromptOr
 
 
 func _ready() -> void:
 	Inventory.changed.connect(_on_inventory_changed)
 	TimeManager.new_day.connect(_on_new_day)
+	Music.toggled.connect(func(on: bool) -> void: _show_toast(GameData.text("hud.musique_activee" if on else "hud.musique_coupee")))
 	TimeManager.hour_changed.connect(func(_hour: int) -> void: _refresh_clock())
 	_refresh_clock()
 	if player:
@@ -40,7 +44,9 @@ func _ready() -> void:
 		build_mode.mode_changed.connect(_on_build_mode_changed)
 		build_mode.placement_changed.connect(_on_placement_changed)
 		build_mode.built.connect(_on_built)
-	_shortcuts.text = GameData.text("hud.raccourcis")
+	_fill_shortcuts()
+	_prompt_key.key_text = GameData.text("hud.touche_action")
+	_prompt_or.text = GameData.text("hud.ou_clic")
 	_on_prompt_changed("", "", false)
 	_on_build_mode_changed(false, "")
 	_refresh_inventory()
@@ -48,12 +54,31 @@ func _ready() -> void:
 
 func _on_prompt_changed(prompt: String, hint: String, possible: bool) -> void:
 	_prompt_panel.visible = prompt != ""
-	if possible:
-		_prompt_label.text = GameData.text("hud.invite_action", {"touches": GameData.text("hud.touches_action"), "invite": prompt})
-	else:
-		_prompt_label.text = prompt
+	# The key and "or click" only show when the prompt is an action, not an information.
+	_prompt_key.visible = possible
+	_prompt_or.visible = possible
+	_prompt_label.text = prompt
 	_prompt_hint.text = hint
 	_prompt_hint.visible = hint != ""
+
+
+## One key cap and its action name per shortcut listed in data/textes.json (hud.raccourcis).
+func _fill_shortcuts() -> void:
+	for entry: Dictionary in GameData.texts.get("hud", {}).get("raccourcis", []):
+		var key := KeyCap.new()
+		key.key_text = entry.get("touche", "")
+		key.font_size = 15
+		_shortcut_row.add_child(key)
+		var label := Label.new()
+		label.text = entry.get("action", "")
+		label.label_settings = _prompt_or.label_settings
+		label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		_shortcut_row.add_child(label)
+		var gap := Control.new()
+		gap.custom_minimum_size.x = 6
+		_shortcut_row.add_child(gap)
+	if _shortcut_row.get_child_count() > 0:
+		_shortcut_row.get_child(_shortcut_row.get_child_count() - 1).queue_free()
 
 
 func _on_new_day(day: int) -> void:

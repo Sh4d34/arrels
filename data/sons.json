@@ -250,5 +250,19 @@
 			"volume_db": -12,
 			"variation_hauteur": 0.08
 		}
+	},
+	"musique": {
+		"volume_db": -20,
+		"fondu_secondes": 5,
+		"premier_morceau_secondes": 25,
+		"silence_min_secondes": 60,
+		"silence_max_secondes": 180,
+		"jour": [
+			"res://assets/audio/musique/echoes_of_calm.mp3",
+			"res://assets/audio/musique/relaxation.mp3"
+		],
+		"nuit": [
+			"res://assets/audio/musique/yoga.mp3"
+		]
 	}
 }
