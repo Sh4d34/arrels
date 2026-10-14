@@ -40,4 +40,4 @@ Phase 1, prototype. Voir PLAN.md pour les jalons.
 
 ## Façon de travailler
 - Un jalon à la fois ; proposer un plan d'implémentation et attendre validation avant d'écrire le code
-- Le développeur apprend Godot (vient du web) : expliquer les concepts Godot utilisés
+- Le développeur vient du web : expliquer brièvement les concepts Godot utilisés
