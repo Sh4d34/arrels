@@ -39,6 +39,20 @@ extends Node
 @export var ambient_max_energy: float = 0.6
 @export var fog_color: Gradient
 
+@export_group("Compatibility renderer")
+## The web build uses the Compatibility renderer: no ambient occlusion, so shade looks washed out.
+## These bring it closer to the desktop look.
+@export var compatibility_ambient_scale: float = 0.6
+@export var compatibility_sun_scale: float = 0.8
+@export var compatibility_exposure: float = 0.85
+
+var _compatibility := RenderingServer.get_current_rendering_method() == "gl_compatibility"
+
+
+func _ready() -> void:
+	if _compatibility and world_environment and not Engine.is_editor_hint():
+		world_environment.environment.tonemap_exposure = compatibility_exposure
+
 
 func _process(_delta: float) -> void:
 	if not (sun and moon and world_environment):
@@ -56,6 +70,8 @@ func apply(hour: float, dawn: float, dusk: float) -> void:
 
 	sun.light_color = sun_color.sample(x)
 	sun.light_energy = sun_energy.sample(x) * sun_max_energy
+	if _compatibility and not Engine.is_editor_hint():
+		sun.light_energy *= compatibility_sun_scale
 	sun.shadow_enabled = sun.light_energy > 0.02
 	sun.basis = Basis.looking_at(-sun_dir)
 	moon.light_energy = moon_energy.sample(x) * moon_max_energy
@@ -64,6 +80,8 @@ func apply(hour: float, dawn: float, dusk: float) -> void:
 	var environment := world_environment.environment
 	environment.ambient_light_color = ambient_color.sample(x)
 	environment.ambient_light_energy = ambient_energy.sample(x) * ambient_max_energy
+	if _compatibility and not Engine.is_editor_hint():
+		environment.ambient_light_energy *= compatibility_ambient_scale
 	environment.fog_light_color = fog_color.sample(x)
 
 	var sky := environment.sky.sky_material as ShaderMaterial

@@ -40,7 +40,7 @@ extends Node3D
 @export var bounds: Rect2 = Rect2(-28.0, -28.0, 56.0, 56.0) ## Pivot limits on the XZ plane.
 
 @export_group("Initial view")
-@export var distance: float = 14.0
+@export var distance: float = 10.0
 @export var pitch_deg: float = -35.0
 
 var _current_distance: float
