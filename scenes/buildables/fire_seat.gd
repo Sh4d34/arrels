@@ -30,3 +30,5 @@ func interact(actor: Node3D) -> void:
 		actor.call("stand_up")
 	elif occupant == null and actor.has_method("sit_on"):
 		actor.call("sit_on", self)
+		var fire := get_parent() as Campfire
+		Events.action_done.emit("s_asseoir", fire.buildable_id if fire else "")

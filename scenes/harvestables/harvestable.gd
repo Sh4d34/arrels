@@ -80,6 +80,7 @@ func _fell(actor: Node3D) -> void:
 	for drop: Dictionary in _data.get("recolte", []):
 		Inventory.add(drop.item, int(drop.qte))
 	harvested.emit(harvestable_id)
+	Events.action_done.emit("recolter", harvestable_id)
 
 	if _data.get("disparition", "chute") == "ramassage":
 		_pick_up()

@@ -243,6 +243,7 @@ func _try_place() -> void:
 	building.scale = full_scale * 0.6
 	building.create_tween().tween_property(building, "scale", full_scale, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	built.emit(_buildable_id)
+	Events.action_done.emit("construire", _buildable_id)
 
 
 func _set_placement(valid: bool, reason: String) -> void:

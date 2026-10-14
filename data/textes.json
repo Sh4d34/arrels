@@ -95,5 +95,12 @@
 		"titre": "Qui arrive au pied du Canigou ?",
 		"elle": "Elle",
 		"lui": "Lui"
+	},
+	"projets": {
+		"titre": "Projet : {titre}",
+		"progression": "({fait} / {total})",
+		"accompli": "Projet accompli : {titre}",
+		"accompli_titre": "Projet accompli !",
+		"fin": "Tous les projets sont accomplis. D'autres viendront…"
 	}
 }

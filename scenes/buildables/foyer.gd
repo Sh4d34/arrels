@@ -94,6 +94,7 @@ func interact(_actor: Node3D) -> void:
 		"ajouter":
 			Inventory.remove_all(_step("ajout").get("cout", []))
 			_burn_until += float(_step("ajout").get("heures", 1.0))
+	Events.action_done.emit(action.id, buildable_id)
 	_refresh()
 
 

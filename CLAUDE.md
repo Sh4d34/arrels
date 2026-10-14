@@ -31,7 +31,7 @@ Cadre inspiré des environs de Prades (Conflent, Pyrénées-Orientales). Textes 
 ## Arborescence
 - assets/ : modèles, textures, sons (Git LFS)
 - data/ : contenus du jeu en JSON
-- autoload/ : singletons globaux (game_data, inventory, time_manager)
+- autoload/ : singletons globaux (game_data, inventory, time_manager, projects, sfx, music ; events : bus de signaux entre systèmes)
 - scenes/ : world, player, harvestables, buildables, crops, ui
 - tests/
 

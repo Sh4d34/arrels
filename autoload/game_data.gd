@@ -13,6 +13,7 @@ var sounds: Dictionary = {} ## data/sons.json: ambience loops and sound effect e
 var texts: Dictionary = {} ## data/textes.json: every text shown to the player, outside content data.
 var modes: Dictionary = {} ## data/modes.json: building modes (construction, garden...), by id.
 var characters: Dictionary = {} ## data/personnages.json: playable characters, animations and gestures.
+var projects: Array[Dictionary] = [] ## data/projets.json: the thread of projects, in order.
 
 
 func _ready() -> void:
@@ -25,6 +26,7 @@ func _ready() -> void:
 	texts = _load_object("textes.json")
 	modes = _load_collection("modes.json")
 	characters = _load_object("personnages.json")
+	projects.assign(_load_collection("projets.json").values())
 	_validate()
 
 
@@ -143,6 +145,26 @@ func _validate() -> void:
 		_check_items(crop.get("recolte", []) + [{"item": crop.get("graine", "")}], context)
 		if not ResourceLoader.exists(crop.get("modele_plant", "")):
 			push_error("GameData: %s has no plant model at '%s'" % [context, crop.get("modele_plant", "")])
+
+	for project: Dictionary in projects:
+		_check_project(project)
+
+
+## A project's objective must point to existing content: an item to gain, a buildable to build,
+## or anything acted upon (harvestable, crop, buildable).
+func _check_project(project: Dictionary) -> void:
+	var objective: Dictionary = project.get("objectif", {})
+	var target: String = objective.get("cible", "")
+	var known: bool
+	match objective.get("action", ""):
+		"obtenir":
+			known = items.has(target)
+		"construire":
+			known = buildables.has(target)
+		_:
+			known = harvestables.has(target) or crops.has(target) or buildables.has(target)
+	if not known:
+		push_error("GameData: project '%s' refers to unknown target '%s'" % [project.id, target])
 
 
 func _check_items(lines: Array, context: String) -> void:

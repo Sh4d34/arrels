@@ -52,6 +52,7 @@ func interact(_actor: Node3D) -> void:
 	else:
 		Inventory.remove_all(_rules.get("entree", []))
 		_batches.append(TimeManager.day)
+	Events.action_done.emit(action.id, buildable_id)
 	_refresh_visual()
 
 

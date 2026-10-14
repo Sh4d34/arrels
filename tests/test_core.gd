@@ -18,6 +18,7 @@ func _initialize() -> void:
 	_test_clock()
 	_test_modes()
 	_test_campfire()
+	_test_projects()
 	print("Tests: %s (%d vérifications)" % ["OK" if _failures == 0 else "%d échec(s)" % _failures, _checks])
 	quit(1 if _failures > 0 else 0)
 
@@ -212,3 +213,40 @@ func _test_campfire() -> void:
 	fire._process(0.0)
 	_check(fire.state == fire.State.EMPTY, "les braises finissent par s'éteindre")
 	fire.queue_free()
+
+
+func _test_projects() -> void:
+	var game_data: Node = root.get_node("GameData")
+	var events: Node = root.get_node("Events")
+	var projects: Node = root.get_node("Projects")
+	var inventory: Node = root.get_node("Inventory")
+	_check(game_data.projects.size() >= 2, "projets.json contient le fil de projets")
+	_check(game_data.projects[0].id == "paquet", "le premier projet est le paquet de bienvenue")
+	projects.reset()
+	_check(projects.current().id == "paquet", "on commence par le premier projet")
+	events.action_done.emit("recolter", "arbre_friche")
+	_check(projects.current().id == "paquet", "une autre action ne valide pas le projet")
+	var completed: Array = []
+	projects.project_completed.connect(func(project: Dictionary) -> void: completed.append(project.id))
+	# The composter is built ahead of time: it will count when its project comes.
+	events.action_done.emit("construire", "composteur")
+	events.action_done.emit("recolter", "paquet_bienvenue")
+	_check(projects.current().id == "bois", "ouvrir le paquet passe au projet suivant")
+	inventory.add("bois", 5)
+	_check(projects.progress() == 5 and projects.goal() == 8, "le bois récolté fait avancer le projet")
+	inventory.remove("bois", 5)
+	_check(projects.progress() == 5, "dépenser du bois ne fait pas reculer le projet")
+	inventory.add("bois", 3)
+	_check(projects.current().id == "semis", "un composteur déjà construit valide aussitôt son projet")
+	_check(completed == ["paquet", "bois", "composteur"], "chaque projet accompli est annoncé")
+	for i in game_data.projects.size():
+		if projects.current().is_empty():
+			break
+		var objective: Dictionary = projects.current().objectif
+		if objective.action == "obtenir":
+			inventory.add(objective.cible, int(objective.nombre))
+		else:
+			for n in int(objective.get("nombre", 1)):
+				events.action_done.emit(objective.action, objective.cible)
+	_check(projects.current().is_empty(), "tous les projets peuvent être accomplis")
+	projects.reset()

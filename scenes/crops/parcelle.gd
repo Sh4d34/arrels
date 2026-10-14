@@ -95,7 +95,11 @@ func interact(_actor: Node3D) -> void:
 			Inventory.remove(_water().item, int(_water().qte))
 			last_watered_day = TimeManager.day
 		"recolter":
+			Events.action_done.emit("recolter", crop_id)
 			_harvest()
+	if action.id != "recolter":
+		# Garden work before sowing concerns the plot itself, then the crop.
+		Events.action_done.emit(action.id, crop_id if crop_id != "" else buildable_id)
 	_refresh_visual()
 
 

@@ -17,9 +17,11 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+Events="*res://autoload/events.gd"
 GameData="*res://autoload/game_data.gd"
 Inventory="*res://autoload/inventory.gd"
 TimeManager="*res://autoload/time_manager.gd"
+Projects="*res://autoload/projects.gd"
 Sfx="*res://autoload/sfx.gd"
 Music="*res://autoload/music.gd"
 

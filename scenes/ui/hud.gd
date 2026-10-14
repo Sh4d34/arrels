@@ -1,7 +1,7 @@
 class_name Hud
 extends CanvasLayer
 ## On-screen information: day, inventory, interaction prompt with its carnet hint,
-## short messages and the build panel.
+## short messages, the current project and the build panel.
 
 @export var player: Player
 @export var build_mode: BuildMode
@@ -9,8 +9,10 @@ extends CanvasLayer
 @export var invalid_status_color: Color = Color(1.0, 0.6, 0.5)
 @export var toast_duration: float = 1.6
 @export var toast_rise: float = 30.0
+@export var project_carnet_duration: float = 8.0 ## Seconds a completed project's carnet stays shown.
 
 var _known_quantities: Dictionary[String, int] = {}
+var _celebrations := 0 ## Completed projects whose carnet is still shown.
 
 @onready var _inventory_panel: PanelContainer = %InventoryPanel
 @onready var _inventory_list: VBoxContainer = %InventoryList
@@ -30,6 +32,10 @@ var _known_quantities: Dictionary[String, int] = {}
 @onready var _shortcut_row: HBoxContainer = %ShortcutRow
 @onready var _prompt_key: KeyCap = %PromptKey
 @onready var _prompt_or: Label = %PromptOr
+@onready var _project_panel: PanelContainer = %ProjectPanel
+@onready var _project_title: Label = %ProjectTitle
+@onready var _project_step: Label = %ProjectStep
+@onready var _project_carnet: Label = %ProjectCarnet
 
 
 func _ready() -> void:
@@ -44,12 +50,16 @@ func _ready() -> void:
 		build_mode.mode_changed.connect(_on_build_mode_changed)
 		build_mode.placement_changed.connect(_on_placement_changed)
 		build_mode.built.connect(_on_built)
+	Projects.project_changed.connect(func(_project: Dictionary) -> void: _refresh_project())
+	Projects.project_completed.connect(_on_project_completed)
+	Events.action_done.connect(func(_action: String, _target: String) -> void: _refresh_project())
 	_fill_shortcuts()
 	_prompt_key.key_text = GameData.text("hud.touche_action")
 	_prompt_or.text = GameData.text("hud.ou_clic")
 	_on_prompt_changed("", "", false)
 	_on_build_mode_changed(false, "")
 	_refresh_inventory()
+	_refresh_project()
 
 
 func _on_prompt_changed(prompt: String, hint: String, possible: bool) -> void:
@@ -96,11 +106,13 @@ func _on_inventory_changed(item_id: String, quantity: int) -> void:
 		_show_toast(GameData.text("hud.gain", {"quantite": gained, "objet": GameData.item_name(item_id)}))
 	_refresh_inventory()
 	_refresh_build_cost()
+	_refresh_project()
 
 
 func _on_build_mode_changed(active: bool, buildable_id: String) -> void:
 	_build_panel.visible = active
 	_shortcuts.visible = not active
+	_project_panel.visible = not active # Both panels sit top right.
 	if not active:
 		return
 	var data := GameData.get_buildable(buildable_id)
@@ -131,6 +143,37 @@ func _on_placement_changed(valid: bool, reason: String) -> void:
 
 func _on_built(buildable_id: String) -> void:
 	_show_toast(GameData.text("construction.construit", {"nom": GameData.get_buildable(buildable_id).get("nom", buildable_id)}))
+
+
+func _on_project_completed(project: Dictionary) -> void:
+	_show_toast(GameData.text("projets.accompli", {"titre": project.get("titre", "")}))
+	_celebrations += 1
+	_project_title.text = GameData.text("projets.accompli_titre")
+	_project_step.text = project.get("titre", "")
+	_project_step.visible = true
+	_project_carnet.text = project.get("carnet", "")
+	_project_carnet.visible = _project_carnet.text != ""
+	await get_tree().create_timer(project_carnet_duration).timeout
+	_celebrations -= 1
+	_refresh_project()
+
+
+## The current project with its instruction and progress, unless a completed one is being shown.
+func _refresh_project() -> void:
+	if _celebrations > 0:
+		return
+	var project := Projects.current()
+	_project_carnet.visible = false
+	if project.is_empty():
+		_project_title.text = GameData.text("projets.fin")
+		_project_step.visible = false
+		return
+	_project_title.text = GameData.text("projets.titre", {"titre": project.get("titre", "")})
+	var step: String = project.get("consigne", "")
+	if Projects.goal() > 1:
+		step += " " + GameData.text("projets.progression", {"fait": Projects.progress(), "total": Projects.goal()})
+	_project_step.text = step
+	_project_step.visible = true
 
 
 func _refresh_build_cost() -> void:
