@@ -2,7 +2,7 @@ class_name CharacterModel
 extends Node3D
 ## The player's look and animations, from data/personnages.json: a base body, hair pieces skinned
 ## on the same skeleton, a straw hat on the head bone, locomotion blended by speed, and gestures
-## (cutting, kneeling, picking up...) played on top of it.
+## (cutting, kneeling, picking up...) played on top of it, with a tool in hand when the gesture needs one.
 
 @export var hat_height: float = 0.15 ## Above the head bone, in meters (rest pose).
 @export var hat_forward: float = 0.02
@@ -16,6 +16,8 @@ var _body: Node3D
 var _skeleton: Skeleton3D
 var _tree: AnimationTree
 var _gesture_node: AnimationNodeAnimation
+var _tools: Dictionary = {} ## Tool id -> its node in the hand, hidden outside gestures.
+var _tool_time_left: float = 0.0
 
 
 ## Builds the character with this id (see data/personnages.json); replaces the previous one.
@@ -43,13 +45,27 @@ func set_character(character_id: String) -> void:
 	for piece_path: String in definition.get("pieces", []):
 		_attach_skinned((load(piece_path) as PackedScene).instantiate(), Color.from_string(definition.get("couleur_cheveux", "#ffffff"), Color.WHITE))
 	_add_hat()
+	_add_tools()
 	_setup_animation()
+
+
+func _process(delta: float) -> void:
+	if _tool_time_left > 0.0:
+		_tool_time_left -= delta
+		if _tool_time_left <= 0.0:
+			_show_tool("")
 
 
 ## Locomotion blend: idle, walk, jog and sprint follow the ground speed, in m/s.
 func set_speed(speed: float) -> void:
 	if _tree:
 		_tree.set("parameters/move/blend_position", speed)
+
+
+## Seated posture (looping) or back to the locomotion blend.
+func set_seated(seated: bool) -> void:
+	if _tree:
+		_tree.set("parameters/posture/transition_request", "assis" if seated else "debout")
 
 
 ## Plays a gesture from data/personnages.json; returns how long it lasts, in seconds.
@@ -61,7 +77,10 @@ func play_gesture(gesture: String) -> float:
 	_gesture_node.animation = definition.animation
 	_tree.set("parameters/gesture_speed/scale", speed)
 	_tree.set("parameters/gesture/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
-	return _library.get_animation(definition.animation).length / speed
+	var duration := _library.get_animation(definition.animation).length / speed
+	_show_tool(definition.get("outil", ""))
+	_tool_time_left = duration
+	return duration
 
 
 func _definition(character_id: String) -> Dictionary:
@@ -130,7 +149,7 @@ func _add_hat() -> void:
 	var material := StandardMaterial3D.new()
 	material.albedo_color = straw_color
 	material.roughness = 1.0
-	for part in [[0.3, 0.3, 0.03, 0.0], [0.13, 0.16, 0.13, 0.07]]:
+	for part in [[0.24, 0.24, 0.025, 0.0], [0.1, 0.125, 0.11, 0.06]]:
 		var cylinder := CylinderMesh.new()
 		cylinder.top_radius = part[0]
 		cylinder.bottom_radius = part[1]
@@ -144,6 +163,67 @@ func _add_hat() -> void:
 		# No cast shadow: the brim would otherwise hide the face in shade.
 		mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		hat.add_child(mesh)
+
+
+## The tools of data/personnages.json ("outils"), built from simple shapes and held by a hand bone.
+## Each one is drawn with its handle along +Y, the grip at its origin.
+func _add_tools() -> void:
+	_tools.clear()
+	_tool_time_left = 0.0
+	var tools: Dictionary = GameData.characters.get("outils", {})
+	for tool_id: String in tools:
+		var definition: Dictionary = tools[tool_id]
+		if _skeleton.find_bone(definition.get("os", "")) < 0:
+			push_warning("CharacterModel: no bone '%s' for tool '%s'" % [definition.get("os", ""), tool_id])
+			continue
+		var attachment := BoneAttachment3D.new()
+		attachment.bone_name = definition.os
+		_skeleton.add_child(attachment)
+		var tool := Node3D.new()
+		tool.position = _vector(definition.get("prise_position", []))
+		tool.rotation_degrees = _vector(definition.get("prise_rotation", []))
+		tool.visible = false
+		attachment.add_child(tool)
+		for part: Dictionary in definition.get("pieces", []):
+			tool.add_child(_tool_part(part))
+		_tools[tool_id] = tool
+
+
+func _tool_part(part: Dictionary) -> MeshInstance3D:
+	var size: Array = part.get("taille", [])
+	var shape: PrimitiveMesh
+	if part.get("forme") == "cylindre":
+		var cylinder := CylinderMesh.new()
+		cylinder.top_radius = size[0]
+		cylinder.bottom_radius = size[0]
+		cylinder.height = size[1]
+		cylinder.radial_segments = 6
+		cylinder.rings = 1
+		shape = cylinder
+	else:
+		var box := BoxMesh.new()
+		box.size = _vector(size)
+		shape = box
+	var material := StandardMaterial3D.new()
+	material.albedo_color = Color.from_string(part.get("couleur", "#ffffff"), Color.WHITE)
+	material.roughness = 0.9
+	shape.material = material
+	var mesh := MeshInstance3D.new()
+	mesh.mesh = shape
+	mesh.position = _vector(part.get("position", []))
+	return mesh
+
+
+## Shows this tool in the hand, or none with an empty id.
+func _show_tool(tool_id: String) -> void:
+	for id: String in _tools:
+		_tools[id].visible = id == tool_id
+
+
+static func _vector(values: Array) -> Vector3:
+	if values.size() < 3:
+		return Vector3.ZERO
+	return Vector3(values[0], values[1], values[2])
 
 
 func _setup_animation() -> void:
@@ -165,12 +245,22 @@ func _setup_animation() -> void:
 	var gesture := AnimationNodeOneShot.new()
 	gesture.fadein_time = gesture_fade_in
 	gesture.fadeout_time = gesture_fade_out
+	var posture := AnimationNodeTransition.new()
+	posture.add_input("debout")
+	posture.add_input("assis")
+	posture.xfade_time = 0.3
+	var seated := AnimationNodeAnimation.new()
+	seated.animation = GameData.characters.get("posture_assise", "")
 	blend.add_node("move", move)
+	blend.add_node("seated", seated)
+	blend.add_node("posture", posture)
+	blend.connect_node("posture", 0, "move")
+	blend.connect_node("posture", 1, "seated")
 	blend.add_node("gesture_clip", _gesture_node)
 	blend.add_node("gesture_speed", gesture_speed)
 	blend.add_node("gesture", gesture)
 	blend.connect_node("gesture_speed", 0, "gesture_clip")
-	blend.connect_node("gesture", 0, "move")
+	blend.connect_node("gesture", 0, "posture")
 	blend.connect_node("gesture", 1, "gesture_speed")
 	blend.connect_node("output", 0, "gesture")
 
@@ -179,6 +269,8 @@ func _setup_animation() -> void:
 	_tree.anim_player = _tree.get_path_to(player)
 	_tree.tree_root = blend
 	_tree.active = true
+	# A new transition has no input selected: without this, locomotion would not play at all.
+	_tree.set("parameters/posture/transition_request", "debout")
 	_tree.advance(0.0) # Pose right away, even if the game starts paused (character choice).
 
 
@@ -193,6 +285,7 @@ static func _get_library() -> AnimationLibrary:
 		needed.append(step.animation)
 	for gesture: Dictionary in GameData.characters.get("gestes", {}).values():
 		needed.append(gesture.animation)
+	needed.append(GameData.characters.get("posture_assise", ""))
 	for name in needed:
 		if player.has_animation(name) and not _library.has_animation(name):
 			_library.add_animation(name, player.get_animation(name))

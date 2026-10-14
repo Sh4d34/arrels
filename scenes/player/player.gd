@@ -37,6 +37,7 @@ var _spawn_position: Vector3
 var _speed: float = 0.0 ## Current walking speed along the facing direction.
 var _step_phase: float = 0.0
 var _gesture_left: float = 0.0 ## While a gesture plays, the player stands still.
+var _seat: FireSeat = null ## The log the player sits on, or null.
 var _last_step: int = 0
 var interaction_enabled: bool = true ## Turned off by modes that use the same inputs (building).
 var _target: Node3D ## The physics body currently targeted, or null.
@@ -60,7 +61,41 @@ func set_character(new_character_id: String) -> void:
 	_character.set_character(character_id)
 
 
+## Sits on a log by the fire, facing it; time flows faster meanwhile.
+func sit_on(seat: FireSeat) -> void:
+	if _seat:
+		return
+	_seat = seat
+	seat.occupant = self
+	velocity = Vector3.ZERO
+	_speed = 0.0
+	global_position = seat.anchor.global_position
+	var toward_fire := -seat.anchor.global_basis.z
+	_model.rotation.y = atan2(-toward_fire.x, -toward_fire.z)
+	_character.set_seated(true)
+	_gesture_left = _character.play_gesture("s_asseoir")
+	TimeManager.time_multiplier = TimeManager.seated_speed
+
+
+func stand_up() -> void:
+	if _seat == null:
+		return
+	_seat.occupant = null
+	_seat = null
+	_character.set_seated(false)
+	_gesture_left = _character.play_gesture("se_lever")
+	TimeManager.time_multiplier = 1.0
+
+
 func _physics_process(delta: float) -> void:
+	if _seat:
+		_gesture_left = maxf(_gesture_left - delta, 0.0)
+		_character.set_speed(0.0)
+		# Wanting to walk away stands the player up, once settled.
+		if _gesture_left == 0.0 and Input.get_vector("move_left", "move_right", "move_forward", "move_back") != Vector2.ZERO:
+			stand_up()
+		_update_interaction(delta)
+		return
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
@@ -102,7 +137,9 @@ func _physics_process(delta: float) -> void:
 func _update_interaction(delta: float) -> void:
 	_cooldown_left = maxf(_cooldown_left - delta, 0.0)
 	var target: Node3D = null
-	if interaction_enabled:
+	if _seat:
+		target = _seat # Seated, the only action is standing up.
+	elif interaction_enabled:
 		target = _find_hovered_interactable()
 		if target == null:
 			target = _find_nearest_interactable()
@@ -120,7 +157,7 @@ func _update_interaction(delta: float) -> void:
 		_target_prompt = prompt
 		_target_hint = hint
 		_target_possible = possible
-		_highlight.set_target(target, possible)
+		_highlight.set_target(null if _seat else target, possible) # No glow on the log one sits on.
 		interaction_prompt_changed.emit(prompt, hint, possible)
 	if _target and Input.is_action_pressed("interact") and _cooldown_left == 0.0:
 		_interact_with_target()

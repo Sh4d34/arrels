@@ -13,6 +13,8 @@ var day_length: float = 120.0 ## Real seconds for a whole day, night included.
 var night_share: float = 0.25 ## Part of day_length spent at night.
 var dawn_hour: float = 6.0
 var dusk_hour: float = 21.0
+var seated_speed: float = 8.0 ## How much faster time flows while sitting by the fire.
+var time_multiplier: float = 1.0 ## Set by gameplay (sitting by the fire), 1.0 otherwise.
 
 var _elapsed: float = 0.0 ## Real seconds since dawn.
 var _last_whole_hour: int = -1
@@ -25,6 +27,7 @@ func _ready() -> void:
 	night_share = float(settings.get("part_nuit", night_share))
 	dawn_hour = float(settings.get("heure_aube", dawn_hour))
 	dusk_hour = float(settings.get("heure_crepuscule", dusk_hour))
+	seated_speed = float(settings.get("acceleration_assis", seated_speed))
 	_periods = settings.get("periodes", [])
 	set_hour(float(settings.get("heure_depart", dawn_hour)))
 
@@ -33,7 +36,7 @@ func _process(delta: float) -> void:
 	var speed := 1.0
 	if OS.is_debug_build() and Input.is_action_pressed("debug_fast_time"):
 		speed = FAST_TIME_FACTOR
-	_elapsed += delta * speed
+	_elapsed += delta * speed * time_multiplier
 	if _elapsed >= day_length:
 		_elapsed -= day_length
 		advance_day()

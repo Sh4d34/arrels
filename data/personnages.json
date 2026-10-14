@@ -58,7 +58,13 @@
 	"gestes": {
 		"couper": {
 			"animation": "Sword_Attack",
-			"vitesse": 1.6
+			"vitesse": 1.2,
+			"outil": "hachette"
+		},
+		"piocher": {
+			"animation": "Sword_Attack",
+			"vitesse": 1.2,
+			"outil": "pioche"
 		},
 		"a_genoux": {
 			"animation": "Fixing_Kneeling",
@@ -71,6 +77,101 @@
 		"interagir": {
 			"animation": "Interact",
 			"vitesse": 1.5
+		},
+		"s_asseoir": {
+			"animation": "Sitting_Enter",
+			"vitesse": 1.0
+		},
+		"se_lever": {
+			"animation": "Sitting_Exit",
+			"vitesse": 1.2
+		}
+	},
+	"posture_assise": "Sitting_Idle",
+	"outils": {
+		"hachette": {
+			"os": "hand_r",
+			"prise_position": [
+				0.0,
+				0.08,
+				0.03
+			],
+			"prise_rotation": [
+				0.0,
+				0.0,
+				90.0
+			],
+			"pieces": [
+				{
+					"forme": "cylindre",
+					"taille": [
+						0.017,
+						0.55
+					],
+					"position": [
+						0.0,
+						0.17,
+						0.0
+					],
+					"couleur": "#8a6440"
+				},
+				{
+					"forme": "boite",
+					"taille": [
+						0.03,
+						0.09,
+						0.15
+					],
+					"position": [
+						0.0,
+						0.4,
+						0.055
+					],
+					"couleur": "#6e747a"
+				}
+			]
+		},
+		"pioche": {
+			"os": "hand_r",
+			"prise_position": [
+				0.0,
+				0.08,
+				0.03
+			],
+			"prise_rotation": [
+				0.0,
+				0.0,
+				90.0
+			],
+			"pieces": [
+				{
+					"forme": "cylindre",
+					"taille": [
+						0.018,
+						0.6
+					],
+					"position": [
+						0.0,
+						0.2,
+						0.0
+					],
+					"couleur": "#8a6440"
+				},
+				{
+					"forme": "boite",
+					"taille": [
+						0.03,
+						0.035,
+						0.42
+					],
+					"position": [
+						0.0,
+						0.47,
+						0.0
+					],
+					"couleur": "#5e6369"
+				}
+			]
 		}
 	}
 }

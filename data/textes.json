@@ -82,7 +82,10 @@
 		"reste": {
 			"un": "Encore environ 1 heure de feu",
 			"plusieurs": "Encore environ {n} heures de feu"
-		}
+		},
+		"s_asseoir": "S'asseoir au coin du feu",
+		"se_lever": "Se lever",
+		"assis_carnet": "Au coin du feu, le temps passe plus vite : la nuit file jusqu'au matin."
 	},
 	"lieux": {
 		"cortal": "Un vieux cortal",

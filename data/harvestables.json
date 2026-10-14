@@ -95,14 +95,31 @@
 		"recolte": [
 			{
 				"item": "pierres",
-				"qte": 2
+				"qte": 3
 			}
 		],
 		"repousse_jours": null,
 		"disparition": "ramassage",
 		"son_coup": "casser_pierre",
 		"son_fin": "casser_pierre",
-		"geste": "couper"
+		"geste": "piocher"
+	},
+	{
+		"id": "gros_rocher",
+		"nom": "Gros rocher",
+		"invite": "Casser des pierres",
+		"coups": 5,
+		"recolte": [
+			{
+				"item": "pierres",
+				"qte": 4
+			}
+		],
+		"repousse_jours": null,
+		"disparition": "ramassage",
+		"son_coup": "casser_pierre",
+		"son_fin": "casser_pierre",
+		"geste": "piocher"
 	},
 	{
 		"id": "brindilles",
