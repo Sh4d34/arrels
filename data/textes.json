@@ -57,7 +57,9 @@
 		"humide": "La terre est encore humide",
 		"arroser": "Arroser le plant de {culture}",
 		"arrosoir_vide": "Arrosoir vide : va puiser à la rivière",
-		"pousse": "Pousse : {jours} / {total} jours"
+		"pousse": "Pousse : {jours} / {total} jours",
+		"choisir_graine": "Semer : choisis une graine",
+		"choix_graine": "{graine} ({quantite})"
 	},
 	"composteur": {
 		"recuperer": "Récupérer le compost",

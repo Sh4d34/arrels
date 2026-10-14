@@ -153,6 +153,7 @@ func _validate() -> void:
 ## A project's objective must point to existing content: an item to gain, a buildable to build,
 ## or anything acted upon (harvestable, crop, buildable).
 func _check_project(project: Dictionary) -> void:
+	_check_items(project.get("recompense", []), "project '%s'" % project.id)
 	var objective: Dictionary = project.get("objectif", {})
 	var target: String = objective.get("cible", "")
 	var known: bool

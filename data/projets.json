@@ -3,56 +3,137 @@
 		"id": "paquet",
 		"titre": "Ouvrir le paquet de bienvenue",
 		"consigne": "Un paquet t'attend quelque part sur le terrain.",
-		"objectif": { "action": "recolter", "cible": "paquet_bienvenue", "nombre": 1 },
+		"objectif": {
+			"action": "recolter",
+			"cible": "paquet_bienvenue",
+			"nombre": 1
+		},
 		"carnet": "Quelques graines et des allumettes : de quoi commencer une vie ici."
 	},
 	{
 		"id": "bois",
 		"titre": "Ramasser du bois",
 		"consigne": "Coupe les jeunes arbres de la friche et les arbres morts.",
-		"objectif": { "action": "obtenir", "cible": "bois", "nombre": 8 },
+		"objectif": {
+			"action": "obtenir",
+			"cible": "bois",
+			"nombre": 8
+		},
 		"carnet": "Défricher sans tout raser : la lisière reste, et repousse pour fournir du bois durablement."
 	},
 	{
 		"id": "composteur",
 		"titre": "Monter un composteur",
 		"consigne": "Construis-le avec 8 bois (touche B).",
-		"objectif": { "action": "construire", "cible": "composteur", "nombre": 1 },
+		"objectif": {
+			"action": "construire",
+			"cible": "composteur",
+			"nombre": 1
+		},
 		"carnet": "Rien ne se perd : les herbes d'aujourd'hui seront la terre de demain."
 	},
 	{
 		"id": "semis",
 		"titre": "Semer des tomates",
 		"consigne": "Pose une parcelle (touche P), prépare la terre puis sème.",
-		"objectif": { "action": "semer", "cible": "tomate", "nombre": 1 },
-		"carnet": "Désherber, ameublir, pailler : une terre bien préparée travaille ensuite pour toi."
+		"objectif": {
+			"action": "semer",
+			"cible": "tomate",
+			"nombre": 1
+		},
+		"carnet": "Désherber, ameublir, pailler : une terre bien préparée travaille ensuite pour toi. Une voisine passe et te laisse quelques graines de basilic.",
+		"recompense": [
+			{
+				"item": "graine_basilic",
+				"qte": 3
+			}
+		]
+	},
+	{
+		"id": "basilic",
+		"titre": "Semer du basilic",
+		"consigne": "Sème-le dans une parcelle près de tes tomates (touches 1, 2… pour choisir la graine).",
+		"objectif": {
+			"action": "semer",
+			"cible": "basilic",
+			"nombre": 1
+		},
+		"carnet": "Associer les cultures, c'est laisser les plantes s'entraider."
 	},
 	{
 		"id": "pierres",
 		"titre": "Casser des pierres",
 		"consigne": "Casse quelques rochers pour réunir 6 pierres.",
-		"objectif": { "action": "obtenir", "cible": "pierres", "nombre": 6 },
+		"objectif": {
+			"action": "obtenir",
+			"cible": "pierres",
+			"nombre": 6
+		},
 		"carnet": "Les pierres du terrain servent sur place : pas besoin d'en faire venir de loin."
 	},
 	{
 		"id": "feu",
 		"titre": "Allumer un premier feu",
 		"consigne": "Monte un foyer en pierres (touche B), prépare-le avec du petit bois et du bois, puis allume-le.",
-		"objectif": { "action": "allumer", "cible": "foyer", "nombre": 1 },
+		"objectif": {
+			"action": "allumer",
+			"cible": "foyer",
+			"nombre": 1
+		},
 		"carnet": "Un feu bien préparé prend du premier coup : le petit bois d'abord, les bûches ensuite."
 	},
 	{
 		"id": "veillee",
 		"titre": "Une soirée au coin du feu",
 		"consigne": "Assieds-toi sur la bûche près du feu et regarde la nuit passer.",
-		"objectif": { "action": "s_asseoir", "cible": "foyer", "nombre": 1 },
+		"objectif": {
+			"action": "s_asseoir",
+			"cible": "foyer",
+			"nombre": 1
+		},
 		"carnet": "Prendre le temps fait aussi partie de la vie ici."
 	},
 	{
 		"id": "tomates",
 		"titre": "Récolter tes premières tomates",
 		"consigne": "Arrose ton plant chaque jour jusqu'à ce qu'il porte des fruits.",
-		"objectif": { "action": "recolter", "cible": "tomate", "nombre": 1 },
-		"carnet": "Des tomates venues de ta propre terre : le lieu commence à te nourrir."
+		"objectif": {
+			"action": "recolter",
+			"cible": "tomate",
+			"nombre": 1
+		},
+		"carnet": "Des tomates venues de ta propre terre : le lieu commence à te nourrir. En échange de quelques tomates, la voisine te donne des haricots à semer et des graines de courgette.",
+		"recompense": [
+			{
+				"item": "graine_haricot",
+				"qte": 3
+			},
+			{
+				"item": "graine_courgette",
+				"qte": 2
+			}
+		]
+	},
+	{
+		"id": "haricots",
+		"titre": "Semer des haricots",
+		"consigne": "Prépare une nouvelle parcelle et sèmes-y tes haricots.",
+		"objectif": {
+			"action": "semer",
+			"cible": "haricot",
+			"nombre": 1
+		},
+		"carnet": "Garder une part de sa récolte pour la ressemer : c'est ainsi que les variétés se transmettent."
+	},
+	{
+		"id": "courgettes",
+		"titre": "Récolter tes premières courgettes",
+		"consigne": "Sème tes graines de courgette dans une terre compostée et arrose-les.",
+		"objectif": {
+			"action": "recolter",
+			"cible": "courgette",
+			"nombre": 1
+		},
+		"carnet": "Tomates, basilic, haricots, courgettes : ton potager prend des couleurs."
 	}
 ]

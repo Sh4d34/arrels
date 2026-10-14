@@ -63,6 +63,30 @@ func can_interact() -> bool:
 	return _current_action().possible
 
 
+## Numbered options offered instead of a single action: the seeds to sow, when there are
+## several kinds. Empty otherwise.
+func get_interaction_choices() -> Array[String]:
+	var choices: Array[String] = []
+	var seeds := owned_seeds()
+	if _current_action().id != "semer" or seeds.size() < 2:
+		return choices
+	for seed_id in seeds:
+		var crop := GameData.crop_for_seed(seed_id)
+		choices.append(GameData.text("parcelle.choix_graine", {"graine": crop.get("nom", seed_id), "quantite": Inventory.count(seed_id)}))
+	return choices
+
+
+## Sows the seed of the chosen option (index in get_interaction_choices).
+func interact_choice(_actor: Node3D, index: int) -> void:
+	var seeds := owned_seeds()
+	if index < 0 or index >= get_interaction_choices().size():
+		return
+	Sfx.play("semer", global_position)
+	_sow(seeds[index])
+	Events.action_done.emit("semer", crop_id)
+	_refresh_visual()
+
+
 func interact(_actor: Node3D) -> void:
 	var action := _current_action()
 	if not action.possible:
@@ -85,12 +109,7 @@ func interact(_actor: Node3D) -> void:
 			Inventory.remove_all(_step("pailler").get("cout", []))
 			stage = Stage.MULCHED
 		"semer":
-			var seed_id := _available_seed()
-			Inventory.remove(seed_id)
-			crop_id = GameData.crop_for_seed(seed_id).id
-			days_grown = 0
-			last_watered_day = -1000
-			stage = Stage.SOWN
+			_sow(owned_seeds()[0])
 		"arroser":
 			Inventory.remove(_water().item, int(_water().qte))
 			last_watered_day = TimeManager.day
@@ -130,9 +149,12 @@ func _current_action() -> Dictionary:
 				if Inventory.has_all(cost):
 					return _action("pailler", GameData.text("parcelle.pailler", {"cout": GameData.describe(cost)}), true, _step("pailler").get("carnet", ""))
 				return _action("pailler", GameData.text("parcelle.pailler_manque", {"cout": GameData.describe(cost)}), false, _step("pailler").get("carnet", ""))
-			var seed_id := _available_seed()
-			if seed_id != "":
-				return _action("semer", GameData.text("parcelle.semer", {"graine": GameData.item_name(seed_id).to_lower()}), true, GameData.crop_for_seed(seed_id).get("carnet", ""))
+			var seeds := owned_seeds()
+			if seeds.size() > 1:
+				# Several kinds: the player picks one with the choice keys (see get_interaction_choices).
+				return _action("semer", GameData.text("parcelle.choisir_graine"), false, GameData.crop_for_seed(seeds[0]).get("carnet", ""))
+			if seeds.size() == 1:
+				return _action("semer", GameData.text("parcelle.semer", {"graine": GameData.item_name(seeds[0]).to_lower()}), true, GameData.crop_for_seed(seeds[0]).get("carnet", ""))
 			return _action("semer", GameData.text("parcelle.sans_graine"), false, _rules.get("carnet", ""))
 		_:
 			var crop := _crop()
@@ -173,11 +195,21 @@ func _harvest() -> void:
 	stage = Stage.MULCHED
 
 
-func _available_seed() -> String:
+## Seeds the player owns, in data/crops.json order.
+static func owned_seeds() -> Array[String]:
+	var seeds: Array[String] = []
 	for crop: Dictionary in GameData.crops.values():
 		if Inventory.count(crop.get("graine", "")) > 0:
-			return crop.graine
-	return ""
+			seeds.append(crop.graine)
+	return seeds
+
+
+func _sow(seed_id: String) -> void:
+	Inventory.remove(seed_id)
+	crop_id = GameData.crop_for_seed(seed_id).id
+	days_grown = 0
+	last_watered_day = -1000
+	stage = Stage.SOWN
 
 
 func _step(id: String) -> Dictionary:

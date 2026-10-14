@@ -19,6 +19,7 @@ func _initialize() -> void:
 	_test_modes()
 	_test_campfire()
 	_test_projects()
+	_test_seed_choice()
 	print("Tests: %s (%d vérifications)" % ["OK" if _failures == 0 else "%d échec(s)" % _failures, _checks])
 	quit(1 if _failures > 0 else 0)
 
@@ -249,4 +250,34 @@ func _test_projects() -> void:
 			for n in int(objective.get("nombre", 1)):
 				events.action_done.emit(objective.action, objective.cible)
 	_check(projects.current().is_empty(), "tous les projets peuvent être accomplis")
+	_check(inventory.count("graine_basilic") >= 3, "semer des tomates rapporte des graines de basilic")
+	_check(inventory.count("graine_courgette") >= 2, "récolter des tomates rapporte des graines de courgette")
 	projects.reset()
+
+
+func _test_seed_choice() -> void:
+	var game_data: Node = root.get_node("GameData")
+	var inventory: Node = root.get_node("Inventory")
+	var parcel: GDScript = load("res://scenes/crops/parcelle.gd") # Static members of Parcel.
+	for crop: Dictionary in game_data.crops.values():
+		inventory.remove(crop.graine, inventory.count(crop.graine))
+	inventory.add("graine_tomate", 1)
+	var plot: Node3D = load("res://scenes/crops/parcelle.tscn").instantiate()
+	root.add_child(plot)
+	plot.stage = plot.Stage.MULCHED
+	plot.composted = true
+	_check(plot.get_interaction_prompt() == "Semer une graine de tomate" and plot.can_interact(), "une seule sorte de graine : semer directement")
+	_check(plot.get_interaction_choices().is_empty(), "une seule sorte de graine : pas de choix")
+
+	inventory.add("graine_haricot", 2)
+	_check(parcel.owned_seeds() == ["graine_tomate", "graine_haricot"], "graines possédées, dans l'ordre de crops.json")
+	_check(plot.get_interaction_prompt() == "Semer : choisis une graine" and not plot.can_interact(), "plusieurs graines : il faut choisir")
+	_check(plot.get_interaction_choices() == ["Tomate (1)", "Haricot (2)"], "les choix numérotés listent les graines")
+	plot.interact_choice(null, 5)
+	_check(plot.stage == plot.Stage.MULCHED, "un choix hors liste ne sème rien")
+	plot.interact_choice(null, 1)
+	_check(plot.crop_id == "haricot" and inventory.count("graine_haricot") == 1, "le choix 2 sème le haricot")
+	_check(plot.get_interaction_choices().is_empty(), "plus de choix une fois semé")
+	plot.queue_free()
+	inventory.remove("graine_tomate", 1)
+	inventory.remove("graine_haricot", 1)

@@ -11,6 +11,7 @@ const GAIN_ACTION := "obtenir"
 
 var _counts: Dictionary[String, int] = {} ## "action:target" -> times done (or items gained).
 var _index := 0
+var _last_announced := 0 ## Index of the project last sent with project_changed.
 var _known_quantities: Dictionary[String, int] = {}
 
 
@@ -43,6 +44,7 @@ func count(action: String, target_id: String) -> int:
 func reset() -> void:
 	_counts.clear()
 	_index = 0
+	_last_announced = 0
 	_known_quantities = Inventory.get_all()
 	project_changed.emit(current())
 
@@ -64,12 +66,18 @@ func _add(action: String, target_id: String, amount: int) -> void:
 	_advance()
 
 
-## Completes the current project while its objective is reached, possibly several in a row.
+## Completes the current project while its objective is reached, possibly several in a row,
+## then hands out their rewards (which may in turn complete the next project).
 func _advance() -> void:
-	var completed := false
+	var rewards: Array = []
 	while not current().is_empty() and progress() >= goal():
-		project_completed.emit(current())
+		var project := current()
 		_index += 1
-		completed = true
-	if completed:
-		project_changed.emit(current())
+		rewards.append_array(project.get("recompense", []))
+		project_completed.emit(project)
+	if _index == _last_announced:
+		return
+	_last_announced = _index
+	project_changed.emit(current())
+	for reward: Dictionary in rewards:
+		Inventory.add(reward.item, int(reward.qte))

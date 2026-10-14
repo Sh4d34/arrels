@@ -8,7 +8,8 @@ extends CharacterBody3D
 
 ## prompt is empty when nothing can be interacted with; hint is an optional carnet text;
 ## possible is false for information-only prompts.
-signal interaction_prompt_changed(prompt: String, hint: String, possible: bool)
+## choices: numbered options the target offers instead of a single action (see get_interaction_choices).
+signal interaction_prompt_changed(prompt: String, hint: String, possible: bool, choices: Array[String])
 
 @export_group("Movement")
 @export var walk_speed: float = 3.5
@@ -44,6 +45,7 @@ var _target: Node3D ## The physics body currently targeted, or null.
 var _target_prompt: String = ""
 var _target_hint: String = ""
 var _target_possible: bool = false
+var _target_choices: Array[String] = []
 var _cooldown_left: float = 0.0
 
 @onready var _model: Node3D = $Model
@@ -146,26 +148,40 @@ func _update_interaction(delta: float) -> void:
 	var prompt := ""
 	var hint := ""
 	var possible := false
+	var choices: Array[String] = []
 	if target:
 		var interactable: Object = target.get_meta("interactable")
 		prompt = interactable.call("get_interaction_prompt")
 		if interactable.has_method("get_interaction_hint"):
 			hint = interactable.call("get_interaction_hint")
 		possible = interactable.call("can_interact")
-	if target != _target or prompt != _target_prompt or hint != _target_hint or possible != _target_possible:
+		if interactable.has_method("get_interaction_choices"):
+			choices = interactable.call("get_interaction_choices")
+	if target != _target or prompt != _target_prompt or hint != _target_hint or possible != _target_possible or choices != _target_choices:
 		_target = target
 		_target_prompt = prompt
 		_target_hint = hint
 		_target_possible = possible
-		_highlight.set_target(null if _seat else target, possible) # No glow on the log one sits on.
-		interaction_prompt_changed.emit(prompt, hint, possible)
-	if _target and Input.is_action_pressed("interact") and _cooldown_left == 0.0:
+		_target_choices = choices
+		# No glow on the log one sits on; a target with choices glows as available.
+		_highlight.set_target(null if _seat else target, possible or not choices.is_empty())
+		interaction_prompt_changed.emit(prompt, hint, possible, choices)
+	if not _target or _cooldown_left > 0.0:
+		return
+	if Input.is_action_pressed("interact"):
 		_interact_with_target()
+		return
+	for i in _target_choices.size():
+		var action := "choix_%d" % (i + 1)
+		if InputMap.has_action(action) and Input.is_action_just_pressed(action):
+			_interact_with_target(i)
+			return
 
 
-func _interact_with_target() -> void:
+## Plays the target's action, or the option of index choice when it offers numbered choices.
+func _interact_with_target(choice: int = -1) -> void:
 	var interactable: Object = _target.get_meta("interactable")
-	if not interactable.call("can_interact"):
+	if choice < 0 and not interactable.call("can_interact"):
 		return
 	var to_target := _target.global_position - global_position
 	_model.rotation.y = atan2(-to_target.x, -to_target.z)
@@ -174,7 +190,10 @@ func _interact_with_target() -> void:
 	_speed = 0.0
 	# The next hit waits for the end of the gesture, so actions follow the animation.
 	_cooldown_left = maxf(interact_cooldown, _gesture_left)
-	interactable.call("interact", self)
+	if choice < 0:
+		interactable.call("interact", self)
+	else:
+		interactable.call("interact_choice", self, choice)
 
 
 func _is_reachable(body: Node3D) -> bool:

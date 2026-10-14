@@ -3,15 +3,121 @@
 		"id": "tomate",
 		"nom": "Tomate",
 		"graine": "graine_tomate",
-		"mois_semis": [3, 4, 5],
+		"mois_semis": [
+			3,
+			4,
+			5
+		],
 		"jours_pousse": 6,
 		"stades": 4,
 		"eau_par_jour": 1,
-		"recolte": [{ "item": "tomate", "qte": 3 }, { "item": "graine_tomate", "qte": 1 }],
-		"associations": ["basilic", "oeillet_inde"],
+		"recolte": [
+			{
+				"item": "tomate",
+				"qte": 3
+			},
+			{
+				"item": "graine_tomate",
+				"qte": 1
+			}
+		],
+		"associations": [
+			"basilic",
+			"oeillet_inde"
+		],
 		"couleur_fruit": "#d8452f",
 		"modele_plant": "res://assets/models/quaternius_nature/Plant_1_Big.gltf",
 		"invite_recolte": "Récolter les tomates",
 		"carnet": "La tomate aime la chaleur. On la sème au printemps, à l'abri des dernières gelées."
+	},
+	{
+		"id": "basilic",
+		"nom": "Basilic",
+		"graine": "graine_basilic",
+		"mois_semis": [
+			4,
+			5,
+			6
+		],
+		"jours_pousse": 3,
+		"stades": 3,
+		"eau_par_jour": 1,
+		"recolte": [
+			{
+				"item": "basilic",
+				"qte": 2
+			},
+			{
+				"item": "graine_basilic",
+				"qte": 1
+			}
+		],
+		"associations": [
+			"tomate"
+		],
+		"couleur_fruit": "#4c9a3c",
+		"modele_plant": "res://assets/models/quaternius_nature/Plant_7.gltf",
+		"invite_recolte": "Cueillir le basilic",
+		"carnet": "Planté au pied des tomates, le basilic éloigne certains insectes et aime la même chaleur."
+	},
+	{
+		"id": "haricot",
+		"nom": "Haricot",
+		"graine": "graine_haricot",
+		"mois_semis": [
+			5,
+			6,
+			7
+		],
+		"jours_pousse": 4,
+		"stades": 4,
+		"eau_par_jour": 1,
+		"recolte": [
+			{
+				"item": "haricots",
+				"qte": 4
+			},
+			{
+				"item": "graine_haricot",
+				"qte": 2
+			}
+		],
+		"associations": [
+			"courgette"
+		],
+		"couleur_fruit": "#8fbf4a",
+		"modele_plant": "res://assets/models/quaternius_nature/Plant_1.gltf",
+		"invite_recolte": "Cueillir les haricots",
+		"carnet": "Les haricots captent l'azote de l'air et en enrichissent le sol : une bonne voisine pour les plantes gourmandes."
+	},
+	{
+		"id": "courgette",
+		"nom": "Courgette",
+		"graine": "graine_courgette",
+		"mois_semis": [
+			4,
+			5,
+			6
+		],
+		"jours_pousse": 5,
+		"stades": 4,
+		"eau_par_jour": 1,
+		"recolte": [
+			{
+				"item": "courgette",
+				"qte": 2
+			},
+			{
+				"item": "graine_courgette",
+				"qte": 1
+			}
+		],
+		"associations": [
+			"haricot"
+		],
+		"couleur_fruit": "#4f7d2c",
+		"modele_plant": "res://assets/models/quaternius_nature/Plant_7_Big.gltf",
+		"invite_recolte": "Cueillir les courgettes",
+		"carnet": "La courgette est gourmande : une terre bien compostée et de l'eau régulière, et elle produit sans compter."
 	}
 ]

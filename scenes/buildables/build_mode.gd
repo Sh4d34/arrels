@@ -144,7 +144,7 @@ func _mode_pressed(event: InputEvent) -> String:
 ## Index, within the open mode, of the buildable chosen with the number keys, or -1.
 func _slot_pressed(event: InputEvent) -> int:
 	for i in GameData.buildables_in_mode(mode_id).size():
-		var action := "build_slot_%d" % (i + 1)
+		var action := "choix_%d" % (i + 1)
 		if InputMap.has_action(action) and event.is_action_pressed(action):
 			return i
 	return -1

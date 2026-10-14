@@ -32,6 +32,7 @@ var _celebrations := 0 ## Completed projects whose carnet is still shown.
 @onready var _shortcut_row: HBoxContainer = %ShortcutRow
 @onready var _prompt_key: KeyCap = %PromptKey
 @onready var _prompt_or: Label = %PromptOr
+@onready var _prompt_choices: HBoxContainer = %PromptChoices
 @onready var _project_panel: PanelContainer = %ProjectPanel
 @onready var _project_title: Label = %ProjectTitle
 @onready var _project_step: Label = %ProjectStep
@@ -56,13 +57,13 @@ func _ready() -> void:
 	_fill_shortcuts()
 	_prompt_key.key_text = GameData.text("hud.touche_action")
 	_prompt_or.text = GameData.text("hud.ou_clic")
-	_on_prompt_changed("", "", false)
+	_on_prompt_changed("", "", false, [])
 	_on_build_mode_changed(false, "")
 	_refresh_inventory()
 	_refresh_project()
 
 
-func _on_prompt_changed(prompt: String, hint: String, possible: bool) -> void:
+func _on_prompt_changed(prompt: String, hint: String, possible: bool, choices: Array[String]) -> void:
 	_prompt_panel.visible = prompt != ""
 	# The key and "or click" only show when the prompt is an action, not an information.
 	_prompt_key.visible = possible
@@ -70,25 +71,35 @@ func _on_prompt_changed(prompt: String, hint: String, possible: bool) -> void:
 	_prompt_label.text = prompt
 	_prompt_hint.text = hint
 	_prompt_hint.visible = hint != ""
+	for child in _prompt_choices.get_children():
+		_prompt_choices.remove_child(child) # Out of the row now, so the new first pair gets no gap.
+		child.queue_free()
+	for i in choices.size():
+		_add_key_and_label(_prompt_choices, str(i + 1), choices[i])
+	_prompt_choices.visible = not choices.is_empty()
 
 
 ## One key cap and its action name per shortcut listed in data/textes.json (hud.raccourcis).
 func _fill_shortcuts() -> void:
 	for entry: Dictionary in GameData.texts.get("hud", {}).get("raccourcis", []):
-		var key := KeyCap.new()
-		key.key_text = entry.get("touche", "")
-		key.font_size = 15
-		_shortcut_row.add_child(key)
-		var label := Label.new()
-		label.text = entry.get("action", "")
-		label.label_settings = _prompt_or.label_settings
-		label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-		_shortcut_row.add_child(label)
+		_add_key_and_label(_shortcut_row, entry.get("touche", ""), entry.get("action", ""))
+
+
+## A key cap followed by its label, spaced from the previous pair in the row.
+func _add_key_and_label(row: HBoxContainer, key_text: String, text: String) -> void:
+	if row.get_child_count() > 0:
 		var gap := Control.new()
 		gap.custom_minimum_size.x = 6
-		_shortcut_row.add_child(gap)
-	if _shortcut_row.get_child_count() > 0:
-		_shortcut_row.get_child(_shortcut_row.get_child_count() - 1).queue_free()
+		row.add_child(gap)
+	var key := KeyCap.new()
+	key.key_text = key_text
+	key.font_size = 15
+	row.add_child(key)
+	var label := Label.new()
+	label.text = text
+	label.label_settings = _prompt_or.label_settings
+	label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(label)
 
 
 func _on_new_day(day: int) -> void:
